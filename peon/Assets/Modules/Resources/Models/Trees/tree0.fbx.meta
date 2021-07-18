@@ -1,0 +1,131 @@
+fileFormatVersion: 2
+guid: b5e35014c45d90a438a53fdebd293a76
+ModelImporter:
+  serializedVersion: 20101
+  internalIDToNameTable:
+  - first:
+      74: 8521936675685159512
+    second: Barrens_TreeDoodad0 Nodes|#UNANIMATED
+  - first:
+      74: 1861792685090719314
+    second: Barrens_TreeDoodad0 Nodes|#UNANIMATED Barrens_TreeDoodad0
+  - first:
+      74: 8277410948082012442
+    second: Barrens_TreeDoodad0 Nodes|#UNANIMATED Barrens_TreeDoodad0.001
+  - first:
+      74: 7185931181261735012
+    second: Barrens_TreeDoodad0 Nodes|#UNANIMATED Barrens_TreeDoodad0.002
+  - first:
+      74: 1723001556082209262
+    second: Barrens_TreeDoodad0 Nodes|#UNANIMATED Barrens_TreeDoodad0.003
+  - first:
+      74: -2651473579909185132
+    second: Barrens_TreeDoodad0 Nodes|all sequences
+  - first:
+      74: 8194214006010520655
+    second: Barrens_TreeDoodad0 Nodes|Birth
+  - first:
+      74: -911162552748021332
+    second: Barrens_TreeDoodad0 Nodes|Death 1
+  - first:
+      74: -2260183303871699196
+    second: Barrens_TreeDoodad0 Nodes|Stand 1
+  - first:
+      74: -1004241258038101692
+    second: Barrens_TreeDoodad0 Nodes|Stand Hit 1
+  externalObjects: {}
+  materials:
+    materialImportMode: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
