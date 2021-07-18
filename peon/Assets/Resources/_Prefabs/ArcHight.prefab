@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8664959902638724376}
   - component: {fileID: 6048315290093181831}
   - component: {fileID: 7731046218535736349}
+  - component: {fileID: -3546508470184709989}
   m_Layer: 9
   m_Name: ArcHight
   m_TagString: Untagged
@@ -81,3 +82,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &-3546508470184709989
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4901789957485583399}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4216936035827285324, guid: 672f91d565d3463468b0d9886990f31f, type: 3}
