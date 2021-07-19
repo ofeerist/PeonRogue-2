@@ -9,6 +9,12 @@ namespace Game.Unit
         [SerializeField] private float _retreatDistance;
         [SerializeField] private bool _attackOnClamp;
 
+        [Space]
+
+        [SerializeField] private bool _chase;
+        [SerializeField] private float _minDistanceToChase;
+        [SerializeField] private float _maxDistanceToChase;
+
         private Transform _target;
         private NavMeshAgent _navMeshAgent;
 
@@ -34,9 +40,6 @@ namespace Game.Unit
 
             var _transform = transform;
 
-            if (_target != null) Blocking = Vector3.Distance(_transform.position, _target.position) < _retreatDistance;
-            else Blocking = false;
-
             DetectEnemy(_transform);
 
             if (Unit.enabled && _navMeshAgent.enabled)
@@ -44,24 +47,31 @@ namespace Game.Unit
                 {
                     if (_target != null)
                     {
-                        var v = transform.position + (_transform.position - _target.position).normalized * _retreatDistance;
-                        if (_navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
-                            _navMeshAgent.SetDestination(v);
-                        
-
-                        if (!_clamped && !_navMeshAgent.CalculatePath(v, _navMeshAgent.path) && _navMeshAgent.velocity.magnitude == 0f)
+                        if (Vector3.Distance(_target.transform.position, _transform.position) <= _retreatDistance)
                         {
-                            _clamped = true;
-                            StartCoroutine(ResetClamped(_clampResetTime));
-                            _navMeshAgent.SetDestination(RandomNavmeshLocation(_retreatDistance));
+                            var v = transform.position + (_transform.position - _target.position).normalized * _retreatDistance;
+                            if (_navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
+                                _navMeshAgent.SetDestination(v);
 
-                            if (_attackOnClamp)
+
+                            if (!_clamped && !_navMeshAgent.CalculatePath(v, _navMeshAgent.path) && _navMeshAgent.velocity.magnitude == 0f)
                             {
-                                _throw.SpawnFan(transform.rotation, 30, 11);
+                                _clamped = true;
+                                StartCoroutine(ResetClamped(_clampResetTime));
+                                _navMeshAgent.SetDestination(RandomNavmeshLocation(_retreatDistance));
+
+                                if (_attackOnClamp)
+                                {
+                                    _throw.SpawnFan(transform.rotation, 30, 11);
+                                }
                             }
                         }
+                        else if(_chase)
+                        {
+                            if(Vector3.Distance(_target.transform.position, _transform.position) > _minDistanceToChase)
+                                _navMeshAgent.SetDestination(_target.transform.position);
+                        }
                     }
-
                 }
                 else
                 {
@@ -115,7 +125,7 @@ namespace Game.Unit
             {
                 _target = null;
 
-                var objects = Physics.OverlapSphere(_transform.position, _retreatDistance);
+                var objects = Physics.OverlapSphere(_transform.position, _chase ? _maxDistanceToChase : _retreatDistance);
                 foreach (var item in objects)
                 {
                     var unit = item.GetComponent<Unit>();
