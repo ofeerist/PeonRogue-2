@@ -30,6 +30,8 @@ namespace Game.Unit
         private Unit _unit;
 
         private Unit _target;
+
+        private ParticleSystem _shout;
         private void Start()
         {
             _unit = GetComponent<Unit>();
@@ -67,6 +69,8 @@ namespace Game.Unit
 
         private void FixedUpdate()
         {
+            if (_shout != null) return;
+
             var _transform = transform;
             if (_target != null)
             {
@@ -89,10 +93,12 @@ namespace Game.Unit
             eff.Stop();
             StartCoroutine(DestoyTimed(.5f, eff.gameObject));
 
+            _unit.Animator.SetBool("Shout", true);
+
             var shoutPos = transform.position + new Vector3(0, .5f, 0) + transform.forward;
             var shoutRot = transform.rotation * Quaternion.Euler(0, -90 - (_shoutEffect.shape.arc / 2), 0);
-            var shout = Instantiate(_shoutEffect, shoutPos, shoutRot);
-            shout.Play();
+            _shout = Instantiate(_shoutEffect, shoutPos, shoutRot);
+            _shout.Play();
 
             yield return new WaitForSeconds(.2f);
 
@@ -114,10 +120,12 @@ namespace Game.Unit
 
             yield return new WaitForSeconds(_attackTime);
 
-            shout.Stop();
-            StartCoroutine(DestoyTimed(.5f, shout.gameObject));
+            _shout.Stop();
+            StartCoroutine(DestoyTimed(.5f, _shout.gameObject));
+            _shout = null;
 
             _unit.UnitAttack.InAttack = false;
+            _unit.Animator.SetBool("Shout", false);
 
             _target = null;
         }

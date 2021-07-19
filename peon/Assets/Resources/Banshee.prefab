@@ -512,6 +512,7 @@ GameObject:
   - component: {fileID: 7684584219479419266}
   - component: {fileID: 918432185449585311}
   - component: {fileID: 1514333993525988189}
+  - component: {fileID: 7320809972887570870}
   - component: {fileID: 918432185449585305}
   - component: {fileID: 918432185449585376}
   - component: {fileID: 918432185449585383}
@@ -625,11 +626,35 @@ MonoBehaviour:
   _attackDistance: 5
   _prepareTime: 1
   _attackTime: 2
-  _attackCooldown: 3
+  _attackCooldown: 5
   _damageDistance: 6
   _damage: 5
   _knockback: 1
   _rotateSpeed: 5
+--- !u!114 &7320809972887570870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918432185449585310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2d7b09140f0ba0449c308d3aa297e84, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Unit: {fileID: 0}
+  BlockMovement: 0
+  Blocking: 0
+  _rotateSpeed: 0
+  Speed: 0
+  _distanceToRetreat: 1
+  _retreatRange: 5
+  _chase: 1
+  _minDistanceToChase: 5
+  _maxDistanceToChase: 10
+  _chaseRange: 4
+  BounceDamage: 0
 --- !u!195 &918432185449585305
 NavMeshAgent:
   m_ObjectHideFlags: 0
