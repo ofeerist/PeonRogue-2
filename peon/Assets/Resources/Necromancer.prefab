@@ -44635,6 +44635,9 @@ MonoBehaviour:
   Speed: 1.9
   _retreatDistance: 5
   _attackOnClamp: 1
+  _chase: 0
+  _minDistanceToChase: 10
+  _maxDistanceToChase: 15
   BounceDamage: 0
   _clampResetTime: 5
 --- !u!114 &8162784131651806738
