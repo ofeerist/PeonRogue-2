@@ -14,6 +14,8 @@ namespace Game.Unit
         [SerializeField] private float _maxDistanceToChase;
         [SerializeField] private float _chaseRange;
 
+        [SerializeField] private ParticleSystem _teleportEffect;
+
         private Transform _target;
         private NavMeshAgent _navMeshAgent;
 
@@ -45,13 +47,13 @@ namespace Game.Unit
                     {
                         if (Vector3.Distance(_target.transform.position, _transform.position) <= _distanceToRetreat)
                         {
-                            _navMeshAgent.Warp(RandomNavmeshLocation(_retreatRange, transform.position));
+                            Warp(_retreatRange, transform.position);
                         }
                         else if (_chase)
                         {
                             if(Vector3.Distance(_target.transform.position, _transform.position) >= _minDistanceToChase)
                             {
-                                _navMeshAgent.Warp(RandomNavmeshLocation(_chaseRange, _target.transform.position));
+                                Warp(_chaseRange, _target.transform.position);
                             }
                         }
                     }
@@ -73,6 +75,25 @@ namespace Game.Unit
             }
         }
 
+        private void Warp(float range, Vector3 position)
+        {
+            var eff = Instantiate(_teleportEffect, transform.position, Quaternion.identity);
+            eff.Play();
+            StartCoroutine(DestroyTimed(eff.gameObject, 1f));
+
+            _navMeshAgent.Warp(RandomNavmeshLocation(range, position));
+
+            StartCoroutine(DelayedTeleportEffect());
+        }
+
+        private IEnumerator DelayedTeleportEffect()
+        {
+            yield return null;
+            var eff = Instantiate(_teleportEffect, transform.position, Quaternion.identity);
+            eff.Play();
+            StartCoroutine(DestroyTimed(eff.gameObject, 1f));
+        }
+
         private Vector3 RandomNavmeshLocation(float radius, Vector3 offset)
         {
             var randomDirection = (Random.insideUnitSphere * radius) + offset;
@@ -83,6 +104,12 @@ namespace Game.Unit
                 finalPosition = hit.position;
             }
             return finalPosition;
+        }
+
+        private IEnumerator DestroyTimed(GameObject obj, float time)
+        {
+            yield return new WaitForSeconds(time);
+            Destroy(obj);
         }
 
         public override void AddImpulse(Vector3 direction, bool stan = true, float stanTime = 1f)
