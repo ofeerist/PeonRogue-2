@@ -24,6 +24,10 @@ namespace Game.Unit
 
         public float BounceDamage;
 
+        [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AudioClip _startTeleport;
+        [SerializeField] private AudioClip _endTeleport;
+
         private void Start()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
@@ -54,13 +58,13 @@ namespace Game.Unit
                     {
                         if (Vector3.Distance(_target.transform.position, _transform.position) <= _distanceToRetreat)
                         {
-                            Warp(_retreatRange, transform.position);
+                            StartCoroutine(Teleport(_retreatRange, transform.position));
                         }
                         else if (_chase)
                         {
                             if(Vector3.Distance(_target.transform.position, _transform.position) >= _minDistanceToChase)
                             {
-                                Warp(_chaseRange, _target.transform.position);
+                                StartCoroutine(Teleport(_chaseRange, _target.transform.position));
                             }
                         }
                     }
@@ -82,13 +86,17 @@ namespace Game.Unit
             }
         }
 
-        private void Warp(float range, Vector3 position)
+        private IEnumerator Teleport(float range, Vector3 position)
         {
             _teleportCooldownTimer = Time.time + _teleportCooldown;
+
+            _audioSource.PlayOneShot(_startTeleport);
 
             var eff = Instantiate(_teleportEffect, transform.position, Quaternion.identity);
             eff.Play();
             StartCoroutine(DestroyTimed(eff.gameObject, 1f));
+
+            yield return new WaitForSeconds(.1f);
 
             _navMeshAgent.Warp(RandomNavmeshLocation(range, position));
 
@@ -101,6 +109,8 @@ namespace Game.Unit
             var eff = Instantiate(_teleportEffect, transform.position, Quaternion.identity);
             eff.Play();
             StartCoroutine(DestroyTimed(eff.gameObject, 1f));
+
+            _audioSource.PlayOneShot(_endTeleport);
         }
 
         private Vector3 RandomNavmeshLocation(float radius, Vector3 offset)

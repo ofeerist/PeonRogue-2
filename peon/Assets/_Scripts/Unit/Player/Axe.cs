@@ -17,7 +17,10 @@ namespace Game.Unit
         private Vector3 _startPosition;
 
         private ParticleSystem _disposeEffect;
-        public static Axe Create(Collider ignore, Vector3 position, Quaternion rotation, float speed, float maxDistance, float damage, float knockback, ParticleSystem disposeEffect, bool trail = false)
+
+        private AudioSource _audioSource;
+        private AudioClip[] _hit;
+        public static Axe Create(Collider ignore, Vector3 position, Quaternion rotation, float speed, float maxDistance, float damage, float knockback, ParticleSystem disposeEffect, AudioClip[] hit, bool trail = false)
         {
             var gameObject = Instantiate(Resources.Load<GameObject>("pickaxe"), position, rotation);
             var axe = gameObject.GetComponent<Axe>();
@@ -36,6 +39,10 @@ namespace Game.Unit
             Physics.IgnoreCollision(ignore, axe._collider);
 
             axe._collider.enabled = true;
+
+            axe._audioSource = axe.GetComponent<AudioSource>();
+            axe._audioSource.Play();
+            axe._hit = hit;
 
             axe._trail = trail;
             if (axe._trail)
@@ -68,6 +75,9 @@ namespace Game.Unit
             if (unit != null && !unit.CompareTag("Player") && unit.UnitHealth != null && unit.enabled)
             {
                 unit.UnitHealth.TakeDamage(_damage);
+
+                _audioSource.Stop();
+                _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
 
                 var posTo = (unit.transform.position - transform.position).normalized;
                 posTo.y = 0;

@@ -34,10 +34,16 @@ namespace Game.Unit
         private ParticleSystem _shout;
 
         private Coroutine _shoutCoroutine;
+
+        private AudioSource _audioSource;
+        [SerializeField] private AudioClip _shoutClip;
+
         private void Start()
         {
             _unit = GetComponent<Unit>();
             _attackCooldownTimer = Time.time;
+
+            _audioSource = GetComponent<AudioSource>();
         }
 
         public void StopShout()
@@ -114,6 +120,7 @@ namespace Game.Unit
             StartCoroutine(DestoyTimed(.5f, eff.gameObject));
 
             _unit.Animator.SetBool("Shout", true);
+            _audioSource.PlayOneShot(_shoutClip);
 
             var shoutPos = transform.position + new Vector3(0, .5f, 0) + transform.forward;
             var shoutRot = transform.rotation * Quaternion.Euler(0, -90 - (_shoutEffect.shape.arc / 2), 0);

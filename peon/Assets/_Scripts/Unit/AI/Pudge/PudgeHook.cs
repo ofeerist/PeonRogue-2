@@ -36,6 +36,13 @@ namespace Game.Unit
 
         private Coroutine _hook;
 
+        [Space]
+
+        [SerializeField] private AudioSource _hookSound;
+        [SerializeField] private AudioClip _hookFly;
+        [SerializeField] private AudioClip _hookHit;
+        [SerializeField] private AudioClip _hookReturn;
+
         public void StopHook()
         {
             StopCoroutine(_hook);
@@ -97,6 +104,10 @@ namespace Game.Unit
                 {
                     _cells = new List<GameObject>();
                     _hookCooldownTimer = Time.time + _hookCooldown;
+
+                    if (closest.TryGetComponent<BansheeShoutAttack>(out var bsa)) bsa.StopShout();
+                    if (closest.TryGetComponent<PudgeHook>(out var ph)) ph.StopHook();
+
                     _hook = StartCoroutine(Hook(closest.transform.position));
                 }
             }
@@ -112,6 +123,9 @@ namespace Game.Unit
 
             _head = Instantiate(_hookHead, transform.position + new Vector3(0, .5f, 0), Quaternion.LookRotation(pos - transform.position, Vector3.up));
             _cells.Add(Instantiate(_hookCell, _head.transform.position, Quaternion.LookRotation(pos - transform.position, Vector3.up)));
+
+            _hookSound.clip = _hookFly;
+            _hookSound.Play();
 
             Unit victim = null;
             while (true)
@@ -131,14 +145,22 @@ namespace Game.Unit
                     if (unit != null && unit != _unit && unit.enabled)
                     {
                         victim = unit;
+
+                        _hookSound.Stop();
+                        _hookSound.PlayOneShot(_hookHit);
+
                         break;
                     }
                 }
-                
+
+                if (victim != null) break;
                 if (Vector3.Distance(_head.transform.position, transform.position) >= _maxHookDistance || Vector3.Distance(_head.transform.position, pos) <= .1f)
                     break;
                 
             }
+
+            _hookSound.clip = _hookFly;
+            _hookSound.Play();
 
             while (true)
             {
@@ -184,6 +206,9 @@ namespace Game.Unit
             
 
             Destroy(_head);
+
+            _hookSound.Stop();
+            _hookSound.PlayOneShot(_hookReturn);
 
             _unit.UnitAttack.enabled = true;
             _isHook = false;

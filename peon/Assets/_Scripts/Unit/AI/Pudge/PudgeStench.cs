@@ -22,6 +22,10 @@ namespace Game.Unit
         [SerializeField] private float _stenchCooldown;
         private float _stenchCooldownTimer;
 
+        [Space]
+
+        [SerializeField] private AudioSource _sound;
+
         private Unit _unit;
         private void Start()
         {
@@ -76,10 +80,12 @@ namespace Game.Unit
 
             _stenchMarker.Stop();
             _stenchEffect.Play();
+            _sound.Play();
 
             yield return new WaitForSeconds(_stenchUsingTime);
 
             _stenchEffect.Stop();
+            _sound.Stop();
         }
 
         private void OnDrawGizmos()

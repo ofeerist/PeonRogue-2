@@ -9,6 +9,10 @@ namespace Game.Unit
         [SerializeField] private float _angle;
         [SerializeField] private float _damage;
 
+        [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AudioClip[] _preAttack;
+        [SerializeField] private AudioClip[] _hit;
+
         private float _attackCooldown;
         private bool _inAttack;
 
@@ -52,6 +56,7 @@ namespace Game.Unit
         private void Attack()
         {
             Unit.Animator.SetTrigger("Attack");
+            _audioSource.PlayOneShot(_preAttack[Random.Range(0, _preAttack.Length)]);
         }
 
         private void DoDamage(float damage)
@@ -71,6 +76,7 @@ namespace Game.Unit
                     {
                         unit.UnitHealth.TakeDamage(damage);
                         damaged++;
+                        _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
                     }
                 }
             }

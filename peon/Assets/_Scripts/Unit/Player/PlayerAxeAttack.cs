@@ -68,6 +68,10 @@ namespace Game.Unit
         private float _rollAttackTimesTimer;
         [SerializeField] private float _rollDamage;
         [SerializeField] private float _rollRadius;
+
+        [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AudioClip[] _hit;
+
         public void OnEnable()
         {
             PhotonNetwork.AddCallbackTarget(this);
@@ -178,7 +182,7 @@ namespace Game.Unit
             }
 
             // Roll Damage
-            if (InRoll)
+            if (InRoll && InAttack)
             {
                 if(_rollAttackTimesTimer <= Time.time)
                 {
@@ -311,6 +315,7 @@ namespace Game.Unit
                     var posTo = (unit.transform.position - _transform.position).normalized;
 
                     unit.UnitHealth.TakeDamage(_rollDamage);
+                    if (!_audioSource.isPlaying) _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
 
                     var p = Instantiate(_hitEffects[0]);
                     p.transform.position = unit.transform.position + new Vector3(0, .5f, 0);
@@ -341,7 +346,9 @@ namespace Game.Unit
                     if (dot >= Mathf.Cos(angle))
                     {
                         unit.UnitHealth.TakeDamage(damage);
-                        
+
+                        if(!_audioSource.isPlaying) _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
+
                         var p = Instantiate(_hitEffects[attackNum - 1]);
                         p.transform.position = unit.transform.position + new Vector3(0, .5f, 0);
                         StartCoroutine(DestroyEffectTimed(p, .5f));
