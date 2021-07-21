@@ -32,15 +32,35 @@ namespace Game.Unit
         private Unit _target;
 
         private ParticleSystem _shout;
+
+        private Coroutine _shoutCoroutine;
         private void Start()
         {
             _unit = GetComponent<Unit>();
             _attackCooldownTimer = Time.time;
         }
 
+        public void StopShout()
+        {
+            if (_shout == null) return;
+
+            StopCoroutine(_shoutCoroutine);
+
+            _shout.Stop();
+            StartCoroutine(DestoyTimed(.5f, _shout.gameObject));
+            _shout = null;
+        }
+
         private void Update()
         {
             if (_unit.UnitAttack.InAttack) return;
+            if (!_unit.enabled) 
+            { 
+                if(_shout != null)
+                    StopShout();
+                
+                return;
+            }
 
             var _transform = transform;
 
@@ -63,7 +83,7 @@ namespace Game.Unit
                     }
                 }
 
-                if (closest != null) StartCoroutine(Shout(closest));
+                if (closest != null) _shoutCoroutine = StartCoroutine(Shout(closest));
             }
         }
 

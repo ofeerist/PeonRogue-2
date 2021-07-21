@@ -14,6 +14,9 @@ namespace Game.Unit
         [SerializeField] private float _maxDistanceToChase;
         [SerializeField] private float _chaseRange;
 
+        [SerializeField] private float _teleportCooldown;
+        private float _teleportCooldownTimer;
+
         [SerializeField] private ParticleSystem _teleportEffect;
 
         private Transform _target;
@@ -27,11 +30,15 @@ namespace Game.Unit
 
             _navMeshAgent.speed = Speed;
             _navMeshAgent.angularSpeed = _rotateSpeed;
+
+            _teleportCooldownTimer = 0;
         }
 
         private void Update()
         {
-            if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || !Unit.enabled || Unit.UnitHealth.InStan || Unit.UnitAttack.InAttack) BlockMovement = true;
+            if (!Unit.enabled) return;
+
+            if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || Unit.UnitHealth.InStan || Unit.UnitAttack.InAttack) BlockMovement = true;
             else BlockMovement = false;
 
             Unit.Animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude);
@@ -43,7 +50,7 @@ namespace Game.Unit
             if (Unit.enabled && _navMeshAgent.enabled)
                 if (!BlockMovement)
                 {
-                    if (_target != null)
+                    if (_target != null && _teleportCooldownTimer < Time.time)
                     {
                         if (Vector3.Distance(_target.transform.position, _transform.position) <= _distanceToRetreat)
                         {
@@ -77,6 +84,8 @@ namespace Game.Unit
 
         private void Warp(float range, Vector3 position)
         {
+            _teleportCooldownTimer = Time.time + _teleportCooldown;
+
             var eff = Instantiate(_teleportEffect, transform.position, Quaternion.identity);
             eff.Play();
             StartCoroutine(DestroyTimed(eff.gameObject, 1f));

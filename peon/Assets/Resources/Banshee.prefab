@@ -654,6 +654,7 @@ MonoBehaviour:
   _minDistanceToChase: 5
   _maxDistanceToChase: 10
   _chaseRange: 4
+  _teleportCooldown: 1
   _teleportEffect: {fileID: 6310902712687766875, guid: 539fcd1ebcd6fa74ca8c2880866d58f7, type: 3}
   BounceDamage: 0
 --- !u!195 &918432185449585305
