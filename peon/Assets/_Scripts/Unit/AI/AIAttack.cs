@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AI;
 
 namespace Game.Unit
 {
@@ -10,6 +11,7 @@ namespace Game.Unit
 
         private float _attackCooldown;
         private bool _inAttack;
+
         private void Update()
         {
             var currentStateInfo = Unit.Animator.GetCurrentAnimatorStateInfo(0);

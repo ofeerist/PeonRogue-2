@@ -100,7 +100,7 @@ namespace Game.Unit
             _shout = Instantiate(_shoutEffect, shoutPos, shoutRot);
             _shout.Play();
 
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(.5f);
 
             var objects = Physics.OverlapSphere(transform.position, _attackDistance);
             foreach (var obj in objects)

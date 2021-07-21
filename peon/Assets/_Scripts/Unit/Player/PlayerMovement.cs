@@ -149,7 +149,7 @@ namespace Game.Unit
         {
             if (!Unit.PhotonView.IsMine) return;
 
-            if (_impact.magnitude > 0.2F) Unit.Controller.Move(_impact * Time.deltaTime);
+            var impact = _impact;
 
             var roll = false;
             if (Unit.UnitAttack is PlayerAxeAttack pa) roll = pa.InRoll && pa.InAttack;
@@ -161,7 +161,7 @@ namespace Game.Unit
             var _transform = transform;
 
             if (!BlockMovement)
-                Unit.Controller.SimpleMove(vectorInput * Speed);
+                Unit.Controller.SimpleMove(vectorInput * Speed + impact);
 
             if (Unit.Controller.isGrounded && !Unit.UnitAttack.InAttack)
             {

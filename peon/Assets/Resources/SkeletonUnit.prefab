@@ -2361,7 +2361,7 @@ MonoBehaviour:
   Unit: {fileID: 0}
   _Speed: 0.1
   InAttack: 0
-  _range: 2
+  _range: 1
   _angle: 120
   _damage: 10
 --- !u!114 &3061274226410104282
@@ -2407,7 +2407,7 @@ NavMeshAgent:
   m_Height: 1
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 1
+  m_ObstacleAvoidanceType: 4
 --- !u!54 &4938188580037423416
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2491,10 +2491,10 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 5680dc2283157744ab7b3fa78d9c3e74, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 1.1
   m_Height: 3
   m_Direction: 1
-  m_Center: {x: 0, y: 1.5, z: 0}
+  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!136 &-1658107622474423867
 CapsuleCollider:
   m_ObjectHideFlags: 0
