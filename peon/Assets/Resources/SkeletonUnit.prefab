@@ -2345,9 +2345,6 @@ MonoBehaviour:
   Blocking: 0
   _rotateSpeed: 1000
   Speed: 1.9
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 2048
   _detectionRange: 10
   BounceDamage: 0
 --- !u!114 &4938188580037423420
@@ -2365,9 +2362,6 @@ MonoBehaviour:
   Unit: {fileID: 0}
   _Speed: 0.1
   InAttack: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 2048
   _range: 1
   _angle: 120
   _damage: 10

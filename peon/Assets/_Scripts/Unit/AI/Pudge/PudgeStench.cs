@@ -6,8 +6,6 @@ namespace Game.Unit
 {
     class PudgeStench : MonoCached
     {
-        [SerializeField] private LayerMask _layerMask;
-
         [SerializeField] private float _stenchUseRange;
 
         [SerializeField] private float _stenchRange;
@@ -35,18 +33,18 @@ namespace Game.Unit
             _stenchUpdateDelayTimer = Time.time;
 
             _unit = GetComponent<Unit>();
-
-            InvokeRepeating(nameof(DetectEnemy), 1f, .3f);
         }
 
-        private void DetectEnemy()
+        protected override void OnTick()
         {
+            if (!_unit.enabled) return;
+
             if (_stenchCooldownTimer <= Time.time)
             {
-                var objects = Physics.OverlapSphere(transform.position, _stenchUseRange, _layerMask);
+                var objects = Physics.OverlapSphere(transform.position, _stenchUseRange);
                 foreach (var obj in objects)
                 {
-                    if (obj.GetComponent<Unit>().enabled)
+                    if (obj.CompareTag("Player") && obj.GetComponent<Unit>().enabled)
                     {
                         _stenchCooldownTimer = Time.time + _stenchCooldown;
                         StartCoroutine(UseStench());
@@ -54,11 +52,6 @@ namespace Game.Unit
                     }
                 }
             }
-        }
-
-        protected override void OnTick()
-        {
-            if (!_unit.enabled) return;
 
             if (_stenchEffect.isPlaying)
             {
@@ -66,11 +59,11 @@ namespace Game.Unit
                 {
                     _stenchUpdateDelayTimer = Time.time + _stenchUpdateDelay;
 
-                    var objects = Physics.OverlapSphere(transform.position, _stenchRange, _layerMask);
+                    var objects = Physics.OverlapSphere(transform.position, _stenchRange);
                     foreach (var obj in objects)
                     {
                         var unit = obj.GetComponent<Unit>();
-                        if (unit.enabled)
+                        if (obj.CompareTag("Player") && unit.enabled)
                         {
                             unit.UnitHealth.TakeDamage(_stenchDamage);
                         }

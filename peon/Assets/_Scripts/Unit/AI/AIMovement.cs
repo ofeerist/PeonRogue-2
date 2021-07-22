@@ -7,7 +7,6 @@ namespace Game.Unit
 {
     class AIMovement : UnitMovement
     {
-        [SerializeField] private LayerMask _layerMask;
         [SerializeField] private float _detectionRange;
 
         private Unit _target;
@@ -21,46 +20,42 @@ namespace Game.Unit
 
             _navMeshAgent.speed = Speed;
             _navMeshAgent.angularSpeed = _rotateSpeed;
-
-            InvokeRepeating(nameof(UpdateDestination), 1f, .5f);
-        }
-
-        private void UpdateDestination()
-        {
-            DetectEnemy(transform);
-
-            if (!BlockMovement)
-            {
-                if (_target != null) _navMeshAgent.SetDestination(_target.transform.position);
-            }
-            else
-            {
-                _navMeshAgent.SetDestination(transform.position);
-                Unit.Animator.SetFloat("Speed", 0);
-            }
         }
 
         protected override void OnTick()
         {
-            if (!Unit.enabled) return;
+            if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || !Unit.enabled || Unit.UnitHealth.InStan) BlockMovement = true;
+            else BlockMovement = false;
+
+            if (!Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+                Unit.Animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude);      
+            else        
+                Unit.Animator.SetFloat("Speed", 0);           
+
+            var _transform = transform;
+            DetectEnemy(_transform);
+
+            if(Unit.enabled && _navMeshAgent.enabled)
+                if (!BlockMovement)
+                {
+                    if(_target != null) _navMeshAgent.SetDestination(_target.transform.position);
+                }
+                else
+                {
+                    _navMeshAgent.SetDestination(transform.position);
+                    Unit.Animator.SetFloat("Speed", 0);
+                }
+
 
             if (Unit.Rigidbody.velocity.magnitude <= 0.1f)
             {
                 _navMeshAgent.enabled = true;
                 Unit.Rigidbody.isKinematic = true;
             }
-
-            if (!_navMeshAgent.enabled) return;
-
-            var isAttack = Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack");
-
-            if (isAttack || !Unit.enabled || Unit.UnitHealth.InStan) BlockMovement = true;
-            else BlockMovement = false;
-
-            if (!isAttack)
-                Unit.Animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude);      
-            else        
-                Unit.Animator.SetFloat("Speed", 0);           
+            else
+            {
+                _navMeshAgent.enabled = false;
+            }
         }
 
         public override void AddImpulse(Vector3 direction, bool stan = true, float stanTime = 1f)
@@ -76,11 +71,11 @@ namespace Game.Unit
             {
                 _target = null;
 
-                var objects = Physics.OverlapSphere(_transform.position, _detectionRange, _layerMask);
+                var objects = Physics.OverlapSphere(_transform.position, _detectionRange);
                 var enemys = new List<Unit>();
                 foreach (var obj in objects)
                 {
-                    enemys.Add(obj.GetComponent<Unit>());
+                    if (obj.CompareTag("Player")) enemys.Add(obj.GetComponent<Unit>());
                 }
 
                 Unit closest = null;

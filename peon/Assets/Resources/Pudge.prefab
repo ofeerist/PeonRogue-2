@@ -425,9 +425,6 @@ MonoBehaviour:
   Blocking: 0
   _rotateSpeed: 1000
   Speed: 1.9
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 2048
   _detectionRange: 10
   BounceDamage: 0
 --- !u!114 &4077909085836697004
@@ -442,9 +439,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a20416f5c5c94e24da43c14cef553455, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 0
   _stenchUseRange: 3
   _stenchRange: 1.5
   _stenchDamage: 3
@@ -467,9 +461,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0505921215f7c974fbf81af63538a0f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 2048
   _hookCell: {fileID: 5470641466693785946, guid: 2670751803532964ab9224af617ada69, type: 3}
   _hookHead: {fileID: 2011107532224937123, guid: 04508c2ea65190c478f3e5d4be736bb6, type: 3}
   _distanceToSpawnCell: 0.275
@@ -499,9 +490,6 @@ MonoBehaviour:
   Unit: {fileID: 0}
   _Speed: 0.1
   InAttack: 0
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 2048
   _range: 1.5
   _angle: 100
   _damage: 30
