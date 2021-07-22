@@ -34,15 +34,20 @@ namespace Game.Unit
             _navMeshAgent.angularSpeed = _rotateSpeed;
         }
 
-        protected override void OnTick()
+        private void Update()
         {
+            if (!_navMeshAgent.enabled) return;
+
+            if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || !Unit.enabled || Unit.UnitHealth.InStan) BlockMovement = true;
+            else BlockMovement = false;
+
             Unit.Animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude);
 
             var _transform = transform;
 
             DetectEnemy(_transform);
 
-            if (Unit.enabled && _navMeshAgent.enabled)
+            if (_navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete || _navMeshAgent.pathStatus == NavMeshPathStatus.PathInvalid)
                 if (!BlockMovement)
                 {
                     if (_target != null)
@@ -50,7 +55,7 @@ namespace Game.Unit
                         if (Vector3.Distance(_target.transform.position, _transform.position) <= _retreatDistance)
                         {
                             var v = transform.position + (_transform.position - _target.position).normalized * _retreatDistance;
-                            if (_navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
+                            
                                 _navMeshAgent.SetDestination(v);
 
 
@@ -78,20 +83,6 @@ namespace Game.Unit
                     _navMeshAgent.SetDestination(transform.position);
                     Unit.Animator.SetFloat("Speed", 0);
                 }
-
-
-            if (Unit.Rigidbody.velocity.magnitude <= 0.1f)
-            {
-                _navMeshAgent.enabled = true;
-                Unit.Rigidbody.isKinematic = true;
-            }
-            else
-            {
-                _navMeshAgent.enabled = false;
-            }
-
-            if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || !Unit.enabled || Unit.UnitHealth.InStan) BlockMovement = true;
-            else BlockMovement = false;
         }
 
         private IEnumerator ResetClamped(float time)

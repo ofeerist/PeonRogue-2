@@ -5,6 +5,8 @@ namespace Game.Unit
 {
     class AIAttack : UnitAttack
     {
+        [SerializeField] private LayerMask _layerMask;
+
         [SerializeField] private float _range;
         [SerializeField] private float _angle;
         [SerializeField] private float _damage;
@@ -23,15 +25,16 @@ namespace Game.Unit
             {
                 if (_attackCooldown + _Speed <= Time.time && Unit.enabled)
                 {
-                    var objects = Physics.OverlapSphere(transform.position, _range);
+                    var objects = Physics.OverlapSphere(transform.position, _range, _layerMask);
                     foreach (var obj in objects)
                     {
-                        if (obj.CompareTag("Player") && obj.GetComponent<Unit>().enabled && !_inAttack)
+                        if (obj.GetComponent<Unit>().enabled && !_inAttack)
                         {
                             Unit.UnitMovement.BlockMovement = true;
                             _inAttack = true;
                             InAttack = true;
                             Attack();
+                            break;
                         }
                     }
                 }
@@ -61,23 +64,20 @@ namespace Game.Unit
 
         private void DoDamage(float damage)
         {
-            var objects = Physics.OverlapSphere(transform.position, _range);
+            var objects = Physics.OverlapSphere(transform.position, _range, _layerMask);
             int damaged = 0;
             foreach (var obj in objects)
             {
-                if (obj.CompareTag("Player"))
-                {
-                    var unit = obj.GetComponent<Unit>();
-                    var _transform = transform;
+                var unit = obj.GetComponent<Unit>();
+                var _transform = transform;
 
-                    var posTo = (unit.transform.position - _transform.position).normalized;
-                    var dot = Vector3.Dot(posTo, _transform.forward);
-                    if (dot >= Mathf.Cos(_angle))
-                    {
-                        unit.UnitHealth.TakeDamage(damage);
-                        damaged++;
-                        _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
-                    }
+                var posTo = (unit.transform.position - _transform.position).normalized;
+                var dot = Vector3.Dot(posTo, _transform.forward);
+                if (dot >= Mathf.Cos(_angle))
+                {
+                    unit.UnitHealth.TakeDamage(damage);
+                    damaged++;
+                    _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
                 }
             }
 

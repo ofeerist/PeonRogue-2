@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 namespace Game.Unit
 {
     class PudgeHook : MonoCached
     {
+        [SerializeField] private LayerMask _layerMask;
+
         [SerializeField] private GameObject _hookCell;
         [SerializeField] private GameObject _hookHead;
         [SerializeField] private float _distanceToSpawnCell;
@@ -54,18 +57,16 @@ namespace Game.Unit
         {
             _unit = GetComponent<Unit>();
             _hookCooldownTimer = 0f;
+
+            InvokeRepeating(nameof(DetectEnemy), 1f, .3f);
         }
 
-        protected override void OnTick()
+        private void DetectEnemy()
         {
-            if (!_unit.enabled) return;
-
-            _unit.UnitMovement.BlockMovement = _isHook;
-            _unit.UnitAttack.InAttack = _isHook;
-
-            if (_hookCooldownTimer <= Time.time && !_isHook) 
+            if (_hookCooldownTimer <= Time.time && !_isHook)
             {
-                var objects = Physics.OverlapSphere(transform.position, _rangeToUseHook);
+                var objects = Physics.OverlapSphere(transform.position, _rangeToUseHook, _layerMask);
+
                 var units = new List<Unit>();
                 foreach (var obj in objects)
                 {
@@ -75,32 +76,19 @@ namespace Game.Unit
 
                     if (unit == null || unit.IsHooked) continue;
 
-                    var direction = unit.transform.position - transform.position;
-                    var hits = Physics.RaycastAll(transform.position, direction);
-                    if (hits.Length > 0)
-                    {
-                        for (int i = 0; i < hits.Length; i++)
-                        {
-                            if (i == 2) break;
-                            if (hits[i].collider.gameObject == unit.gameObject && obj.CompareTag("Player") && unit.enabled)
-                            {
-                                units.Add(unit);
-                            }
-                        }
-                        
-                    }
+                    units.Add(unit);
                 }
 
                 Unit closest = null;
                 foreach (var u in units)
                 {
-                    if(closest != null && Vector3.Distance(transform.position, u.transform.position) < Vector3.Distance(transform.position, closest.transform.position))      
+                    if (closest != null && Vector3.Distance(transform.position, u.transform.position) < Vector3.Distance(transform.position, closest.transform.position))
                         closest = u;
                     else
                         closest = u;
                 }
 
-                if(closest != null)
+                if (closest != null)
                 {
                     _cells = new List<GameObject>();
                     _hookCooldownTimer = Time.time + _hookCooldown;
@@ -111,6 +99,14 @@ namespace Game.Unit
                     _hook = StartCoroutine(Hook(closest.transform.position));
                 }
             }
+        }
+
+        protected override void OnTick()
+        {
+            if (!_unit.enabled) return;
+
+            _unit.UnitMovement.BlockMovement = _isHook;
+            _unit.UnitAttack.InAttack = _isHook;
         }
 
         private IEnumerator Hook(Vector3 pos)
