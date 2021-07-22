@@ -16,7 +16,7 @@ namespace Game.Unit
         private float _attackCooldown;
         private bool _inAttack;
 
-        private void Update()
+        protected override void OnTick()
         {
             var currentStateInfo = Unit.Animator.GetCurrentAnimatorStateInfo(0);
             if (!currentStateInfo.IsTag("Attack"))

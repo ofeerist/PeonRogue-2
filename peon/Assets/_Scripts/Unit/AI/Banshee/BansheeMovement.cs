@@ -38,7 +38,7 @@ namespace Game.Unit
             _teleportCooldownTimer = 0;
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             if (!Unit.enabled) return;
 

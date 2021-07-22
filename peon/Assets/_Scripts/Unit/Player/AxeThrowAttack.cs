@@ -4,7 +4,7 @@ using Photon.Pun;
 
 namespace Game.Unit
 {
-    class AxeThrowAttack : MonoBehaviour
+    class AxeThrowAttack : MonoCached
     {
         [Header("Regular")]
         [SerializeField] private float _damage;
@@ -76,9 +76,9 @@ namespace Game.Unit
         { 
             if (CurrentThrowCharges < _maxThrowCharges) CurrentThrowCharges += 1; 
         }
-        
 
-        private void Update()
+
+        protected override void OnTick()
         {
             if (!_photonView.IsMine) return;
 

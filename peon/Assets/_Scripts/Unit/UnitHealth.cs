@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Unit
 {
-    public class UnitHealth : MonoBehaviour
+    public class UnitHealth : MonoCached
     {
         [HideInInspector] public Unit Unit;
 

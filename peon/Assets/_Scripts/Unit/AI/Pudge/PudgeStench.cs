@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Unit
 {
-    class PudgeStench : MonoBehaviour
+    class PudgeStench : MonoCached
     {
         [SerializeField] private float _stenchUseRange;
 
@@ -35,7 +35,7 @@ namespace Game.Unit
             _unit = GetComponent<Unit>();
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             if (!_unit.enabled) return;
 

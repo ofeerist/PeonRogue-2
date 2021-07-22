@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace Game.UI
 {
-    public class DarknessTransition : MonoBehaviour
+    public class DarknessTransition : MonoCached
     {
         public float Speed;
         private Image _image;
@@ -15,7 +15,7 @@ namespace Game.UI
             _image = GetComponent<Image>();
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             if (_dark) _image.color = Color.Lerp(_image.color, new Color(0, 0, 0, 1), Speed * Time.deltaTime);
             else _image.color = Color.Lerp(_image.color, new Color(0, 0, 0, 0), Speed * Time.deltaTime);

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace Game.UI
 {
-    public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+    public class ButtonAnimation : MonoCached, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
     {
         [Tooltip("optional")]
         [SerializeField] private RectTransform _target;
@@ -58,7 +58,7 @@ namespace Game.UI
             }
         }
 
-        void Update()
+        protected override void OnTick()
         {
             if (_button != null && !_button.interactable) return;
 

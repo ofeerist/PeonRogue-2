@@ -22,7 +22,7 @@ namespace Game.Unit
             _navMeshAgent.angularSpeed = _rotateSpeed;
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || !Unit.enabled || Unit.UnitHealth.InStan) BlockMovement = true;
             else BlockMovement = false;
