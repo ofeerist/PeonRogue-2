@@ -96,7 +96,9 @@ namespace Game.Unit
                     break;
 
                 case (byte)PhotonEvent.Event.RollDamage:
-                    DoRollDamage();
+                    var data = (float[])photonEvent.CustomData;
+                    var pos = new Vector3(data[0], data[1], data[2]);
+                    DoRollDamage(pos);
                     break;
 
                 default:
@@ -153,7 +155,7 @@ namespace Game.Unit
                     {
                         if (!_rollEffect.isPlaying)
                         {
-                            Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All);
+                            Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All, true);
                         }
                         if (_currentRollRateTimer <= Time.time)
                         {
@@ -164,7 +166,9 @@ namespace Game.Unit
                     else
                     {
                         InAttack = false;
-                        _rollEffect.Stop();
+
+                        Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All, false);
+
                         _rollAudioSource.Stop();
                         _rollTimer = Mathf.Infinity;
                     }
@@ -176,7 +180,9 @@ namespace Game.Unit
                 if (InRoll)
                 {
                     InAttack = false;
-                    _rollEffect.Stop();
+
+                    Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All, false);
+
                     _rollTimer = Mathf.Infinity;
                 }
                 InRoll = false;
@@ -198,7 +204,9 @@ namespace Game.Unit
 
                     RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                     SendOptions sendOptions = new SendOptions { Reliability = true };
-                    PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollDamage, null, options, sendOptions);
+
+                    var pos = transform.position;
+                    PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollDamage, new float[] { pos.x, pos.y, pos.z }, options, sendOptions);
                 }
 
                 if (_rollAudioSource.time >= 1f)
@@ -220,12 +228,19 @@ namespace Game.Unit
         }
 
         [PunRPC]
-        private void RollEffect()
+        private void RollEffect(bool start)
         {
-            _rollEffect.Play();
+            if (start)
+            {
+                _rollEffect.Play();
 
-            _rollAudioSource.Play();
-            if (Random.Range(0, 4) == 0) _jagAudioSource.PlayOneShot(_jaggernaut);
+                _rollAudioSource.Play();
+                if (Random.Range(0, 4) == 0) _jagAudioSource.PlayOneShot(_jaggernaut);
+            }
+            else
+            {
+                _rollEffect.Stop();
+            }
         }
 
         private float _rotation = 0;
@@ -324,17 +339,15 @@ namespace Game.Unit
             }
         }
 
-        private void DoRollDamage()
+        private void DoRollDamage(Vector3 position)
         {
-            var _transform = transform;
-
-            var objects = Physics.OverlapSphere(_transform.position, _rollRadius);
+            var objects = Physics.OverlapSphere(position, _rollRadius);
             foreach (var obj in objects)
             {
                 var unit = obj.GetComponent<Unit>();
                 if (unit != null && !unit.CompareTag("Player") && unit.UnitHealth != null && unit != Unit && obj.GetComponent<Unit>().enabled)
                 {
-                    var posTo = (unit.transform.position - _transform.position).normalized;
+                    var posTo = (unit.transform.position - position).normalized;
 
                     unit.UnitHealth.TakeDamage(_rollDamage);
                     if (!_audioSource.isPlaying) _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
