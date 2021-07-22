@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Game.Unit
 {
-    class PudgeHook : MonoBehaviour
+    class PudgeHook : MonoCached
     {
         [SerializeField] private GameObject _hookCell;
         [SerializeField] private GameObject _hookHead;
@@ -56,7 +56,7 @@ namespace Game.Unit
             _hookCooldownTimer = 0f;
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             if (!_unit.enabled) return;
 

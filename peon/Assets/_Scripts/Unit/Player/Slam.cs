@@ -6,7 +6,7 @@ using Photon.Realtime;
 
 namespace Game.Unit
 {
-    class Slam : MonoBehaviour, IOnEventCallback
+    class Slam : MonoCached, IOnEventCallback
     {
         [SerializeField] private Transform _attackPosition;
 
@@ -79,7 +79,7 @@ namespace Game.Unit
                 CurrentCharges += 1;
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             if (!_photonView.IsMine) return;
 

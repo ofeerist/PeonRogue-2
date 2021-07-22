@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Unit
 {
-    public class Door : MonoBehaviour
+    public class Door : MonoCached
     {
         private Animator _animator;
 
@@ -14,7 +14,7 @@ namespace Game.Unit
             _animator = GetComponentInChildren<Animator>();
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             _animator.SetBool("IsOpen", IsOpen);
         }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Unit
 {
-    class NecromancerThrow : MonoBehaviour
+    class NecromancerThrow : MonoCached
     {
         [SerializeField] private int _throws;
         [SerializeField] private float _angle;
@@ -44,7 +44,7 @@ namespace Game.Unit
             _throwDelayTimer = 0;
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             if (!_unit.enabled) return;
             if (_unit.UnitMovement.Blocking) return;

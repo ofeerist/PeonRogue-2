@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Game.Unit
 {
-    class NecromancerProjectile : MonoBehaviour
+    class NecromancerProjectile : MonoCached
     {
         private float _damage;
         private float _knockback;
@@ -27,6 +27,7 @@ namespace Game.Unit
             prj._startPosition = position;
 
             prj._disposeEffect = disposeEffect;
+            prj.AddFixedUpdate();
 
             return prj;
         }
@@ -56,7 +57,7 @@ namespace Game.Unit
             }
         }
 
-        private void FixedUpdate()
+        protected override void OnFixedTick()
         {
             if (_destroy != null) return;
 
@@ -78,15 +79,17 @@ namespace Game.Unit
             _destroy.transform.position = transform.position;
             _destroy.Play();
 
-            StartCoroutine(DestroyEffectTimed(_destroy, 1));
+            StartCoroutine(DestroyEffectTimed(_destroy, .3f));
         }
 
         private IEnumerator DestroyEffectTimed(ParticleSystem ps, float time)
         {
             yield return new WaitForSeconds(time);
-            _destroy = null;
             Destroy(ps.gameObject);
             Destroy(gameObject);
         }
+
+        private void OnDestroy() => RemoveFixedUpdate();
+        private void OnDisable() => RemoveFixedUpdate();
     }
 }

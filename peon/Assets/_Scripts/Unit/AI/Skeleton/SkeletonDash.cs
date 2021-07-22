@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace Game.Unit
 {
-    class SkeletonDash : MonoBehaviour
+    class SkeletonDash : MonoCached
     {
         [SerializeField] private float _dashMaxDetectRange;
         [SerializeField] private float _dashMinDetectRange;
@@ -40,7 +40,7 @@ namespace Game.Unit
             _aimPos = Vector3.zero;
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             if (_dashCooldownTimer > Time.time || _aimPos != Vector3.zero || !_unit.enabled) return;
 

@@ -4,7 +4,7 @@ using System.Collections;
 
 namespace Game.Unit
 {
-    class Axe : MonoBehaviour
+    class Axe : MonoCached
     { 
         private float _damage;
         private float _knockback;
@@ -52,10 +52,12 @@ namespace Game.Unit
                 ps.Play();
             }
 
+            axe.AddFixedUpdate();
+
             return axe;
         }
 
-        private void FixedUpdate()
+        protected override void OnFixedTick()
         {
             var transform = gameObject.transform;
 
@@ -115,6 +117,9 @@ namespace Game.Unit
         public void OnDisable()
         {
             PhotonNetwork.RemoveCallbackTarget(this);
+            RemoveFixedUpdate();
         }
+
+        private void OnDestroy() => RemoveFixedUpdate();
     }
 }

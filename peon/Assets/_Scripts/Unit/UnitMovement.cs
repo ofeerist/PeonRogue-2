@@ -2,7 +2,7 @@
 
 namespace Game.Unit
 {
-    public class UnitMovement : MonoBehaviour
+    public class UnitMovement : MonoCached
     {
         [HideInInspector] public Unit Unit;
         public bool BlockMovement;

@@ -350,7 +350,7 @@ namespace Game.Unit
                     var posTo = (unit.transform.position - position).normalized;
 
                     unit.UnitHealth.TakeDamage(_rollDamage);
-                    if (!_audioSource.isPlaying) _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
+                    _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
 
                     var p = Instantiate(_hitEffects[0]);
                     p.transform.position = unit.transform.position + new Vector3(0, .5f, 0);

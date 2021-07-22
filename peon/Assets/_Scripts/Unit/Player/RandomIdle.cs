@@ -2,7 +2,7 @@
 
 namespace Game.Unit
 {
-    class RandomIdle : MonoBehaviour
+    class RandomIdle : MonoCached
     {
         private Animator _animator;
 
@@ -13,7 +13,7 @@ namespace Game.Unit
             _animator = GetComponent<Animator>();
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             _animator.SetInteger("RandomIdle", Random.Range(min, max));
         }

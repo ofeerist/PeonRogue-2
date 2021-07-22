@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Game.Unit
 {
-    class BansheeShoutAttack : MonoBehaviour
+    class BansheeShoutAttack : MonoCached
     {
         [SerializeField] private ParticleSystem _shoutEffect;
         [SerializeField] private ParticleSystem _prepareEffect;
@@ -44,6 +44,8 @@ namespace Game.Unit
             _attackCooldownTimer = Time.time;
 
             _audioSource = GetComponent<AudioSource>();
+
+            AddFixedUpdate();
         }
 
         public void StopShout()
@@ -57,7 +59,7 @@ namespace Game.Unit
             _shout = null;
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             if (_unit.UnitAttack.InAttack) return;
             if (!_unit.enabled) 
@@ -93,7 +95,7 @@ namespace Game.Unit
             }
         }
 
-        private void FixedUpdate()
+        protected override void OnFixedTick()
         {
             if (_shout != null) return;
 
@@ -171,5 +173,8 @@ namespace Game.Unit
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, _damageDistance);
         }
+
+        private void OnDestroy() => RemoveFixedUpdate();
+        private void OnDisable() => RemoveFixedUpdate();
     }
 }

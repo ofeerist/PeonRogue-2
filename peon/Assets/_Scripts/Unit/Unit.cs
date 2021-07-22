@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace Game.Unit
 {
-    public class Unit : MonoBehaviour
+    public class Unit : MonoCached
     {
         [HideInInspector] public UnitHealth UnitHealth;
         [HideInInspector] public UnitMovement UnitMovement;

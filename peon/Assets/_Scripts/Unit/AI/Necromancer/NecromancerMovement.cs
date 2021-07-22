@@ -34,7 +34,7 @@ namespace Game.Unit
             _navMeshAgent.angularSpeed = _rotateSpeed;
         }
 
-        private void Update()
+        protected override void OnTick()
         {
             Unit.Animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude);
 

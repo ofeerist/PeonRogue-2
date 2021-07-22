@@ -134,7 +134,7 @@ namespace Game.Unit
                 {
                     _dashAttackCount++;
                     _dashAttackTimeOut = Time.time;
-                    
+
                     RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                     SendOptions sendOptions = new SendOptions { Reliability = true };
                     var pos = transform.position;
@@ -332,6 +332,16 @@ namespace Game.Unit
                 }
             }
         }
+
+        public void OnEnable()
+        {
+            PhotonNetwork.AddCallbackTarget(this);
+        }
+        public void OnDisable()
+        {
+            PhotonNetwork.RemoveCallbackTarget(this);
+        }
+
 
         public void OnEvent(EventData photonEvent)
         {
