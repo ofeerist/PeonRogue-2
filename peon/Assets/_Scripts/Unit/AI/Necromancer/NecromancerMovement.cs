@@ -159,7 +159,7 @@ namespace Game.Unit
                 Unit.UnitHealth.TakeDamage(BounceDamage);
 
                 var randomOffset = new Vector3(Random.Range(-.1f, .1f), Random.Range(-.1f, .1f), Random.Range(-.1f, .1f));
-                TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", Color.gray, 5, new Vector3(0, .005f), 0.3f);
+                TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", Color.gray, 1, new Vector3(0, .005f), 0.2f);
             }
         }
     }

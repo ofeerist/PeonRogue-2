@@ -72,6 +72,11 @@ namespace Game.Unit
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioClip[] _hit;
 
+        [SerializeField] private AudioSource _rollAudioSource;
+
+        [SerializeField] private AudioSource _jagAudioSource;
+        [SerializeField] private AudioClip _jaggernaut;
+
         public void OnEnable()
         {
             PhotonNetwork.AddCallbackTarget(this);
@@ -146,8 +151,10 @@ namespace Game.Unit
                     InAttack = true;
                     if (RollingTime > 0)
                     {
-                        if(!_rollEffect.isPlaying) _rollEffect.Play();
-
+                        if (!_rollEffect.isPlaying)
+                        {
+                            Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All);
+                        }
                         if (_currentRollRateTimer <= Time.time)
                         {
                             RollingTime -= 1;
@@ -158,6 +165,7 @@ namespace Game.Unit
                     {
                         InAttack = false;
                         _rollEffect.Stop();
+                        _rollAudioSource.Stop();
                         _rollTimer = Mathf.Infinity;
                     }
                 }
@@ -192,6 +200,11 @@ namespace Game.Unit
                     SendOptions sendOptions = new SendOptions { Reliability = true };
                     PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollDamage, null, options, sendOptions);
                 }
+
+                if (_rollAudioSource.time >= 1f)
+                {
+                    _rollAudioSource.time = .2f;
+                }
             }
         }
 
@@ -204,6 +217,15 @@ namespace Game.Unit
                 Attack();
                 StartCoroutine(AttackCheck());
             }
+        }
+
+        [PunRPC]
+        private void RollEffect()
+        {
+            _rollEffect.Play();
+
+            _rollAudioSource.Play();
+            if (Random.Range(0, 4) == 0) _jagAudioSource.PlayOneShot(_jaggernaut);
         }
 
         private float _rotation = 0;

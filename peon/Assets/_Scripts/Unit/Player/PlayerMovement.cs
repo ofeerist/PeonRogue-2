@@ -62,6 +62,12 @@ namespace Game.Unit
         private Vector3 _vectorToAttackRotate;
 
         private Vector3 _impact;
+
+        [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AudioClip _dash;
+        [SerializeField] private AudioClip[] _dashAttack;
+        [SerializeField] private AudioClip[] _dashHit;
+
         public override void AddImpulse(Vector3 direction, bool stan = false, float stanTime = 1f)
         {
             _impact += direction;
@@ -113,6 +119,7 @@ namespace Game.Unit
                     main.simulationSpeed *= _dashAttackEffectSpeed;
 
                     _dashAttackEffect.Play();
+                    _audioSource.PlayOneShot(_dashAttack[Random.Range(0, _dashAttack.Length)]);
                 }
             }
 
@@ -230,6 +237,7 @@ namespace Game.Unit
                     if (dot >= Mathf.Cos(_dashAttackAngle))
                     {
                         unit.UnitHealth.TakeDamage(_dashAttackDamage);
+                        _audioSource.PlayOneShot(_dashHit[Random.Range(0, _dashHit.Length)]);
 
                         posTo.y = 0;
                         unit.UnitMovement.AddImpulse((posTo) * _dashAttackKnockback);
@@ -243,6 +251,8 @@ namespace Game.Unit
             if (_dashCooldownTimer > Time.time) return;
 
             if (DashCurrentStock <= 0) return;
+
+            _audioSource.PlayOneShot(_dash);
 
             Physics.IgnoreLayerCollision(11, 8);
 
