@@ -72,6 +72,11 @@ namespace Game.Unit
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioClip[] _hit;
 
+        [SerializeField] private AudioSource _rollAudioSource;
+
+        [SerializeField] private AudioSource _jagAudioSource;
+        [SerializeField] private AudioClip _jaggernaut;
+
         public void OnEnable()
         {
             PhotonNetwork.AddCallbackTarget(this);
@@ -91,7 +96,9 @@ namespace Game.Unit
                     break;
 
                 case (byte)PhotonEvent.Event.RollDamage:
-                    DoRollDamage();
+                    var data = (float[])photonEvent.CustomData;
+                    var pos = new Vector3(data[0], data[1], data[2]);
+                    DoRollDamage(pos);
                     break;
 
                 default:
@@ -146,8 +153,10 @@ namespace Game.Unit
                     InAttack = true;
                     if (RollingTime > 0)
                     {
-                        if(!_rollEffect.isPlaying) _rollEffect.Play();
-
+                        if (!_rollEffect.isPlaying)
+                        {
+                            Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All, true);
+                        }
                         if (_currentRollRateTimer <= Time.time)
                         {
                             RollingTime -= 1;
@@ -157,7 +166,10 @@ namespace Game.Unit
                     else
                     {
                         InAttack = false;
-                        _rollEffect.Stop();
+
+                        Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All, false);
+
+                        _rollAudioSource.Stop();
                         _rollTimer = Mathf.Infinity;
                     }
                 }
@@ -168,7 +180,9 @@ namespace Game.Unit
                 if (InRoll)
                 {
                     InAttack = false;
-                    _rollEffect.Stop();
+
+                    Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All, false);
+
                     _rollTimer = Mathf.Infinity;
                 }
                 InRoll = false;
@@ -190,7 +204,14 @@ namespace Game.Unit
 
                     RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                     SendOptions sendOptions = new SendOptions { Reliability = true };
-                    PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollDamage, null, options, sendOptions);
+
+                    var pos = transform.position;
+                    PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollDamage, new float[] { pos.x, pos.y, pos.z }, options, sendOptions);
+                }
+
+                if (_rollAudioSource.time >= 1f)
+                {
+                    _rollAudioSource.time = .2f;
                 }
             }
         }
@@ -203,6 +224,22 @@ namespace Game.Unit
             {
                 Attack();
                 StartCoroutine(AttackCheck());
+            }
+        }
+
+        [PunRPC]
+        private void RollEffect(bool start)
+        {
+            if (start)
+            {
+                _rollEffect.Play();
+
+                _rollAudioSource.Play();
+                if (Random.Range(0, 4) == 0) _jagAudioSource.PlayOneShot(_jaggernaut);
+            }
+            else
+            {
+                _rollEffect.Stop();
             }
         }
 
@@ -302,17 +339,15 @@ namespace Game.Unit
             }
         }
 
-        private void DoRollDamage()
+        private void DoRollDamage(Vector3 position)
         {
-            var _transform = transform;
-
-            var objects = Physics.OverlapSphere(_transform.position, _rollRadius);
+            var objects = Physics.OverlapSphere(position, _rollRadius);
             foreach (var obj in objects)
             {
                 var unit = obj.GetComponent<Unit>();
                 if (unit != null && !unit.CompareTag("Player") && unit.UnitHealth != null && unit != Unit && obj.GetComponent<Unit>().enabled)
                 {
-                    var posTo = (unit.transform.position - _transform.position).normalized;
+                    var posTo = (unit.transform.position - position).normalized;
 
                     unit.UnitHealth.TakeDamage(_rollDamage);
                     if (!_audioSource.isPlaying) _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);

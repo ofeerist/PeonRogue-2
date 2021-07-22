@@ -52,6 +52,9 @@ namespace Game.Unit
         private Animator _animator;
         private PhotonView _photonView;
 
+        [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AudioClip _clap;
+
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
@@ -96,12 +99,18 @@ namespace Game.Unit
             _animator.SetInteger("AttackNum", 2);
             _animator.SetTrigger("Attack");
 
-            var slam = Instantiate(_slam);
+            _unit.PhotonView.RPC(nameof(PlayEffect), RpcTarget.All);
 
-            StartCoroutine(DelayedPlay(slam, _slamDelay));
             StartCoroutine(DelayedDamage(_slamDelay));
-            StartCoroutine(DestroyOnEnd(slam));
             StartCoroutine(AttackDuration(_inAttackDuration));
+        }
+
+        [PunRPC]
+        private void PlayEffect()
+        {
+            var slam = Instantiate(_slam);
+            StartCoroutine(DelayedPlay(slam, _slamDelay));
+            StartCoroutine(DestroyOnEnd(slam));
         }
 
         private IEnumerator DelayedPlay(ParticleSystem ps, float time)
@@ -109,6 +118,8 @@ namespace Game.Unit
             yield return new WaitForSeconds(time);
             ps.transform.position = _attackPosition.position;
             ps.Play();
+
+            _audioSource.PlayOneShot(_clap);
         }
 
         private IEnumerator DelayedDamage(float time)

@@ -1,9 +1,11 @@
-﻿using Photon.Pun;
+﻿using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 
 namespace Game.Unit
 {
-    class PlayerMovement : UnitMovement
+    class PlayerMovement : UnitMovement, IOnEventCallback
     {
         [Space]
 
@@ -62,6 +64,12 @@ namespace Game.Unit
         private Vector3 _vectorToAttackRotate;
 
         private Vector3 _impact;
+
+        [SerializeField] private AudioSource _audioSource;
+        [SerializeField] private AudioClip _dash;
+        [SerializeField] private AudioClip[] _dashAttack;
+        [SerializeField] private AudioClip[] _dashHit;
+
         public override void AddImpulse(Vector3 direction, bool stan = false, float stanTime = 1f)
         {
             _impact += direction;
@@ -113,6 +121,7 @@ namespace Game.Unit
                     main.simulationSpeed *= _dashAttackEffectSpeed;
 
                     _dashAttackEffect.Play();
+                    _audioSource.PlayOneShot(_dashAttack[Random.Range(0, _dashAttack.Length)]);
                 }
             }
 
@@ -125,7 +134,13 @@ namespace Game.Unit
                 {
                     _dashAttackCount++;
                     _dashAttackTimeOut = Time.time;
-                    DashDamage();
+                    
+                    RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    SendOptions sendOptions = new SendOptions { Reliability = true };
+                    var pos = transform.position;
+                    var fwd = transform.forward;
+                    PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.DashDamage, new float[] { pos.x, pos.y, pos .z, fwd.x, fwd.y, fwd.z}, options, sendOptions);
+
                 }
                 if (_dashAttackCount >= _dashAttackTimes || _dashAttackTimeOut + offset * _dashAttackTimes <= Time.time)
                 {
@@ -215,21 +230,21 @@ namespace Game.Unit
             }
         }
 
-        private void DashDamage()
+        private void DashDamage(Vector3 position, Vector3 forward)
         {
-            var _transform = transform;
-            var objects = Physics.OverlapSphere(_transform.position, _dashAttackRange);
+            var objects = Physics.OverlapSphere(position, _dashAttackRange);
             foreach (var obj in objects)
             {
                 var unit = obj.GetComponent<Unit>();
                 if (unit != null && unit.UnitHealth != null && unit != Unit && obj.GetComponent
                     <Unit>().enabled)
                 {
-                    var posTo = (unit.transform.position - _transform.position).normalized;
-                    var dot = Vector3.Dot(posTo, _transform.forward);
+                    var posTo = (unit.transform.position - position).normalized;
+                    var dot = Vector3.Dot(posTo, forward);
                     if (dot >= Mathf.Cos(_dashAttackAngle))
                     {
                         unit.UnitHealth.TakeDamage(_dashAttackDamage);
+                        _audioSource.PlayOneShot(_dashHit[Random.Range(0, _dashHit.Length)]);
 
                         posTo.y = 0;
                         unit.UnitMovement.AddImpulse((posTo) * _dashAttackKnockback);
@@ -243,6 +258,8 @@ namespace Game.Unit
             if (_dashCooldownTimer > Time.time) return;
 
             if (DashCurrentStock <= 0) return;
+
+            _audioSource.PlayOneShot(_dash);
 
             Physics.IgnoreLayerCollision(11, 8);
 
@@ -313,6 +330,22 @@ namespace Game.Unit
                     vectorTo2 = new Vector3(_transform.position.x + _dashAttackRange * Mathf.Sin((-_dashAttackAngle / (j + .2f) + _transform.eulerAngles.y) * Mathf.Deg2Rad), _transform.position.y, _transform.position.z + _dashAttackRange * Mathf.Cos((-_dashAttackAngle / (j + .2f) + _transform.eulerAngles.y) * Mathf.Deg2Rad));
                     Gizmos.DrawLine(vectorTo1, vectorTo2);
                 }
+            }
+        }
+
+        public void OnEvent(EventData photonEvent)
+        {
+            switch (photonEvent.Code)
+            {
+                case (byte)PhotonEvent.Event.DashDamage:
+                    var data = (float[])photonEvent.CustomData;
+                    var pos = new Vector3(data[0], data[1], data[2]);
+                    var fwd = new Vector3(data[3], data[4], data[5]);
+                    DashDamage(pos, fwd);
+                    break;
+
+                default:
+                    break;
             }
         }
     }

@@ -28,6 +28,7 @@ namespace Game.Unit
         [SerializeField] private AudioSource _onHit;
         [SerializeField] private AudioClip[] _onHitSounds;
         [SerializeField] private AudioSource _onDeath;
+
         public override void TakeDamage(float damage)
         {
             if (damage == 0) return;

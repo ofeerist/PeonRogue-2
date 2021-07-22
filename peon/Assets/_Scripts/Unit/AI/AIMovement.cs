@@ -39,24 +39,6 @@ namespace Game.Unit
                 if (!BlockMovement)
                 {
                     if(_target != null) _navMeshAgent.SetDestination(_target.transform.position);
-
-                    if (Physics.SphereCast(_transform.position, _navMeshAgent.radius, _transform.forward, out var hit, Mathf.Infinity))
-                    {
-                        if(hit.collider.TryGetComponent<NavMeshAgent>(out var target))
-                        {
-                            for (int i = 0; i < 2; i++)
-                            {
-                                var next = _navMeshAgent.nextPosition;
-                                var targetNext = target.nextPosition;
-
-                                if (Vector3.Distance(next, targetNext) < _navMeshAgent.radius)
-                                {
-                                    _navMeshAgent.velocity = MoveVelocity(_navMeshAgent.velocity, target.velocity);
-                                    _navMeshAgent.velocity = Vector3.ClampMagnitude(_navMeshAgent.velocity, _navMeshAgent.speed);
-                                }
-                            }
-                        }
-                    }
                 }
                 else
                 {
@@ -110,16 +92,6 @@ namespace Game.Unit
             }
         }
 
-        private Vector3 MoveVelocity(Vector3 v1, Vector3 v2)
-        {
-            var finV1 = v1;
-            var v1Dot = Vector3.Dot(v1.normalized, v2.normalized);
-            var dot = v1Dot / (v1.magnitude / v2.magnitude);
-
-            finV1 -= v2.normalized * v1Dot;
-            return finV1;
-        }
-
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = Color.red;
@@ -134,7 +106,7 @@ namespace Game.Unit
                 Unit.UnitHealth.TakeDamage(BounceDamage);
 
                 var randomOffset = new Vector3(Random.Range(-.1f, .1f), Random.Range(-.1f, .1f), Random.Range(-.1f, .1f));
-                TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", Color.gray, 5, new Vector3(0, .005f), 0.3f);
+                TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", Color.gray, 1, new Vector3(0, .005f), 0.2f);
             }
         }
     }
