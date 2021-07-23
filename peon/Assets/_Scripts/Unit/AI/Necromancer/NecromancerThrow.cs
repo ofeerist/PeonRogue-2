@@ -6,6 +6,8 @@ namespace Game.Unit
 {
     class NecromancerThrow : MonoCached
     {
+        [SerializeField] private LayerMask _layerMask;
+
         [SerializeField] private int _throws;
         [SerializeField] private float _angle;
         [SerializeField] private bool _clamped;
@@ -42,6 +44,30 @@ namespace Game.Unit
             _unit = GetComponent<Unit>();
             _animator = GetComponentInChildren<Animator>();
             _throwDelayTimer = 0;
+
+            InvokeRepeating(nameof(FindTarget), 1, .5f);
+        }
+
+        private void FindTarget()
+        {
+            if (_throwDelayTimer <= Time.time)
+            {
+                var _transform = transform;
+
+                var objects = Physics.OverlapSphere(_transform.position, _detectDistance, _layerMask);
+
+                Collider closest = null;
+                var minDistance = Mathf.Infinity;
+                for (int i = 0; i < objects.Length; i++)
+                {
+                    if (Vector3.Distance(_transform.position, objects[i].transform.position) < minDistance)
+                    {
+                        closest = objects[i];
+                    }
+                }
+
+                Throw(closest.GetComponent<Unit>(), _transform);
+            }
         }
 
         protected override void OnTick()
@@ -55,40 +81,9 @@ namespace Game.Unit
                 var rotation = Quaternion.LookRotation(toPoint, Vector3.up);
                 transform.rotation = Quaternion.Lerp(transform.rotation, rotation, _rotateSpeed * Time.deltaTime);
             }
-
-            if (_throwDelayTimer <= Time.time)
-            {
-                var objects = Physics.OverlapSphere(transform.position, _detectDistance);
-                var units = new List<Unit>();
-                foreach (var obj in objects)
-                {
-                    var unit = obj.GetComponent<Unit>();
-
-                    if (unit == null) continue;
-
-                    if (obj.CompareTag("Player") && unit.enabled)
-                    {
-                        units.Add(unit);
-                    }
-                }
-
-                Unit closest = null;
-                foreach (var u in units)
-                {
-                    if (closest != null && Vector3.Distance(transform.position, u.transform.position) < Vector3.Distance(transform.position, closest.transform.position))
-                        closest = u;
-                    else
-                        closest = u;
-                }
-
-                if (closest != null)
-                {
-                    Throw(closest);
-                }
-            }
         }
 
-        private void Throw(Unit unit)
+        private void Throw(Unit unit, Transform transform)
         {
             _unit.UnitAttack.InAttack = true;
             _currentThrowDelay = Random.Range(_minThrowDelay, _maxThrowDelay);

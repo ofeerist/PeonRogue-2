@@ -60,12 +60,14 @@ namespace Game.Unit
             var randomOffset = new Vector3(Random.Range(-.1f, .1f), Random.Range(-.1f, .1f), Random.Range(-.1f, .1f));
             if (_textTag == null)
             {
-                _textTag = TextTag.TextTag.Create(transform.position + randomOffset, Mathf.RoundToInt(damage).ToString(), Color.blue, _textTagLifetime, _textTagVelocity);
+                _textTag = TextTag.TextTag.Create(transform.position + randomOffset, Mathf.RoundToInt(damage).ToString(), Color.blue, _textTagLifetime, _textTagVelocity, false);
             }
             else
             {
                 _textTag.transform.position = transform.position + randomOffset;
-                _textTag.Text = (System.Convert.ToInt32(_textTag.Text) + Mathf.RoundToInt(damage)).ToString();
+                if(_textTag.Color.a >= .2f) _textTag.Text = (System.Convert.ToInt32(_textTag.Text) + Mathf.RoundToInt(damage)).ToString();
+                else _textTag.Text = Mathf.RoundToInt(damage).ToString();
+
                 _textTag.Color = Color.Lerp(_textTag.Color, Color.red, _textTagColorizingTime * Time.deltaTime) + new Color(0, 0, 0, 1);
                 _textTag.LifeTime = _textTagLifetime;
             }

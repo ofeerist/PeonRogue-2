@@ -6,6 +6,8 @@ namespace Game.Unit
 {
     class BansheeShoutAttack : MonoCached
     {
+        [SerializeField] private LayerMask _layerMask;
+
         [SerializeField] private ParticleSystem _shoutEffect;
         [SerializeField] private ParticleSystem _prepareEffect;
 
@@ -46,6 +48,30 @@ namespace Game.Unit
             _audioSource = GetComponent<AudioSource>();
 
             AddFixedUpdate();
+
+            InvokeRepeating(nameof(FindToAttack), 1f, .5f);
+        }
+
+        private void FindToAttack()
+        {
+            var _transform = transform;
+
+            if (_attackCooldownTimer <= Time.time)
+            {
+                var objects = Physics.OverlapSphere(_transform.position, _attackDistance, _layerMask);
+
+                Collider closest = null;
+                var minDistance = Mathf.Infinity;
+                for (int i = 0; i < objects.Length; i++)
+                {
+                    if (Vector3.Distance(_transform.position, objects[i].transform.position) < minDistance)
+                    {
+                        closest = objects[i];
+                    }
+                }
+
+                if (closest != null) _shoutCoroutine = StartCoroutine(Shout(closest.GetComponent<Unit>()));
+            }
         }
 
         public void StopShout()
@@ -68,30 +94,6 @@ namespace Game.Unit
                     StopShout();
                 
                 return;
-            }
-
-            var _transform = transform;
-
-            if (_attackCooldownTimer <= Time.time)
-            {
-                var objects = Physics.OverlapSphere(_transform.position, _attackDistance);
-                var enemys = new List<Unit>();
-                foreach (var obj in objects)
-                {
-                    if (obj.CompareTag("Player")) enemys.Add(obj.GetComponent<Unit>());
-                }
-
-                Unit closest = null;
-                var minDistance = Mathf.Infinity;
-                foreach (var enemy in enemys)
-                {
-                    if (Vector3.Distance(_transform.position, enemy.transform.position) < minDistance)
-                    {
-                        closest = enemy;
-                    }
-                }
-
-                if (closest != null) _shoutCoroutine = StartCoroutine(Shout(closest));
             }
         }
 
@@ -131,7 +133,7 @@ namespace Game.Unit
 
             yield return new WaitForSeconds(.5f);
 
-            var objects = Physics.OverlapSphere(transform.position, _attackDistance);
+            var objects = Physics.OverlapSphere(transform.position, _attackDistance, _layerMask);
             foreach (var obj in objects)
             {
                 var posTo = (obj.transform.position - transform.position).normalized;
@@ -139,7 +141,7 @@ namespace Game.Unit
                 if (dot >= Mathf.Cos(_shoutEffect.shape.arc / 2 * Mathf.Deg2Rad))
                 {
                     var unit = obj.GetComponent<Unit>();
-                    if (obj.CompareTag("Player") && unit != null && unit.enabled)
+                    if (unit != null && unit.enabled)
                     {
                         unit.UnitHealth.TakeDamage(_damage);
                         unit.UnitMovement.AddImpulse((_target.transform.position - transform.position) * _knockback, false);

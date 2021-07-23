@@ -623,6 +623,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c85995da7cc78aa4e9b49b6c08a68691, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
   _shoutEffect: {fileID: 2996192676981474168, guid: 934c1eeeced99f245bc378941e476f2f, type: 3}
   _prepareEffect: {fileID: 19828672, guid: fd16356be77dc144f806afb0a102d109, type: 3}
   _attackDistance: 5
@@ -651,6 +654,9 @@ MonoBehaviour:
   Blocking: 0
   _rotateSpeed: 0
   Speed: 0
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
   _distanceToRetreat: 1
   _retreatRange: 5
   _chase: 1

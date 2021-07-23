@@ -6,6 +6,8 @@ namespace Game.Unit
 {
     class BansheeMovement : UnitMovement
     {
+        [SerializeField] private LayerMask _layerMask;
+
         [SerializeField] private float _distanceToRetreat;
         [SerializeField] private float _retreatRange;
 
@@ -27,6 +29,7 @@ namespace Game.Unit
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioClip _startTeleport;
         [SerializeField] private AudioClip _endTeleport;
+        private TextTag.TextTag _textTag;
 
         private void Start()
         {
@@ -36,17 +39,29 @@ namespace Game.Unit
             _navMeshAgent.angularSpeed = _rotateSpeed;
 
             _teleportCooldownTimer = 0;
+
+            InvokeRepeating(nameof(FindTarget), 1f, .5f);
+
+            InvokeRepeating(nameof(UpdateAnimation), 1f, .2f);
         }
 
-        protected override void OnTick()
+        private void UpdateAnimation()
         {
-            if (!Unit.enabled) return;
-
-            if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || Unit.UnitHealth.InStan || Unit.UnitAttack.InAttack) BlockMovement = true;
-            else BlockMovement = false;
-
             Unit.Animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude);
 
+            if (Unit.Rigidbody.velocity.magnitude <= 0.1f)
+            {
+                _navMeshAgent.enabled = true;
+                Unit.Rigidbody.isKinematic = true;
+            }
+            else
+            {
+                _navMeshAgent.enabled = false;
+            }
+        }
+
+        private void FindTarget()
+        {
             var _transform = transform;
 
             DetectEnemy(_transform);
@@ -62,7 +77,7 @@ namespace Game.Unit
                         }
                         else if (_chase)
                         {
-                            if(Vector3.Distance(_target.transform.position, _transform.position) >= _minDistanceToChase)
+                            if (Vector3.Distance(_target.transform.position, _transform.position) >= _minDistanceToChase)
                             {
                                 StartCoroutine(Teleport(_chaseRange, _target.transform.position));
                             }
@@ -73,17 +88,14 @@ namespace Game.Unit
                 {
                     Unit.Animator.SetFloat("Speed", 0);
                 }
+        }
 
+        protected override void OnTick()
+        {
+            if (!Unit.enabled) return;
 
-            if (Unit.Rigidbody.velocity.magnitude <= 0.1f)
-            {
-                _navMeshAgent.enabled = true;
-                Unit.Rigidbody.isKinematic = true;
-            }
-            else
-            {
-                _navMeshAgent.enabled = false;
-            }
+            if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || Unit.UnitHealth.InStan || Unit.UnitAttack.InAttack) BlockMovement = true;
+            else BlockMovement = false;
         }
 
         private IEnumerator Teleport(float range, Vector3 position)
@@ -144,13 +156,13 @@ namespace Game.Unit
             {
                 _target = null;
 
-                var objects = Physics.OverlapSphere(_transform.position, _chase ? _maxDistanceToChase : _distanceToRetreat);
+                var objects = Physics.OverlapSphere(_transform.position, _chase ? _maxDistanceToChase : _distanceToRetreat, _layerMask);
                 foreach (var item in objects)
                 {
                     var unit = item.GetComponent<Unit>();
                     if (unit == null) continue;
 
-                    if (unit.CompareTag("Player") && unit.enabled)
+                    if (unit.enabled)
                     {
                         _target = unit.transform;
                     }
@@ -176,7 +188,14 @@ namespace Game.Unit
                 Unit.UnitHealth.TakeDamage(BounceDamage);
 
                 var randomOffset = new Vector3(Random.Range(-.1f, .1f), Random.Range(-.1f, .1f), Random.Range(-.1f, .1f));
-                TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", Color.gray, 1, new Vector3(0, .005f), 0.2f);
+
+                if (_textTag == null)
+                    _textTag = TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", Color.gray, 1, new Vector3(0, .005f), false, 0.2f);
+                else
+                {
+                    _textTag.transform.position = transform.position + randomOffset;
+                    _textTag.Color = Color.gray;
+                }
             }
         }
     }

@@ -6,6 +6,8 @@ namespace Game.Unit
 {
     class NecromancerMovement : UnitMovement
     {
+        [SerializeField] private LayerMask _layerMask;
+
         [SerializeField] private float _retreatDistance;
         [SerializeField] private bool _attackOnClamp;
 
@@ -24,6 +26,7 @@ namespace Game.Unit
         [SerializeField] private float _clampResetTime;
 
         private NecromancerThrow _throw;
+        private TextTag.TextTag _textTag;
 
         private void Start()
         {
@@ -32,12 +35,25 @@ namespace Game.Unit
 
             _navMeshAgent.speed = Speed;
             _navMeshAgent.angularSpeed = _rotateSpeed;
+
+            InvokeRepeating(nameof(UpdateDestination), 1f, .5f);
+
+            InvokeRepeating(nameof(UpdateAnimation), 1f, .5f);
         }
 
-        protected override void OnTick()
+        private void UpdateAnimation()
         {
             Unit.Animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude);
 
+            if (Unit.Rigidbody.velocity.magnitude <= 0.1f)
+            {
+                _navMeshAgent.enabled = true;
+                Unit.Rigidbody.isKinematic = true;
+            }
+        }
+
+        private void UpdateDestination()
+        {
             var _transform = transform;
 
             DetectEnemy(_transform);
@@ -50,9 +66,7 @@ namespace Game.Unit
                         if (Vector3.Distance(_target.transform.position, _transform.position) <= _retreatDistance)
                         {
                             var v = transform.position + (_transform.position - _target.position).normalized * _retreatDistance;
-                            if (_navMeshAgent.pathStatus == NavMeshPathStatus.PathComplete)
-                                _navMeshAgent.SetDestination(v);
-
+                            _navMeshAgent.SetDestination(v);
 
                             if (!_clamped && !_navMeshAgent.CalculatePath(v, _navMeshAgent.path) && _navMeshAgent.velocity.magnitude == 0f)
                             {
@@ -66,9 +80,9 @@ namespace Game.Unit
                                 }
                             }
                         }
-                        else if(_chase)
+                        else if (_chase)
                         {
-                            if(Vector3.Distance(_target.transform.position, _transform.position) > _minDistanceToChase)
+                            if (Vector3.Distance(_target.transform.position, _transform.position) > _minDistanceToChase)
                                 _navMeshAgent.SetDestination(_target.transform.position);
                         }
                     }
@@ -78,18 +92,10 @@ namespace Game.Unit
                     _navMeshAgent.SetDestination(transform.position);
                     Unit.Animator.SetFloat("Speed", 0);
                 }
+        }
 
-
-            if (Unit.Rigidbody.velocity.magnitude <= 0.1f)
-            {
-                _navMeshAgent.enabled = true;
-                Unit.Rigidbody.isKinematic = true;
-            }
-            else
-            {
-                _navMeshAgent.enabled = false;
-            }
-
+        protected override void OnTick()
+        {
             if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || !Unit.enabled || Unit.UnitHealth.InStan) BlockMovement = true;
             else BlockMovement = false;
         }
@@ -121,20 +127,15 @@ namespace Game.Unit
 
         private void DetectEnemy(Transform _transform)
         {
-            if (_target == null || Vector3.Distance(_transform.position, _target.position) > _retreatDistance || !_target.GetComponent<Unit>().isActiveAndEnabled)
+            if (_target == null || Vector3.Distance(_transform.position, _target.position) > _retreatDistance)
             {
                 _target = null;
 
-                var objects = Physics.OverlapSphere(_transform.position, _chase ? _maxDistanceToChase : _retreatDistance);
-                foreach (var item in objects)
-                {
-                    var unit = item.GetComponent<Unit>();
-                    if (unit == null) continue;
-
-                    if (unit.CompareTag("Player") && unit.enabled)
-                    {
-                        _target = unit.transform;
-                    }
+                var objects = Physics.OverlapSphere(_transform.position, _chase ? _maxDistanceToChase : _retreatDistance, _layerMask);
+                for(int i = 0; i < objects.Length; i++)
+                {           
+                    _target = objects[i].transform;
+                    break;
                 }
             }
         }
@@ -159,7 +160,14 @@ namespace Game.Unit
                 Unit.UnitHealth.TakeDamage(BounceDamage);
 
                 var randomOffset = new Vector3(Random.Range(-.1f, .1f), Random.Range(-.1f, .1f), Random.Range(-.1f, .1f));
-                TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", Color.gray, 1, new Vector3(0, .005f), 0.2f);
+
+                if (_textTag == null)
+                    _textTag = TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", Color.gray, 1, new Vector3(0, .005f), false, 0.2f);
+                else
+                {
+                    _textTag.transform.position = transform.position + randomOffset;
+                    _textTag.Color = Color.gray;
+                }
             }
         }
     }

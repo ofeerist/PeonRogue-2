@@ -6,6 +6,8 @@ namespace Game.Unit
 {
     class SkeletonDash : MonoCached
     {
+        [SerializeField] private LayerMask _layerMask;
+
         [SerializeField] private float _dashMaxDetectRange;
         [SerializeField] private float _dashMinDetectRange;
 
@@ -38,18 +40,20 @@ namespace Game.Unit
             _navMeshAgent = _unit.GetComponent<NavMeshAgent>();
 
             _aimPos = Vector3.zero;
+
+            InvokeRepeating(nameof(FindEnemy), .5f, .3f);
         }
 
-        protected override void OnTick()
+        private void FindEnemy()
         {
             if (_dashCooldownTimer > Time.time || _aimPos != Vector3.zero || !_unit.enabled) return;
 
-            var objects = Physics.OverlapSphere(transform.position, _dashMaxDetectRange);
+            var objects = Physics.OverlapSphere(transform.position, _dashMaxDetectRange, _layerMask);
             foreach (var obj in objects)
             {
                 if (Vector3.Distance(obj.transform.position, transform.position) < _dashMinDetectRange) continue;
 
-                if (obj.CompareTag("Player") && obj.GetComponent<Unit>().enabled && !_unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
+                if (obj.GetComponent<Unit>().enabled && !_unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
                 {
                     _aimPos = obj.transform.position;
                     _dashCooldownTimer = Time.time + _dashCooldown;
@@ -94,11 +98,11 @@ namespace Game.Unit
             eff.Play();
             StartCoroutine(TimedDestroy(1f, eff));
 
-            var objects = Physics.OverlapSphere(transform.position, _dashDamageRange);
+            var objects = Physics.OverlapSphere(transform.position, _dashDamageRange, _layerMask);
             foreach (var obj in objects)
             {
                 var unit = obj.GetComponent<Unit>();
-                if (obj.CompareTag("Player") && unit.enabled)
+                if (unit.enabled)
                 {
                     unit.UnitHealth.TakeDamage(_dashDamage);
                 }

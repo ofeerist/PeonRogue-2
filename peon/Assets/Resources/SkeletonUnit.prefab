@@ -2319,7 +2319,7 @@ MonoBehaviour:
   _textTagVelocity: {x: 0, y: 0.005, z: 0}
   _textTagLifetime: 3
   _textTagColorizingTime: 5
-  _healthSlider: {fileID: 0}
+  _healthSlider: {fileID: 5459002206257057728}
   _onHit: {fileID: 4697839331250759065}
   _onHitSounds:
   - {fileID: 8300000, guid: b91e0b617df05784ba108f169bd86749, type: 3}
@@ -2345,6 +2345,9 @@ MonoBehaviour:
   Blocking: 0
   _rotateSpeed: 1000
   Speed: 1.9
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
   _detectionRange: 10
   BounceDamage: 0
 --- !u!114 &4938188580037423420
@@ -2362,6 +2365,9 @@ MonoBehaviour:
   Unit: {fileID: 0}
   _Speed: 0.1
   InAttack: 0
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
   _range: 1
   _angle: 120
   _damage: 10

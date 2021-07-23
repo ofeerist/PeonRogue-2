@@ -44633,6 +44633,9 @@ MonoBehaviour:
   Blocking: 0
   _rotateSpeed: 1000
   Speed: 1.9
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
   _retreatDistance: 5
   _attackOnClamp: 1
   _chase: 0
@@ -44652,6 +44655,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e5f913437d6c234aa2677eafe68c899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
   _throws: 1
   _angle: 0
   _clamped: 0
