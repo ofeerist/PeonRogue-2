@@ -17,8 +17,8 @@ namespace Game.UI
 
         protected override void OnTick()
         {
-            if (_dark) _image.color = Color.Lerp(_image.color, new Color(0, 0, 0, 1), Speed * Time.deltaTime);
-            else _image.color = Color.Lerp(_image.color, new Color(0, 0, 0, 0), Speed * Time.deltaTime);
+            if (_dark) { if (_image.color.a <= .99f) _image.color = Color.Lerp(_image.color, new Color(0, 0, 0, 1), Speed * Time.deltaTime); }
+            else { if (_image.color.a >= .01f) _image.color = Color.Lerp(_image.color, new Color(0, 0, 0, 0), Speed * Time.deltaTime); }
         }
 
         public void ActivateDark()

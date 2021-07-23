@@ -25,10 +25,14 @@ namespace Game.UI
         private bool _selected;
 
         private RectTransform _targetTransform;
+        private GameObject _targetGameObject;
 
         private AudioSource _audio;
         private AudioClip _hover;
         private AudioClip _click;
+
+        private int state = 0;
+
         void Start()
         {
             _button = GetComponent<Button>();
@@ -47,6 +51,8 @@ namespace Game.UI
                     SoundClick();
                 });
             }
+
+            _targetGameObject = _targetTransform.gameObject;
         }
 
         public void SoundClick()
@@ -60,10 +66,25 @@ namespace Game.UI
 
         protected override void OnTick()
         {
-            if (_button != null && !_button.interactable) return;
+            if (_button != null && !_button.interactable  && !_button.gameObject.activeInHierarchy) return;
 
-            if(_highlighted || _selected || (_stayOnSelect && EventSystem.current.currentSelectedGameObject == _targetTransform.gameObject)) _targetTransform.anchoredPosition = Vector2.Lerp(_targetTransform.anchoredPosition, _endPosition, _speed * Time.deltaTime);
-            else _targetTransform.anchoredPosition = Vector2.Lerp(_targetTransform.anchoredPosition, _startPosition, _speed * Time.deltaTime);
+            if (state == 0 || _stayOnSelect)
+            {
+
+                var transform = _targetTransform;
+                var pos = transform.anchoredPosition;
+
+                if (_highlighted || _selected || (_stayOnSelect && EventSystem.current.currentSelectedGameObject == _targetGameObject))
+                {
+                    if (Vector2.Distance(pos, _endPosition) > .01f) transform.anchoredPosition = Vector2.Lerp(pos, _endPosition, _speed * Time.deltaTime);
+                    else state = 1;
+                }
+                else
+                {
+                    if (Vector2.Distance(pos, _startPosition) > .01f) transform.anchoredPosition = Vector2.Lerp(pos, _startPosition, _speed * Time.deltaTime);
+                    else state = -1;
+                }
+            }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
@@ -74,21 +95,25 @@ namespace Game.UI
                 _audio.clip = _hover;
                 _audio.Play();
             }
+            state = 0;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
             _highlighted = false;
+            state = 0;
         }
 
         public void OnSelect(BaseEventData eventData)
         {
             if (_stayOnSelect) _selected = true;
+            state = 0;
         }
 
         public void OnDeselect(BaseEventData eventData)
         {
             if (_stayOnSelect) _selected = false;
+            state = 0;
         }
     }
 }

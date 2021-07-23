@@ -101,6 +101,14 @@ namespace Game.Unit
                     DoRollDamage(pos);
                     break;
 
+                case (byte)PhotonEvent.Event.AttackEffect:
+                    AttackEffect((int)photonEvent.CustomData);
+                    break;
+
+                case (byte)PhotonEvent.Event.RollEffect:
+                    RollEffect((bool)photonEvent.CustomData);
+                    break;
+
                 default:
                     break;
             }
@@ -154,8 +162,10 @@ namespace Game.Unit
                     if (RollingTime > 0)
                     {
                         if (!_rollEffect.isPlaying)
-                        {
-                            Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All, true);
+                        { 
+                            RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                            SendOptions sendOptions = new SendOptions { Reliability = true };
+                            PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollEffect, true, options, sendOptions);
                         }
                         if (_currentRollRateTimer <= Time.time)
                         {
@@ -167,7 +177,9 @@ namespace Game.Unit
                     {
                         InAttack = false;
 
-                        Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All, false);
+                        RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                        SendOptions sendOptions = new SendOptions { Reliability = true };
+                        PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollEffect, false, options, sendOptions);
 
                         _rollAudioSource.Stop();
                         _rollTimer = Mathf.Infinity;
@@ -181,7 +193,9 @@ namespace Game.Unit
                 {
                     InAttack = false;
 
-                    Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.All, false);
+                    RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                    SendOptions sendOptions = new SendOptions { Reliability = true };
+                    PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollEffect, false, options, sendOptions);
 
                     _rollTimer = Mathf.Infinity;
                 }
@@ -227,7 +241,6 @@ namespace Game.Unit
             }
         }
 
-        [PunRPC]
         private void RollEffect(bool start)
         {
             if (start)
@@ -253,7 +266,6 @@ namespace Game.Unit
             }
         }
 
-        [PunRPC]
         private void AttackEffect(int attackNum)
         {
             StartCoroutine(StartAttackEffect(attackNum));
@@ -261,7 +273,9 @@ namespace Game.Unit
 
         private IEnumerator AttackCheck()
         {
-            Unit.PhotonView.RPC(nameof(AttackEffect), RpcTarget.All, _currentAttackNum - 1);
+            RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+            SendOptions sendOptions = new SendOptions { Reliability = true };
+            PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.AttackEffect, _currentAttackNum - 1, options, sendOptions);
 
             yield return new WaitForSeconds(.4f);
             InAttack = false;
@@ -304,15 +318,9 @@ namespace Game.Unit
             main.simulationSpeed = _attackEffectsSpeed[attackNum - 1];
 
             Unit.Animator.SetInteger("AttackNum", attackNum);
-            Unit.PhotonView.RPC(nameof(TriggerAttack), RpcTarget.All);
+            Unit.Animator.SetTrigger("Attack");
 
             StartCoroutine(DoAttack(attackNum));
-        }
-
-        [PunRPC]
-        private void TriggerAttack()
-        {
-            Unit.Animator.SetTrigger("Attack");
         }
 
         private void AddCombo()

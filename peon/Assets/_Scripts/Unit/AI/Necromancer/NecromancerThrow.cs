@@ -66,7 +66,7 @@ namespace Game.Unit
                     }
                 }
 
-                Throw(closest.GetComponent<Unit>(), _transform);
+                if(closest != null) Throw(closest.GetComponent<Unit>(), _transform);
             }
         }
 

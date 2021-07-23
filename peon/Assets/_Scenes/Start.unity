@@ -6190,6 +6190,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1453065920}
     m_Modifications:
+    - target: {fileID: 478454532435785777, guid: 83c974ec39571884781aa271c2fa572d, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 523059292597898007, guid: 83c974ec39571884781aa271c2fa572d, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -14535,6 +14539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f113bf94c79364f8d5757703cc75b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cinemachineBrain: {fileID: 2104553813}
   _singlePlayer: {fileID: 1843614681}
   _multiPlayer: {fileID: 229919587}
   _options: {fileID: 1271224802}
@@ -22822,7 +22827,7 @@ Light:
     serializedVersion: 2
     m_Bits: 577
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -23316,6 +23321,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1453065920}
     m_Modifications:
+    - target: {fileID: 478454532435785777, guid: 83c974ec39571884781aa271c2fa572d, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 523059292597898007, guid: 83c974ec39571884781aa271c2fa572d, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -29018,7 +29027,7 @@ Light:
     serializedVersion: 2
     m_Bits: 577
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
@@ -62377,7 +62386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_ShowDebugText: 0
-  m_ShowCameraFrustum: 1
+  m_ShowCameraFrustum: 0
   m_IgnoreTimeScale: 0
   m_WorldUpOverride: {fileID: 0}
   m_UpdateMethod: 2
@@ -63108,6 +63117,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1453065920}
     m_Modifications:
+    - target: {fileID: 478454532435785777, guid: 83c974ec39571884781aa271c2fa572d, type: 3}
+      propertyPath: m_Lightmapping
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 523059292597898007, guid: 83c974ec39571884781aa271c2fa572d, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -63546,7 +63559,7 @@ Light:
     serializedVersion: 2
     m_Bits: 577
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 2
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1

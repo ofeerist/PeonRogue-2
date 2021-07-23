@@ -8,6 +8,10 @@ namespace Game.UI
 {
     public class MainMenuButtonsAction : MonoBehaviour
     {
+        [SerializeField] private CinemachineBrain _cinemachineBrain;
+
+        [Space]
+
         [SerializeField] private Button _singlePlayer;
         [SerializeField] private Button _multiPlayer;
         [SerializeField] private Button _options;

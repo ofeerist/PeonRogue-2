@@ -619,7 +619,13 @@ PlayerSettings:
   XboxOneOverrideIdentityPublisher: 
   vrEditorSettings: {}
   cloudServicesEnabled:
-    Collab: 1
+    Analytics: 1
+    Build: 0
+    Collab: 0
+    Game Performance: 0
+    Purchasing: 0
+    UDP: 0
+    Unity Ads: 0
   luminIcon:
     m_Name: 
     m_ModelFolderPath: 
@@ -633,10 +639,10 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
-  cloudProjectId: 9c828cb3-a5ea-4c55-af14-b3bc93c34e6a
+  cloudProjectId: eaa18b18-17b4-4ddf-b9ba-049c856de29d
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: peon
+  projectName: PeonRogue (4)
   organizationId: flashgrenade
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0

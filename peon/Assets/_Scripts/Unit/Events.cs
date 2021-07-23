@@ -12,6 +12,8 @@ namespace Game.PhotonEvent
         RollDamage = 2,
         SlamDamage = 4,
         DashDamage = 5,
-        GameStart = 6
+        AttackEffect = 6,
+        RollEffect = 7,
+        GameStart = 8
     }
 }

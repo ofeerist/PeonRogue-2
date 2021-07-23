@@ -13,7 +13,7 @@ namespace Game.Unit
             _animator = GetComponent<Animator>();
         }
 
-        protected override void OnTick()
+        public void UpdateRandom()
         {
             _animator.SetInteger("RandomIdle", Random.Range(min, max));
         }

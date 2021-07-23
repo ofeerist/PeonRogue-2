@@ -8,14 +8,10 @@ namespace Game.Unit
     {
         private Animator _animator;
 
-        private bool IsOpen;
+        private bool IsOpen = false;
         private void Start()
         {
             _animator = GetComponentInChildren<Animator>();
-        }
-
-        protected override void OnTick()
-        {
             _animator.SetBool("IsOpen", IsOpen);
         }
 
@@ -23,12 +19,14 @@ namespace Game.Unit
         {
             if(!IsOpen) _animator.SetTrigger("Open");
             IsOpen = true;
+            _animator.SetBool("IsOpen", IsOpen);
         }
 
         public void Close()
         {
             if(IsOpen) _animator.SetTrigger("Close");
             IsOpen = false;
+            _animator.SetBool("IsOpen", IsOpen);
         }
     }
 }
