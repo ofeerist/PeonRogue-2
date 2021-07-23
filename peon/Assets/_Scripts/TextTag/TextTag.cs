@@ -59,12 +59,9 @@ namespace Game.TextTag
 
         protected override void OnTick()
         {
-            if (_destroy)
-            {
-                if (_destroyTime < Time.time) Color = Color.Lerp(Color, new Color(0, 0, 0, 0), Time.deltaTime * 5);
-                if (Color.a <= .2f) Destroy(gameObject);
-            }
-
+            if (_destroyTime < Time.time && Color.a > .01f) Color = Color.Lerp(Color, new Color(0, 0, 0, 0), Time.deltaTime * 5);
+            if (Color.a <= .01f && _destroy) Destroy(gameObject);
+            
             if(Velocity != null) transform.position += Velocity;
         }
 

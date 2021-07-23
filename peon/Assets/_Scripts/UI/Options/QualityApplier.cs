@@ -9,6 +9,8 @@ namespace Game.UI
 
         private void Start()
         {
+            Application.targetFrameRate = -1;
+
             QualityLevel.onValueChanged.AddListener((i) => {
                 QualitySettings.SetQualityLevel(i);
                 PlayerPrefs.SetInt(PrefsConstants.QualityLevel, i);
