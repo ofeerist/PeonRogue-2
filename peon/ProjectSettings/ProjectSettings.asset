@@ -566,11 +566,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: peon
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: C:\projects\PeonRogue-2\peon\Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: PodvalDevelopment
+  metroCertificateIssuer: PodvalDevelopment
+  metroCertificateNotAfter: 8050ff3c8d9fd801
   metroApplicationDescription: peon
   wsaImages: {}
   metroTileShortName: PeonRogue

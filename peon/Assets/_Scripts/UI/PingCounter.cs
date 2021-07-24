@@ -7,9 +7,14 @@ namespace Game.UI
     class PingCounter : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _textMesh;
-        private void Update()
+        private void Start()
         {
-            if(PhotonNetwork.IsConnectedAndReady)
+            InvokeRepeating(nameof(UpdatePingLabel), 0, 1f);
+        }
+
+        private void UpdatePingLabel()
+        {
+            if (PhotonNetwork.IsConnectedAndReady)
                 _textMesh.text = PhotonNetwork.GetPing() + " ms";
         }
     }
