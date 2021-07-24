@@ -82,6 +82,8 @@ namespace Game.Unit
         {
             if (!_photonView.IsMine) return;
 
+            if (!_unit.enabled) return;
+
             if (CurrentThrowCharges > 0 && _unit.UnitMovement is PlayerMovement pm && !pm.InDash)
             {
                 if (Input.GetMouseButtonDown(1) && _attackCooldownTimer + _attackCooldown < Time.time)

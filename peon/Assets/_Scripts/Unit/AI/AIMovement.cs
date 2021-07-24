@@ -30,6 +30,8 @@ namespace Game.Unit
 
         private void UpdateAnim()
         {
+            if (!Unit.enabled) return;
+
             if (!Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
                 Unit.Animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude);
             else
@@ -38,6 +40,8 @@ namespace Game.Unit
 
         private void FindTarget()
         {
+            if (!Unit.enabled) return;
+
             var _transform = transform;
             DetectEnemy(_transform);
 

@@ -41,6 +41,8 @@ namespace Game.Unit
 
         private void FindTarget()
         {
+            if (!_unit.enabled) return;
+
             if (_stenchCooldownTimer <= Time.time)
             {
                 var objects = Physics.OverlapSphere(transform.position, _stenchUseRange, _layerMask);
@@ -59,7 +61,6 @@ namespace Game.Unit
         protected override void OnTick()
         {
             if (!_unit.enabled) return;
-
 
             if (_stenchEffect.isPlaying)
             {

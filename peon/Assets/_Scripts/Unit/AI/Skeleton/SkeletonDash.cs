@@ -46,6 +46,8 @@ namespace Game.Unit
 
         private void FindEnemy()
         {
+            if (!_unit.enabled) return;
+
             if (_dashCooldownTimer > Time.time || _aimPos != Vector3.zero || !_unit.enabled) return;
 
             var objects = Physics.OverlapSphere(transform.position, _dashMaxDetectRange, _layerMask);

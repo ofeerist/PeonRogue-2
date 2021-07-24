@@ -63,6 +63,8 @@ namespace Game.Unit
 
         private void FindToHook()
         {
+            if (!_unit.enabled) return;
+
             if (_hookCooldownTimer <= Time.time && !_isHook)
             {
                 var objects = Physics.OverlapSphere(transform.position, _rangeToUseHook, _layerMask);

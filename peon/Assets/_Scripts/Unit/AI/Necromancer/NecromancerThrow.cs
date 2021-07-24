@@ -50,6 +50,8 @@ namespace Game.Unit
 
         private void FindTarget()
         {
+            if (!_unit.enabled) return;
+
             if (_throwDelayTimer <= Time.time)
             {
                 var _transform = transform;

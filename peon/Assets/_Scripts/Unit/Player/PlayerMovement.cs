@@ -88,7 +88,9 @@ namespace Game.Unit
         {
             if (!Unit.PhotonView.IsMine) return;
 
-            if(Unit.UnitHealth.InStan)
+            if (!Unit.enabled) return;
+
+            if (Unit.UnitHealth.InStan)
             {
                 _currentDashTime = 0;
                 BlockMovement = true;

@@ -43,6 +43,8 @@ namespace Game.Unit
 
         private void UpdateAnimation()
         {
+            if (!Unit.enabled) return;
+
             Unit.Animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude);
 
             if (Unit.Rigidbody.velocity.magnitude <= 0.1f)
@@ -54,6 +56,8 @@ namespace Game.Unit
 
         private void UpdateDestination()
         {
+            if (!Unit.enabled) return;
+
             var _transform = transform;
 
             DetectEnemy(_transform);

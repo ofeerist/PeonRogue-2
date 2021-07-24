@@ -26,6 +26,8 @@ namespace Game.Unit
 
         private void FindTarget()
         {
+            if (!Unit.enabled) return;
+
             if (_attackCooldown + _Speed <= Time.time && Unit.enabled)
             {
                 var objects = Physics.OverlapSphere(transform.position, _range, _layerMask);

@@ -139,6 +139,8 @@ namespace Game.Unit
         {
             if (!Unit.PhotonView.IsMine) return;
 
+            if (!Unit.enabled) return;
+
             if (Input.GetMouseButton(0) && !InAttack && !Unit.UnitMovement.Blocking)
             {
                 if (_attackCooldown + _Speed <= Time.time)

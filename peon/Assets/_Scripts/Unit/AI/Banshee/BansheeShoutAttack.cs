@@ -54,6 +54,8 @@ namespace Game.Unit
 
         private void FindToAttack()
         {
+            if (!_unit.enabled) return;
+
             var _transform = transform;
 
             if (_attackCooldownTimer <= Time.time)
