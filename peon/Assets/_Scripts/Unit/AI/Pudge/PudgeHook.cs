@@ -69,24 +69,40 @@ namespace Game.Unit
             {
                 var objects = Physics.OverlapSphere(transform.position, _rangeToUseHook, _layerMask);
                 var units = new List<Unit>();
+                var pos = transform.position;
                 foreach (var obj in objects)
                 {
-                    if (Vector3.Distance(transform.position, obj.transform.position) <= _minRangeToUseHook) continue;
+                    var Epos = obj.transform.position;
+                    if (Vector3.Distance(pos, Epos) <= _minRangeToUseHook) continue;
 
-                    var unit = obj.GetComponent<Unit>();
+                    var dir = Epos - pos;
+                    var hits = Physics.RaycastAll(pos, dir, _maxHookDistance, _layerMask);
+                    if (hits[1].collider == obj)
+                    {
+                        var unit = obj.GetComponent<Unit>();
 
-                    if (unit == null || unit.IsHooked) continue;
+                        if (unit == null || unit.IsHooked) continue;
 
-                    units.Add(unit);
+                        units.Add(unit);
+                    }
                 }
 
                 Unit closest = null;
+                float distance = Mathf.Infinity;
                 foreach (var u in units)
                 {
-                    if (closest != null && Vector3.Distance(transform.position, u.transform.position) < Vector3.Distance(transform.position, closest.transform.position))
+                    var Upos = u.transform.position;
+                    if (closest != null && Vector3.Distance(pos, Upos) < distance)
+                    {
                         closest = u;
-                    else
+                        distance = Vector3.Distance(pos, Upos);
+                    }
+
+                    if(closest == null)
+                    {
                         closest = u;
+                        distance = Vector3.Distance(pos, Upos);
+                    }
                 }
 
                 if (closest != null)
