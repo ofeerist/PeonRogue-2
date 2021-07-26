@@ -76,8 +76,9 @@ namespace Game.Unit
                     if (Vector3.Distance(pos, Epos) <= _minRangeToUseHook) continue;
 
                     var dir = Epos - pos;
-                    var hits = Physics.RaycastAll(pos, dir, _maxHookDistance, _layerMask);
-                    if (hits[1].collider == obj)
+                    RaycastHit[] hits = null;
+                    Physics.RaycastNonAlloc(pos, dir, hits, _maxHookDistance, _layerMask);
+                    if (hits != null && hits.Length >= 2 && hits[1].collider == obj)
                     {
                         var unit = obj.GetComponent<Unit>();
 

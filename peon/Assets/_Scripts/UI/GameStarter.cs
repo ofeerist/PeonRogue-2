@@ -16,6 +16,8 @@ namespace Game.UI
 
         private void Start()
         {
+            if (_startButton == null) return;
+
             _startButton.onClick.AddListener(() => {
                 GetComponent<PhotonView>().RPC(nameof(StartGame), RpcTarget.All);
             });
@@ -34,6 +36,13 @@ namespace Game.UI
 
             if (PhotonNetwork.MasterClient == PhotonNetwork.LocalPlayer)
                 StartCoroutine(LoadScene());
+        }
+
+        public void StartSingleGame()
+        {
+            _darkness.Speed = 2;
+            _darkness.ActivateDark();
+            StartCoroutine(LoadScene());
         }
 
         private IEnumerator LoadScene()

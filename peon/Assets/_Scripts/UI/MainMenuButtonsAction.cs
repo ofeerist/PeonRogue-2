@@ -1,5 +1,6 @@
 using Cinemachine;
 using Game.Unit;
+using Photon.Pun;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,7 @@ namespace Game.UI
     public class MainMenuButtonsAction : MonoBehaviour
     {
         [SerializeField] private CinemachineBrain _cinemachineBrain;
+        [SerializeField] private GameStarter _gameStarter;
 
         [Space]
 
@@ -59,7 +61,19 @@ namespace Game.UI
 
         private void SinglePlayer()
         {
+            StartCoroutine(Disconnect());
+        }
 
+        IEnumerator Disconnect()
+        {
+            PhotonNetwork.Disconnect();
+            while (PhotonNetwork.IsConnected)
+            {
+                yield return null;
+            }
+            PhotonNetwork.OfflineMode = true;
+
+            _gameStarter.StartSingleGame();
         }
 
         private void MultiPlayer()
