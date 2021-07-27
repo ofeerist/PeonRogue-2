@@ -4,7 +4,7 @@ using Game.Unit;
 namespace Game.Level.UnitData
 {
     [CreateAssetMenu(fileName = "New NecromancerData", menuName = "UnitData/Necromancer Data", order = 51)]
-    class NecromancerData : ScriptableObject
+    class NecromancerData : UnitData
     {
         [SerializeField] private RandomFloat _maxHealth;
         [SerializeField] private RandomFloat _stanTime;
@@ -37,7 +37,7 @@ namespace Game.Level.UnitData
         [SerializeField] private RandomFloat _throwSpeed;
         [SerializeField] private RandomFloat _maxFlightDistance;
 
-        public void SetData(Unit.Unit unit)
+        public override void SetData(Unit.Unit unit)
         {
             var health = unit.UnitHealth as EnemyHealth;
             var aiMovement = unit.GetComponent<NecromancerMovement>();

@@ -4,7 +4,7 @@ using Game.Unit;
 namespace Game.Level.UnitData
 {
     [CreateAssetMenu(fileName = "New PudgeData", menuName = "UnitData/Pudge Data", order = 51)]
-    class PudgeData : ScriptableObject
+    class PudgeData : UnitData
     {
         [SerializeField] private RandomFloat _maxHealth;
         [SerializeField] private RandomFloat _stanTime;
@@ -39,7 +39,7 @@ namespace Game.Level.UnitData
         [SerializeField] private RandomFloat _minRangeToUseHook;
         [SerializeField] private RandomFloat _hookCooldown;
 
-        public void SetData(Unit.Unit unit)
+        public override void SetData(Unit.Unit unit)
         {
             var health = unit.UnitHealth as EnemyHealth;
             var aiMovement = unit.UnitMovement as AIMovement;

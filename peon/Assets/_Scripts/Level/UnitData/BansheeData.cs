@@ -4,7 +4,7 @@ using Game.Unit;
 namespace Game.Level.UnitData
 {
     [CreateAssetMenu(fileName = "New BansheeData", menuName = "UnitData/Banshee Data", order = 51)]
-    class BansheeData : ScriptableObject
+    class BansheeData : UnitData
     {
         [SerializeField] private RandomFloat _maxHealth;
         [SerializeField] private RandomFloat _stanTime;
@@ -30,7 +30,7 @@ namespace Game.Level.UnitData
         [SerializeField] private RandomFloat _damage;
         [SerializeField] private RandomFloat _knockback;
 
-        public void SetData(Unit.Unit unit)
+        public override void SetData(Unit.Unit unit)
         {
             var health = unit.UnitHealth as EnemyHealth;
             var aiMovement = unit.GetComponent<BansheeMovement>();
