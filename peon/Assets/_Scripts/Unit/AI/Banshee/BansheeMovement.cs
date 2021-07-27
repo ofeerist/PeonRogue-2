@@ -31,6 +31,17 @@ namespace Game.Unit
         [SerializeField] private AudioClip _endTeleport;
         private TextTag.TextTag _textTag;
 
+        public void SetData(float distanceToRetreat, float retreatRange, bool chase, float minDistanceToChase, float maxDistanceToChase, float chaseRange, float teleportCooldown)
+        {
+            _distanceToRetreat = distanceToRetreat;
+            _retreatRange = retreatRange;
+            _chase = chase;
+            _minDistanceToChase = minDistanceToChase;
+            _maxDistanceToChase = maxDistanceToChase;
+            _chaseRange = chaseRange;
+            _teleportCooldown = teleportCooldown;
+        }
+
         private void Start()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();

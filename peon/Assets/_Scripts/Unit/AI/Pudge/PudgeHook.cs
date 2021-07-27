@@ -46,6 +46,15 @@ namespace Game.Unit
         [SerializeField] private AudioClip _hookHit;
         [SerializeField] private AudioClip _hookReturn;
 
+        public void SetData(float maxHookDistance, float speed, float backwardSpeed, float maxRangeToUse, float minRangeToUse, float cooldown)
+        {
+            _maxHookDistance = maxHookDistance;
+            _hookSpeed = speed;
+            _hookBackwardSpeed = backwardSpeed;
+            _rangeToUseHook = maxRangeToUse;
+            _minRangeToUseHook = minRangeToUse;
+            _hookCooldown = cooldown;
+        }
         public void StopHook()
         {
             StopCoroutine(_hook);

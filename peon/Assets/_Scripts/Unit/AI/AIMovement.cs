@@ -16,6 +16,13 @@ namespace Game.Unit
         public float BounceDamage;
         private TextTag.TextTag _textTag;
 
+        public void SetData(float detectionRange, float rotateSpeed, float speed)
+        {
+            _detectionRange = detectionRange;
+            _rotateSpeed = rotateSpeed;
+            Speed = speed;
+        }
+
         private void Start()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();

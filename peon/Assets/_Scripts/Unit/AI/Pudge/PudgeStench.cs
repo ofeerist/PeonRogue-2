@@ -29,6 +29,16 @@ namespace Game.Unit
         [SerializeField] private AudioSource _sound;
 
         private Unit _unit;
+
+        public void SetData(float useRange, float range, float damage, float usingTime, float cooldown)
+        {
+            _stenchUseRange = useRange;
+            _stenchRange = range;
+            _stenchDamage = damage;
+            _stenchUsingTime = usingTime;
+            _stenchCooldown = cooldown;
+        }
+
         private void Start()
         {
             _stenchCooldownTimer = Time.time;

@@ -32,6 +32,17 @@ namespace Game.Unit
         private ParticleSystem _aimEffect;
         private NavMeshAgent _navMeshAgent;
 
+        public void SetData(float maxDetect, float minDetect, float range, float damage, float speed, float prepareTime, float cooldown)
+        {
+            _dashMaxDetectRange = maxDetect;
+            _dashMinDetectRange = minDetect;
+            _dashDamageRange = range;
+            _dashDamage = damage;
+            _dashSpeed = speed;
+            _timeToPrepare = prepareTime;
+            _dashCooldown = cooldown;
+        }
+
         private void Start()
         {
             _dashCooldownTimer = 0;
@@ -41,7 +52,7 @@ namespace Game.Unit
 
             _aimPos = Vector3.zero;
 
-            InvokeRepeating(nameof(FindEnemy), .5f, .3f);
+            InvokeRepeating(nameof(FindEnemy), 3, .3f);
         }
 
         private void FindEnemy()

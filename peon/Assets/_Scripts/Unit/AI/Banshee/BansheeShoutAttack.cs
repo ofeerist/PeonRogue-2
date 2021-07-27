@@ -40,6 +40,16 @@ namespace Game.Unit
         private AudioSource _audioSource;
         [SerializeField] private AudioClip _shoutClip;
 
+        public void SetData(float attackDistance, float prepareTime, float attackTime, float attackCooldown, float damage, float knockback)
+        {
+            _attackDistance = attackDistance;
+            _prepareTime = prepareTime;
+            _attackTime = attackTime;
+            _attackCooldown = attackCooldown;
+            _damage = damage;
+            _knockback = knockback;
+        }
+
         private void Start()
         {
             _unit = GetComponent<Unit>();

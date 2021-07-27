@@ -19,6 +19,14 @@ namespace Game.Unit
         private bool _inAttack;
         private TextTag.TextTag _textTag;
 
+        public void SetData(float attackSpeed, float range, float angle, float damage)
+        {
+            _Speed = attackSpeed;
+            _range = range;
+            _angle = angle;
+            _damage = damage;
+        }
+
         private void Start()
         {
             InvokeRepeating(nameof(FindTarget), 1, .5f);

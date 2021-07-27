@@ -39,6 +39,20 @@ namespace Game.Unit
         private Animator _animator;
         private Unit _currentTarget;
 
+        public void SetData(int throws, float angle, bool clamped, float detect, float minThrowDelay, float maxThrowDelay, float damage, float knockback, float speed, float maxFlightDistance)
+        {
+            _throws = throws;
+            _angle = angle;
+            _clamped = clamped;
+            _detectDistance = detect;
+            _minThrowDelay = minThrowDelay;
+            _maxThrowDelay = maxThrowDelay;
+            _damage = damage;
+            _knockback = knockback;
+            _speed = speed;
+            _maxFlightDistance = maxFlightDistance;
+        }
+
         private void Start()
         {
             _unit = GetComponent<Unit>();

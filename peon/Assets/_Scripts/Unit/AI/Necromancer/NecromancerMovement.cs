@@ -28,6 +28,17 @@ namespace Game.Unit
         private NecromancerThrow _throw;
         private TextTag.TextTag _textTag;
 
+        public void SetData(float retreatDisance, bool chase, float minDistanceToChase, float maxDistanceToChase, bool attackOnClamp, float rotateSpeed, float speed)
+        {
+            _retreatDistance = retreatDisance;
+            _chase = chase;
+            _minDistanceToChase = minDistanceToChase;
+            _maxDistanceToChase = maxDistanceToChase;
+            _attackOnClamp = attackOnClamp;
+            _rotateSpeed = rotateSpeed;
+            Speed = speed;
+        }
+
         private void Start()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();

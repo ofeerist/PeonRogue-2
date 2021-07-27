@@ -29,6 +29,12 @@ namespace Game.Unit
         [SerializeField] private AudioClip[] _onHitSounds;
         [SerializeField] private AudioSource _onDeath;
 
+        public void SetData(float maxHealth, float stanTime)
+        {
+            _maxHealth = maxHealth;
+            _stanTime = stanTime;
+        }
+
         public override void TakeDamage(float damage)
         {
             if (damage == 0) return;
