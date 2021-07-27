@@ -6,7 +6,7 @@ namespace Game.Level
     {
         [SerializeField] private float _range;
 
-        private Vector3 GetPosition()
+        public Vector3 GetPosition()
         {
             var _transform = transform;
             float x = _transform.position.x + Random.Range(-_range, _range);

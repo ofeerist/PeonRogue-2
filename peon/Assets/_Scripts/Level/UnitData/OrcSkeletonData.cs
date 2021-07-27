@@ -6,6 +6,8 @@ namespace Game.Level.UnitData
     [CreateAssetMenu(fileName = "New OrcSkeletonData", menuName = "UnitData/OrcSkeleton Data", order = 51)]
     class OrcSkeletonData : UnitData
     {
+        public static int UsageTimes;
+
         [SerializeField] private RandomFloat _maxHealth;
         [SerializeField] private RandomFloat _stanTime;
 
@@ -38,9 +40,9 @@ namespace Game.Level.UnitData
 
         public override void SetData(Unit.Unit unit)
         {
-            var health = unit.UnitHealth as EnemyHealth;
-            var aiMovement = unit.UnitMovement as AIMovement;
-            var aiAttack = unit.UnitAttack as AIAttack;
+            var health = unit.GetComponent<EnemyHealth>();
+            var aiMovement = unit.GetComponent<AIMovement>();
+            var aiAttack = unit.GetComponent<AIAttack>();
             var skeletonDash = unit.GetComponent<SkeletonDash>();
 
             health.SetData(_maxHealth.GetValue(), _stanTime.GetValue());

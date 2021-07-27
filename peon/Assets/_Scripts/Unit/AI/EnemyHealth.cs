@@ -29,6 +29,9 @@ namespace Game.Unit
         [SerializeField] private AudioClip[] _onHitSounds;
         [SerializeField] private AudioSource _onDeath;
 
+        public delegate void Dead();
+        public event Dead OnDeath;
+
         public void SetData(float maxHealth, float stanTime)
         {
             _maxHealth = maxHealth;
@@ -93,6 +96,8 @@ namespace Game.Unit
             _stanChannelEffect.Stop();
             Unit.Animator.speed = 1;
             Unit.Animator.SetBool("Dead", true);
+
+            OnDeath?.Invoke();
         }
 
         private IEnumerator SetKinematic()

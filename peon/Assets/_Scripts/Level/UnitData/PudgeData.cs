@@ -6,6 +6,8 @@ namespace Game.Level.UnitData
     [CreateAssetMenu(fileName = "New PudgeData", menuName = "UnitData/Pudge Data", order = 51)]
     class PudgeData : UnitData
     {
+        public static int UsageTimes;
+
         [SerializeField] private RandomFloat _maxHealth;
         [SerializeField] private RandomFloat _stanTime;
 
@@ -41,9 +43,9 @@ namespace Game.Level.UnitData
 
         public override void SetData(Unit.Unit unit)
         {
-            var health = unit.UnitHealth as EnemyHealth;
-            var aiMovement = unit.UnitMovement as AIMovement;
-            var aiAttack = unit.UnitAttack as AIAttack;
+            var health = unit.GetComponent<EnemyHealth>();
+            var aiMovement = unit.GetComponent<AIMovement>();
+            var aiAttack = unit.GetComponent<AIAttack>();
             var stench = unit.GetComponent<PudgeStench>();
             var hook = unit.GetComponent<PudgeHook>();
 

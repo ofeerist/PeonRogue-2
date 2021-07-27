@@ -6,6 +6,8 @@ namespace Game.Level.UnitData
     [CreateAssetMenu(fileName = "New SkeletonData", menuName = "UnitData/Skeleton Data", order = 51)]
     class SkeletonData : UnitData
     {
+        public static int UsageTimes;
+
         [SerializeField] private RandomFloat _maxHealth;
         [SerializeField] private RandomFloat _stanTime;
 
@@ -24,9 +26,9 @@ namespace Game.Level.UnitData
 
         public override void SetData(Unit.Unit unit)
         {
-            var health = unit.UnitHealth as EnemyHealth;
-            var aiMovement = unit.UnitMovement as AIMovement;
-            var aiAttack = unit.UnitAttack as AIAttack;
+            var health = unit.GetComponent<EnemyHealth>();
+            var aiMovement = unit.GetComponent<AIMovement>();
+            var aiAttack = unit.GetComponent<AIAttack>();
 
             health.SetData(_maxHealth.GetValue(), _stanTime.GetValue());
             aiMovement.SetData(_detectionRange.GetValue(), _rotateSpeed.GetValue(), _speed.GetValue());

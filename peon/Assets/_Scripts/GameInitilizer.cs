@@ -1,6 +1,7 @@
 using Cinemachine;
 using ExitGames.Client.Photon;
 using Game.Colorizing;
+using Game.Level;
 using Game.UI.InGameUI;
 using Game.Unit;
 using Photon.Pun;
@@ -33,6 +34,8 @@ public class GameInitilizer : MonoBehaviour, IOnEventCallback
         var color = ShaderTeamColor.ConvertColorNum(PlayerPrefs.GetInt(PrefsConstants.Color));
         var peonPhotonView = peon.GetPhotonView();
         GetComponent<PhotonView>().RPC(nameof(ChangePeonColor), RpcTarget.All, peonPhotonView.ViewID, color.r, color.g, color.b, color.a);
+
+        FindObjectOfType<UnitHandler>().Units.Add(peon.GetComponent<Unit>());
 
         var cameras = FindObjectsOfType<Camera>();
         foreach (var cam in cameras) cam.gameObject.SetActive(false);
@@ -67,6 +70,7 @@ public class GameInitilizer : MonoBehaviour, IOnEventCallback
         {
             case (byte)Game.PhotonEvent.Event.GameStart:
                 StartGame();
+                FindObjectOfType<LevelFañtory>().Process();
                 break;
 
             default:

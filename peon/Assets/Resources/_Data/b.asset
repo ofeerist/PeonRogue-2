@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cf155418bfba294798143fa318a1103, type: 3}
+  m_Name: b
+  m_EditorClassIdentifier: 
+  UnitPower: 0
+  Prefab: {fileID: 918432185449585304, guid: b9ed19478d84a3b4ea6bd03e1cea68b6, type: 3}
+  _maxHealth:
+    _min: 1
+    _max: 100
+  _stanTime:
+    _min: 0
+    _max: 0
+  _distanceToRetreat:
+    _min: 0
+    _max: 0
+  _retreatRange:
+    _min: 0
+    _max: 0
+  _chase: 0
+  _minDistanceToChase:
+    _min: 0
+    _max: 0
+  _maxDistanceToChase:
+    _min: 0
+    _max: 0
+  _chaseRange:
+    _min: 0
+    _max: 0
+  _teleportCooldown:
+    _min: 0
+    _max: 0
+  _attackDistance:
+    _min: 0
+    _max: 0
+  _prepareTime:
+    _min: 0
+    _max: 0
+  _attackTime:
+    _min: 0
+    _max: 0
+  _attackCooldown:
+    _min: 0
+    _max: 0
+  _damage:
+    _min: 0
+    _max: 0
+  _knockback:
+    _min: 0
+    _max: 0
