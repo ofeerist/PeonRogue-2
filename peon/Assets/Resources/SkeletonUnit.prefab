@@ -4110,6 +4110,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4984701976765856207}
   - component: {fileID: 3063427179307024726}
+  - component: {fileID: 2524200950325307753}
   m_Layer: 8
   m_Name: 2_undead_skeletonWarrior_rig:main_geo
   m_TagString: Untagged
@@ -4224,6 +4225,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.044526756, y: -0.21766037, z: -0.34594008}
     m_Extent: {x: 0.364617, y: 0.8424218, z: 1.2784458}
   m_DirtyAABB: 0
+--- !u!114 &2524200950325307753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7576926306928390507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 545ef707abd6c664e9eb98dac5e26737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7651488983131228148
 GameObject:
   m_ObjectHideFlags: 0
@@ -5117,14 +5130,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dc34b4c6f5e2ef54b995631a30644422, type: 3}
---- !u!198 &103954830445341243 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 19840738, guid: dc34b4c6f5e2ef54b995631a30644422, type: 3}
-  m_PrefabInstance: {fileID: 103954830427411673}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &103954830426975291 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 456930, guid: dc34b4c6f5e2ef54b995631a30644422, type: 3}
+  m_PrefabInstance: {fileID: 103954830427411673}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &103954830445341243 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 19840738, guid: dc34b4c6f5e2ef54b995631a30644422, type: 3}
   m_PrefabInstance: {fileID: 103954830427411673}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &103954830909638536
