@@ -8,6 +8,7 @@ using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameInitilizer : MonoBehaviour, IOnEventCallback
 {
@@ -15,7 +16,7 @@ public class GameInitilizer : MonoBehaviour, IOnEventCallback
     [SerializeField] private GameObject _playerCamera;
     [SerializeField] private Transform _referencePeon;
 
-    private void Awake()
+    public void GameInit()
     {
         RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
         SendOptions sendOptions = new SendOptions { Reliability = true };
@@ -24,6 +25,8 @@ public class GameInitilizer : MonoBehaviour, IOnEventCallback
 
     private void StartGame()
     {
+        SceneManager.UnloadSceneAsync("Waiting");
+
         gameObject.SetActive(false);
 
         var peon = PhotonNetwork.Instantiate(_peon.name, _referencePeon.position, _referencePeon.rotation);

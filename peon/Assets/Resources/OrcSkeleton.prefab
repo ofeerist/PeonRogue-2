@@ -623,7 +623,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: 4938188580037423422}
   - {fileID: 4938188580037423421}
-  - {fileID: 0}
+  - {fileID: 1315645814602603900}
   sceneViewId: 0
   InstantiationId: 0
   isRuntimeInstantiated: 0
@@ -1035,64 +1035,6 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
---- !u!95 &48140807949753158
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8461655823378084771}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c337c094db5be3047ba633d6461c3b7e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1315645814602603900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8461655823378084771}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ShowLayerWeightsInspector: 1
-  ShowParameterInspector: 1
-  m_SynchronizeParameters: []
-  m_SynchronizeLayers:
-  - SynchronizeType: 1
-    LayerIndex: 0
---- !u!114 &4874362192830995591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8461655823378084771}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2cafdfc878034c94abddf1957d56c2e3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _clips:
-  - {fileID: 8300000, guid: 9d73741bacd0268478c7f990a7a243b6, type: 3}
-  - {fileID: 8300000, guid: 54838e78bb795694487c36c456cd1881, type: 3}
-  - {fileID: 8300000, guid: 422091b6f017ed042993fd8713e26323, type: 3}
-  - {fileID: 8300000, guid: 6794dc5effa08c04a847585234023a61, type: 3}
-  - {fileID: 8300000, guid: e9ec9ebd71148b744851d16566a80e08, type: 3}
-  - {fileID: 8300000, guid: 8d66adf35d7595b479da629cd4e162a6, type: 3}
-  - {fileID: 8300000, guid: c7b0d534c1770f24088bf12cfdabf1c0, type: 3}
-  _additional: []
 --- !u!82 &1625784825660595500
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1189,6 +1131,64 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &48140807949753158
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8461655823378084771}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c337c094db5be3047ba633d6461c3b7e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1315645814602603900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8461655823378084771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b8c4a61274f60b4ea5fb4299cfdbf14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ShowLayerWeightsInspector: 1
+  ShowParameterInspector: 1
+  m_SynchronizeParameters: []
+  m_SynchronizeLayers:
+  - SynchronizeType: 1
+    LayerIndex: 0
+--- !u!114 &4874362192830995591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8461655823378084771}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2cafdfc878034c94abddf1957d56c2e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _clips:
+  - {fileID: 8300000, guid: 9d73741bacd0268478c7f990a7a243b6, type: 3}
+  - {fileID: 8300000, guid: 54838e78bb795694487c36c456cd1881, type: 3}
+  - {fileID: 8300000, guid: 422091b6f017ed042993fd8713e26323, type: 3}
+  - {fileID: 8300000, guid: 6794dc5effa08c04a847585234023a61, type: 3}
+  - {fileID: 8300000, guid: e9ec9ebd71148b744851d16566a80e08, type: 3}
+  - {fileID: 8300000, guid: 8d66adf35d7595b479da629cd4e162a6, type: 3}
+  - {fileID: 8300000, guid: c7b0d534c1770f24088bf12cfdabf1c0, type: 3}
+  _additional: []
 --- !u!1001 &103954830427411673
 PrefabInstance:
   m_ObjectHideFlags: 0

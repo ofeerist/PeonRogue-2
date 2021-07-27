@@ -49,7 +49,7 @@ namespace Game.UI
         {
             yield return new WaitForSeconds(3f);
             
-            SceneManager.LoadSceneAsync("FirstLocation", LoadSceneMode.Single);
+            SceneManager.LoadScene("Waiting", LoadSceneMode.Single);
         }
     }
 }
