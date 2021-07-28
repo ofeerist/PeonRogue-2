@@ -16,62 +16,62 @@ MonoBehaviour:
   Prefab: {fileID: 4077909085836697000, guid: 64a6f6c4c4000af43954bb27d1754d81, type: 3}
   Type: 3
   _maxHealth:
-    _min: 3.93
-    _max: 67.44
+    _min: 400
+    _max: 600
   _stanTime:
-    _min: 3.64
-    _max: 51.78
+    _min: 1
+    _max: 1
   _detectionRange:
-    _min: 0
-    _max: 0
+    _min: 13
+    _max: 8
   _rotateSpeed:
-    _min: 0
-    _max: 0
+    _min: 1000
+    _max: 1000
   _speed:
-    _min: 0
-    _max: 0
+    _min: 1.5
+    _max: 1.9
   _attackSpeed:
-    _min: 0
-    _max: 0
+    _min: 0.1
+    _max: 0.1
   _range:
-    _min: 0
-    _max: 0
+    _min: 1.5
+    _max: 1.5
   _angle:
-    _min: 0
-    _max: 0
+    _min: 100
+    _max: 100
   _damage:
-    _min: 0
-    _max: 0
+    _min: 40
+    _max: 75
   _stenchUseRange:
-    _min: 0
-    _max: 0
+    _min: 2
+    _max: 4
   _stenchRange:
-    _min: 0
-    _max: 0
+    _min: 1
+    _max: 3
   _stenchDamage:
-    _min: 0
-    _max: 0
+    _min: 2
+    _max: 6
   _stenchUsingTime:
-    _min: 0
-    _max: 0
+    _min: 5
+    _max: 10
   _stenchCooldown:
-    _min: 0
-    _max: 0
+    _min: 15
+    _max: 30
   _maxHookDistance:
-    _min: 0
-    _max: 0
+    _min: 9
+    _max: 13
   _hookSpeed:
-    _min: 0
-    _max: 0
+    _min: 8
+    _max: 11
   _hookBackwardSpeed:
-    _min: 0
-    _max: 0
+    _min: 8
+    _max: 11
   _rangeToUseHook:
-    _min: 0
-    _max: 0
+    _min: 8
+    _max: 11
   _minRangeToUseHook:
-    _min: 0
-    _max: 0
+    _min: 5
+    _max: 7
   _hookCooldown:
-    _min: 0
-    _max: 0
+    _min: 10
+    _max: 20

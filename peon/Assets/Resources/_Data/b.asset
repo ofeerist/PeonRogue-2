@@ -14,46 +14,47 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitPower: 0
   Prefab: {fileID: 918432185449585304, guid: b9ed19478d84a3b4ea6bd03e1cea68b6, type: 3}
+  Type: 0
   _maxHealth:
-    _min: 1
-    _max: 100
+    _min: 75
+    _max: 125
   _stanTime:
-    _min: 0
-    _max: 0
+    _min: 1
+    _max: 1
   _distanceToRetreat:
-    _min: 0
-    _max: 0
+    _min: 0.5
+    _max: 2
   _retreatRange:
-    _min: 0
-    _max: 0
-  _chase: 0
+    _min: 3
+    _max: 7
+  _chase: 1
   _minDistanceToChase:
-    _min: 0
-    _max: 0
+    _min: 3
+    _max: 6
   _maxDistanceToChase:
-    _min: 0
-    _max: 0
+    _min: 8
+    _max: 10
   _chaseRange:
-    _min: 0
-    _max: 0
+    _min: 3
+    _max: 5
   _teleportCooldown:
-    _min: 0
-    _max: 0
+    _min: 0.7
+    _max: 2
   _attackDistance:
-    _min: 0
-    _max: 0
+    _min: 5
+    _max: 5
   _prepareTime:
-    _min: 0
-    _max: 0
+    _min: 0.5
+    _max: 1.5
   _attackTime:
-    _min: 0
-    _max: 0
+    _min: 0.65
+    _max: 0.65
   _attackCooldown:
-    _min: 0
-    _max: 0
+    _min: 4
+    _max: 6
   _damage:
-    _min: 0
-    _max: 0
+    _min: 20
+    _max: 40
   _knockback:
-    _min: 0
-    _max: 0
+    _min: 0.5
+    _max: 2

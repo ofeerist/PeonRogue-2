@@ -9,11 +9,10 @@ namespace Game.Level
 
         [Space]
 
-        private UnitData.UnitData[] _unitData;
+        private WaveInfo[] _waveInfos;
         private SpawnPosition[] _playerSpawnPositions;
         private RewardPosition[] _rewardPositions;
         private TransferPosition[] _transferPositions;
-        private MaxUsage[] _maxUsages;
 
         public delegate void WaveStart(int enemys);
         public event WaveStart WaveStarted;
@@ -21,7 +20,8 @@ namespace Game.Level
         public delegate void WaveEnd();
         public event WaveEnd WaveEnded;
 
-        private float _currentWave = 0;
+        private int _currentWave = 0;
+        private int _waveCount;
 
         private float _currentEnemyCount;
 
@@ -33,18 +33,23 @@ namespace Game.Level
         public void Process()
         {
             var info = FindObjectOfType<LevelInformation>();
-            _unitData = info.UnitData;
+            _waveInfos = info.WaveInfos;
+            _waveCount = _waveInfos.Length;
             _playerSpawnPositions = info.PlayerSpawnPositions;
             _rewardPositions = info.RewardPositions;
             _transferPositions = info.TransferPositions;
-            _maxUsages = info.MaxUsages;
 
             for (int i = 0; i < _unitHandler.Units.Count; i++)
             {
                 _unitHandler.Units[i].transform.position = _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition();
             }
 
-            StartWave(Wave.Generate(_unitData, 5 + _currentWave, _maxUsages));
+            StartRandomWave();
+        }
+
+        private void StartRandomWave()
+        {
+            StartWave(Wave.Generate(_waveInfos[_currentWave].UnitData, 5 + _currentWave, _waveInfos[_currentWave].MaxUsages));
         }
 
         private void StartWave(Wave wave)
@@ -65,6 +70,25 @@ namespace Game.Level
         private void EndWave()
         {
             WaveEnded?.Invoke();
+
+            if (_currentWave >= _waveCount)
+            {
+                SpawnReward();
+            }
+            else 
+            {
+                StartRandomWave();
+            }
+        }
+
+        private void SpawnReward()
+        {
+            ActivateTransfer();
+        }
+
+        private void ActivateTransfer()
+        {
+
         }
     }
 }

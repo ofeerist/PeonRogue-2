@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Game.Level.UnitData;
+using System.Collections.Generic;
 
 
 namespace Game.Level
@@ -8,34 +9,37 @@ namespace Game.Level
     {
         public List<UnitData.UnitData> WaveEnemies = new List<UnitData.UnitData>();
 
-
         public static Wave Generate(UnitData.UnitData[] unitData, float maxPower, MaxUsage[] maxUsages)
         {
             var wave = new Wave();
 
+            var dict = new Dictionary<UnitDatas, MaxUsage>();
+
             for (int k = 0; k < maxUsages.Length; k++)
+            {
+                dict.Add(maxUsages[k].Target, maxUsages[k]);
                 maxUsages[k].CurrentUsageTimes = 0;
-            
+            }
+
             int i = 0;
             float currentPower = 0;
             while(++i < 100)
             {
                 var data = unitData[UnityEngine.Random.Range(0, unitData.Length)];
-
+                
                 if (data.UnitPower + currentPower <= maxPower)
-                    for (int j = 0; j < maxUsages.Length; j++)
-                    {
-                        if (data.Type == maxUsages[j].Target)
-                        {
-                            if (maxUsages[j].CurrentUsageTimes < maxUsages[j].MaxUsageTimes)
-                            {
-                                maxUsages[j].CurrentUsageTimes += 1;
+                {
+                    var maxUsage = dict[data.Type];
 
-                                currentPower += data.UnitPower;
-                                wave.WaveEnemies.Add(data);
-                            }
-                        }
+                    if (maxUsage.CurrentUsageTimes < maxUsage.MaxUsageTimes)
+                    {
+                        maxUsage.CurrentUsageTimes += 1;
+
+                        currentPower += data.UnitPower;
+                        wave.WaveEnemies.Add(data);
                     }
+                    
+                }
             }
 
             return wave;

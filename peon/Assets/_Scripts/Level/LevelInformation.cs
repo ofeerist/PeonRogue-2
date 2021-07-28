@@ -11,12 +11,21 @@ namespace Game.Level
         public int CurrentUsageTimes;
     }
 
-    class LevelInformation : MonoBehaviour
+    [System.Serializable]
+    class WaveInfo
     {
         public UnitData.UnitData[] UnitData;
+        public MaxUsage[] MaxUsages;
+    }
+
+    class LevelInformation : MonoBehaviour
+    {
         public SpawnPosition[] PlayerSpawnPositions;
         public RewardPosition[] RewardPositions;
         public TransferPosition[] TransferPositions;
-        public MaxUsage[] MaxUsages;
+
+        [Space]
+
+        public WaveInfo[] WaveInfos;
     }
 }
