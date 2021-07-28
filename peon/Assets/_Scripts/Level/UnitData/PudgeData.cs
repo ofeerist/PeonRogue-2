@@ -6,8 +6,6 @@ namespace Game.Level.UnitData
     [CreateAssetMenu(fileName = "New PudgeData", menuName = "UnitData/Pudge Data", order = 51)]
     class PudgeData : UnitData
     {
-        public static int UsageTimes;
-
         [SerializeField] private RandomFloat _maxHealth;
         [SerializeField] private RandomFloat _stanTime;
 

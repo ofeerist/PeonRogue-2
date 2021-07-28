@@ -6,8 +6,6 @@ namespace Game.Level.UnitData
     [CreateAssetMenu(fileName = "New SkeletonData", menuName = "UnitData/Skeleton Data", order = 51)]
     class SkeletonData : UnitData
     {
-        public static int UsageTimes;
-
         [SerializeField] private RandomFloat _maxHealth;
         [SerializeField] private RandomFloat _stanTime;
 

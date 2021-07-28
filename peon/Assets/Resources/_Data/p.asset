@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitPower: 0
   Prefab: {fileID: 4077909085836697000, guid: 64a6f6c4c4000af43954bb27d1754d81, type: 3}
+  Type: 3
   _maxHealth:
     _min: 3.93
     _max: 67.44

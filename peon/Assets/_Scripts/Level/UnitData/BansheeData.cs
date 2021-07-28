@@ -6,8 +6,6 @@ namespace Game.Level.UnitData
     [CreateAssetMenu(fileName = "New BansheeData", menuName = "UnitData/Banshee Data", order = 51)]
     class BansheeData : UnitData
     {
-        public static int UsageTimes;
-
         [SerializeField] private RandomFloat _maxHealth;
         [SerializeField] private RandomFloat _stanTime;
 

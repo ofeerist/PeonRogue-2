@@ -1,13 +1,16 @@
-﻿using UnityEngine;
+﻿using Game.Level.UnitData;
+using UnityEngine;
 
 namespace Game.Level
 {
     [System.Serializable]
     class MaxUsage
     {
-        public UnitData.UnitData Target;
+        public UnitDatas Target;
         public int MaxUsageTimes;
+        public int CurrentUsageTimes;
     }
+
     class LevelInformation : MonoBehaviour
     {
         public UnitData.UnitData[] UnitData;

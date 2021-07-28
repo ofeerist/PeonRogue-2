@@ -51,15 +51,15 @@ namespace Game.Level
         {
             _currentWave++;
 
-            _currentEnemyCount = wave.WaveEnemys.Count;
-            for (int i = 0; i < wave.WaveEnemys.Count; i++)
+            _currentEnemyCount = wave.WaveEnemies.Count;
+            for (int i = 0; i < wave.WaveEnemies.Count; i++)
             {
-                var u = Instantiate(wave.WaveEnemys[i].Prefab, _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition(), Quaternion.identity);
-                wave.WaveEnemys[i].SetData(u);
+                var u = Instantiate(wave.WaveEnemies[i].Prefab, _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition(), Quaternion.identity);
+                wave.WaveEnemies[i].SetData(u);
                 u.GetComponent<EnemyHealth>().OnDeath += () => { _currentEnemyCount--; if (_currentEnemyCount == 0) EndWave(); };
             }
             
-            WaveStarted?.Invoke(wave.WaveEnemys.Count);
+            WaveStarted?.Invoke(wave.WaveEnemies.Count);
         }
 
         private void EndWave()
