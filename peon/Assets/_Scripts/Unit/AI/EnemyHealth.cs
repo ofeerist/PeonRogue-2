@@ -96,7 +96,7 @@ namespace Game.Unit
             Unit.Animator.speed = 1;
             Unit.Animator.SetBool("Dead", true);
 
-            OnDeath?.Invoke();
+            OnDeath?.Invoke(Unit);
         }
 
         private IEnumerator SetKinematic()

@@ -21,8 +21,7 @@ namespace Game.Level
     class LevelInformation : MonoBehaviour
     {
         public SpawnPosition[] PlayerSpawnPositions;
-        public RewardPosition[] RewardPositions;
-        public TransferPosition[] TransferPositions;
+        public SpawnPosition[] TransferPositions;
 
         [Space]
 

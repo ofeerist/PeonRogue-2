@@ -11,8 +11,8 @@ namespace Game.Level
 
         private WaveInfo[] _waveInfos;
         private SpawnPosition[] _playerSpawnPositions;
-        private RewardPosition[] _rewardPositions;
-        private TransferPosition[] _transferPositions;
+        private SpawnPosition[] _enemySpawnPositions;
+        private SpawnPosition[] _transferPositions;
 
         public delegate void WaveStart(int enemys);
         public event WaveStart WaveStarted;
@@ -40,7 +40,6 @@ namespace Game.Level
             _waveInfos = info.WaveInfos;
             _waveCount = _waveInfos.Length;
             _playerSpawnPositions = info.PlayerSpawnPositions;
-            _rewardPositions = info.RewardPositions;
             _transferPositions = info.TransferPositions;
         }
 
@@ -66,7 +65,7 @@ namespace Game.Level
             CurrentEnemyCount = wave.WaveEnemies.Count;
             for (int i = 0; i < wave.WaveEnemies.Count; i++)
             {
-                var u = Instantiate(wave.WaveEnemies[i].Prefab, _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition(), Quaternion.identity);
+                var u = Instantiate(wave.WaveEnemies[i].Prefab, _enemySpawnPositions[Random.Range(0, _enemySpawnPositions.Length)].GetPosition(), Quaternion.identity);
                 wave.WaveEnemies[i].SetData(u);
                 u.UnitHealth.OnDeath += EnemyDeath;
             }
@@ -74,19 +73,19 @@ namespace Game.Level
             WaveStarted?.Invoke(wave.WaveEnemies.Count);
         }
 
-        private void EnemyDeath()
+        private void EnemyDeath(Unit.Unit u)
         {
             CurrentEnemyCount--;
-            if (CurrentEnemyCount == 0) EndWave();
+            if (CurrentEnemyCount == 0) EndWave(u);
         }
 
-        private void EndWave()
+        private void EndWave(Unit.Unit u)
         {
             WaveEnded?.Invoke();
 
             if (_currentWave >= _waveCount)
             {
-                SpawnReward();
+                SpawnReward(u);
             }
             else 
             {
@@ -94,7 +93,7 @@ namespace Game.Level
             }
         }
 
-        private void SpawnReward()
+        private void SpawnReward(Unit.Unit u)
         {
             ActivateTransfer();
         }
