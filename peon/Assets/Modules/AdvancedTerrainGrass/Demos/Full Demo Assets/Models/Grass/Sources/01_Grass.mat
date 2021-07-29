@@ -8,8 +8,9 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 01_Grass
-  m_Shader: {fileID: 4800000, guid: d42a44d830afa4156aca2c58a5dd02f7, type: 3}
-  m_ShaderKeywords: TOUCH_BEND_ON _BENDINPUT_VS _MIXMODE_SOFTMERGE _SPECULARHIGHLIGHTS_OFF
+  m_Shader: {fileID: 4800000, guid: fb1fac9dc9a08b04cb6cceeb2fd6a484, type: 3}
+  m_ShaderKeywords: TOUCH_BEND_ON _ALPHATEST_ON _BENDINGMODE_ALPHA _BENDINPUT_VS
+    _GRASSDISPLACEMENT _MASKMAP _MIXMODE_SOFTMERGE _TEXTUREARRAYS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -19,6 +20,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _BaseMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 0b8ce7325643a411b8069d31ee428d0a, type: 3}
         m_Scale: {x: 1, y: 1}
@@ -35,25 +40,52 @@ Material:
         m_Texture: {fileID: 18700000, guid: a80e5ff41dc334a559138ca8536755c8, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - TOUCH_BEND: 1
+    - _AlphaClip: 1
+    - _AmbientReflection: 1
     - _BendInput: 0
+    - _BendingMode: 0
+    - _BlinnPhong: 0
     - _Clip: 0.4
+    - _Cull: 0
+    - _Culling: 0
     - _Cutoff: 0.3
+    - _CutoffShadows: 0.5
+    - _DisplacementSampleSize: 0.5
+    - _DisplacementStrength: 4
+    - _DisplacementStrengthVertical: 4
+    - _Distortion: 0.01
     - _EnableDebug: 0
+    - _EnableDisplacement: 1
+    - _EnableMask: 1
+    - _EnvironmentReflections: 1
     - _Layers: 2
     - _MixMode: 2
     - _NormalBend: 0.759
+    - _NormalDisplacement: 1
+    - _Occlusion: 0.5
+    - _ReceiveShadows: 1
     - _SampleNormal: 0
     - _SamplePivot: 0
+    - _ShadowStrength: 0.7
     - _SizeThreshold: 0.073
+    - _Smoothness: 0.5
     - _Spec: 1
+    - _SpecularHighlights: 1
+    - _TextureArrays: 1
     - _TransStrength: 0.7
+    - _TranslucencyPower: 7.35
+    - _TranslucencyStrength: 1
     - _WindLOD: 0
     - _WindMultiplier: 1.5
     m_Colors:
+    - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _DebugColor: {r: 1, g: 0, b: 0, a: 1}
     - _DryColor: {r: 0.72091264, g: 0.86157525, b: 0.86764705, a: 0.85882354}
     - _HealthyColor: {r: 1, g: 1, b: 1, a: 1}
     - _MinMaxScales: {r: 0.6, g: 1.2500001, b: 0, a: 0}
+    - _SpecColor: {r: 0.3490566, g: 0.3490566, b: 0.3490566, a: 1}
     - _WindMultiplier: {r: 0.5, g: 1.375, b: 0, a: 0}
+  m_BuildTextureStacks: []

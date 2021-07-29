@@ -2,8 +2,13 @@
 
 namespace Game.UI.InGameUI
 {
-    class UnitObserver : MonoBehaviour
+    public class UnitObserver : MonoBehaviour
     {
         public Unit.Unit Unit;
+
+        private void Start()
+        {
+            DontDestroyOnLoad(this);
+        }
     }
 }

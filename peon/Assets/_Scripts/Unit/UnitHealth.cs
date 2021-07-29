@@ -11,6 +11,10 @@ namespace Game.Unit
 
         [SerializeField] public float _maxHealth;
         protected float _currentHealth;
+
+        public delegate void Dead();
+        public virtual event Dead OnDeath;
+
         private void Start()
         {
             _currentHealth = _maxHealth;

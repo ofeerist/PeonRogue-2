@@ -28,7 +28,7 @@ namespace Game.UI
 
         public void ActivateDarkImmediatly()
         {
-            _image.color = new Color(0, 0, 0, 1);
+            GetComponent<Image>().color = new Color(0, 0, 0, 1);
             _dark = true;
         }
 
@@ -39,7 +39,7 @@ namespace Game.UI
 
         public void DeactivateDarkImmediatly()
         {
-            _image.color = new Color(0, 0, 0, 0);
+            GetComponent<Image>().color = new Color(0, 0, 0, 0);
             _dark = false;
         }
     }

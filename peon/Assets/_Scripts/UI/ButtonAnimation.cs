@@ -70,8 +70,9 @@ namespace Game.UI
 
             if (state == 0 || _stayOnSelect)
             {
-
                 var transform = _targetTransform;
+                if (transform == null) return;
+
                 var pos = transform.anchoredPosition;
 
                 if (_highlighted || _selected || (_stayOnSelect && EventSystem.current.currentSelectedGameObject == _targetGameObject))

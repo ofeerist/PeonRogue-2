@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Game.Level
 {
-    class UnitHandler : MonoBehaviour
+    public class UnitHandler : MonoBehaviour
     {
         private void Start()
         {

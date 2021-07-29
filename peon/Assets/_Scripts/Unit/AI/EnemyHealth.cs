@@ -29,8 +29,7 @@ namespace Game.Unit
         [SerializeField] private AudioClip[] _onHitSounds;
         [SerializeField] private AudioSource _onDeath;
 
-        public delegate void Dead();
-        public event Dead OnDeath;
+        public override event Dead OnDeath;
 
         public void SetData(float maxHealth, float stanTime)
         {

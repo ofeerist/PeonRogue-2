@@ -33,5 +33,15 @@ namespace Game.Unit
             UnitAttack = GetComponent<UnitAttack>();
             if (UnitAttack != null) UnitAttack.Unit = this;
         }
+
+        [PunRPC]
+        public void ChangeColor(int peonViewId, float r, float g, float b, float a)
+        {
+            var peon = PhotonNetwork.GetPhotonView(peonViewId).gameObject;
+            var skinnedMesh = peon.GetComponentInChildren<SkinnedMeshRenderer>();
+            skinnedMesh.material.SetColor("TeamColor", new Color(r, g, b, a));
+
+            if (peon.GetPhotonView().Owner != PhotonNetwork.LocalPlayer) peon.GetComponentInChildren<Light>().gameObject.SetActive(false);
+        }
     }
 }

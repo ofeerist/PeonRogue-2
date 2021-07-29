@@ -1,11 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using Photon.Pun;
-using Cinemachine;
-using Game.Unit;
-using System.Collections;
+using Game.Level;
 using UnityEngine.SceneManagement;
-using System;
+using System.Collections;
 
 namespace Game.UI
 {
@@ -35,21 +33,23 @@ namespace Game.UI
             PhotonNetwork.CurrentRoom.IsVisible = false;
 
             if (PhotonNetwork.MasterClient == PhotonNetwork.LocalPlayer)
-                StartCoroutine(LoadScene());
+                StartCoroutine(LoadLevel());
         }
 
         public void StartSingleGame()
         {
             _darkness.Speed = 2;
             _darkness.ActivateDark();
-            StartCoroutine(LoadScene());
+            StartCoroutine(LoadLevel());
         }
 
-        private IEnumerator LoadScene()
+        private IEnumerator LoadLevel()
         {
+            _darkness.Speed = 1;
+            _darkness.ActivateDark();
+
             yield return new WaitForSeconds(3f);
-            
-            SceneManager.LoadScene("Waiting", LoadSceneMode.Single);
+            FindObjectOfType<LevelLoader>().LoadScene("FirstLocation");
         }
     }
 }
