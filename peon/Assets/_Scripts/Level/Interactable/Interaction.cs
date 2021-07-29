@@ -9,7 +9,7 @@ namespace Game.Level._Interactable
 
         [SerializeField] private float _radius;
 
-        [SerializeField] private TalantWindow _talantWindow;
+        [SerializeField] private TalentWindow _talantWindow;
 
         protected override void OnTick()
         {
@@ -30,7 +30,7 @@ namespace Game.Level._Interactable
                 {
                     var interactable = closest.GetComponent<Interactable>();
                     
-                    if(interactable is Talant talant)
+                    if(interactable is Talent talant)
                     {
                         talant.Interact();
                         _talantWindow.Add(talant);
