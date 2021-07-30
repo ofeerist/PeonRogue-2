@@ -1,4 +1,4 @@
-﻿using Game.Level._Interactable._Talants;
+﻿using Game.Level._Interactable._Talents;
 using UnityEngine;
 
 namespace Game.Level._Interactable
@@ -30,10 +30,10 @@ namespace Game.Level._Interactable
                 {
                     var interactable = closest.GetComponent<Interactable>();
                     
-                    if(interactable is Talent talant)
+                    if(interactable is Talent talent)
                     {
-                        talant.Interact();
-                        _talantWindow.Add(talant);
+                        talent.Interact();
+                        _talantWindow.Add(talent.TargetTalent);
                     }
                 }
             }

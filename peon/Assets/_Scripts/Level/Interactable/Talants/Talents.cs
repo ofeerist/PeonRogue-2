@@ -1,6 +1,6 @@
-﻿namespace Game.Level._Interactable._Talants
+﻿namespace Game.Level._Interactable._Talents
 {
-    enum Talents
+    public enum Talents
     {
         Thrall
     }

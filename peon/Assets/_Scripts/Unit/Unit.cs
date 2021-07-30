@@ -1,6 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
-using UnityEngine.AI;
+using System.Collections.Generic;
+using Game.Level._Interactable._Talents.Data;
 
 namespace Game.Unit
 {
@@ -14,6 +15,8 @@ namespace Game.Unit
         [HideInInspector] public CharacterController Controller;
         [HideInInspector] public Rigidbody Rigidbody;
         [HideInInspector] public PhotonView PhotonView;
+
+        public Dictionary<uint, Skill> Skills = new Dictionary<uint, Skill>();
 
         private bool _isHooked;
         public bool IsHooked { get { return _isHooked; } set { _isHooked = value; } }

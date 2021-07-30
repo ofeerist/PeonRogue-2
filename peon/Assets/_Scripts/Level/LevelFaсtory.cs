@@ -1,4 +1,5 @@
-﻿using Game.Unit;
+﻿using Game.Level._Interactable._Talents;
+using Game.Unit;
 using UnityEngine;
 
 namespace Game.Level
@@ -6,6 +7,7 @@ namespace Game.Level
     class LevelFaсtory : MonoBehaviour
     {
         [SerializeField] private UnitHandler _unitHandler;
+        [SerializeField] private TalentWindow _talentWindow;
 
         [Space]
 
@@ -40,6 +42,7 @@ namespace Game.Level
             _waveInfos = info.WaveInfos;
             _waveCount = _waveInfos.Length;
             _playerSpawnPositions = info.PlayerSpawnPositions;
+            _enemySpawnPositions = info.EnemySpawnPositions;
             _transferPositions = info.TransferPositions;
         }
 
@@ -67,7 +70,7 @@ namespace Game.Level
             {
                 var u = Instantiate(wave.WaveEnemies[i].Prefab, _enemySpawnPositions[Random.Range(0, _enemySpawnPositions.Length)].GetPosition(), Quaternion.identity);
                 wave.WaveEnemies[i].SetData(u);
-                u.UnitHealth.OnDeath += EnemyDeath;
+                u.GetComponent<UnitHealth>().OnDeath += EnemyDeath;
             }
             
             WaveStarted?.Invoke(wave.WaveEnemies.Count);
@@ -95,6 +98,7 @@ namespace Game.Level
 
         private void SpawnReward(Unit.Unit u)
         {
+            _talentWindow.Add(Talents.Thrall);
             ActivateTransfer();
         }
 

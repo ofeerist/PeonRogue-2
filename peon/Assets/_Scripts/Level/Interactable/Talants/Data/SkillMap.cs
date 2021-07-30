@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Level._Interactable._Talants.Data
+namespace Game.Level._Interactable._Talents.Data
 {
     [CreateAssetMenu(fileName = "New SkillMap", menuName = "SkillMap", order = 53)]
     class SkillMap : ScriptableObject
@@ -23,7 +23,10 @@ namespace Game.Level._Interactable._Talants.Data
 
         private void InitMap()
         {
-            Map.Add(Talents.Thrall, _thrallSkills);
+            Map = new Dictionary<Talents, Skill[]>
+            {
+                { Talents.Thrall, _thrallSkills }
+            };
         }
 
         [Header(nameof(Talents.Thrall))]
