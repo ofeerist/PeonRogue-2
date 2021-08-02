@@ -1,20 +1,19 @@
 #define NAVMESHCOMPONENTS_SHOW_NAVMESHDATA_REF
 
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using UnityEditor.Experimental.SceneManagement;
+using Modules.NavMeshComponents.Scripts;
+using UnityEditor;
+using UnityEditor.AI;
 using UnityEditor.IMGUI.Controls;
-using UnityEditor.SceneManagement;
 using UnityEditorInternal;
-using UnityEngine.AI;
 using UnityEngine;
+using UnityEngine.AI;
 
-namespace UnityEditor.AI
+namespace Modules.NavMeshComponents.Editor
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(NavMeshSurface))]
-    class NavMeshSurfaceEditor : Editor
+    class NavMeshSurfaceEditor : UnityEditor.Editor
     {
         SerializedProperty m_AgentTypeID;
         SerializedProperty m_BuildHeightMesh;

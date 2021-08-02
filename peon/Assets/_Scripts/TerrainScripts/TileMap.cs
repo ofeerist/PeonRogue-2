@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Game.Tilemap
+namespace _Scripts.TerrainScripts
 {
     [System.Serializable]
     public class Tile

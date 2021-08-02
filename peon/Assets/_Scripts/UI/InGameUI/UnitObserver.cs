@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Game.UI.InGameUI
+namespace _Scripts.UI.InGameUI
 {
     public class UnitObserver : MonoBehaviour
     {

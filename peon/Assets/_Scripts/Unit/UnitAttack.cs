@@ -1,10 +1,8 @@
 ﻿using UnityEngine;
 
-using Photon.Pun;
-
-namespace Game.Unit
+namespace _Scripts.Unit
 {
-    public class UnitAttack : MonoCached
+    public class UnitAttack : MonoCached.MonoCached
     {
         [HideInInspector] public Unit Unit;
         [SerializeField] protected float _Speed;

@@ -1,4 +1,4 @@
-﻿namespace Game.Level._Interactable
+﻿namespace _Scripts.Level.Interactable
 {
     internal interface IInteractable
     {

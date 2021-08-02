@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
+using UnityEngine;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class RoomListUpdater : MonoBehaviourPunCallbacks
     {

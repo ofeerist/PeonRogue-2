@@ -1,54 +1,54 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MoveWorld : MonoBehaviour {
-    public Camera cam;
-    public float threshold = 100.0f;
+namespace Modules.AdvancedTerrainGrass.Demos.Floating_Origin_Demo_Assets
+{
+    public class MoveWorld : MonoBehaviour {
+        public Camera cam;
+        public float threshold = 100.0f;
 
 
-    private Transform camtrans;
-    private Transform thistrans;
+        private Transform camtrans;
+        private Transform thistrans;
 
-    private Vector3 thispos;
-	// Use this for initialization
-	void Start () {
-        camtrans = cam.transform;
-        thistrans = this.transform;
-    }
+        private Vector3 thispos;
+        // Use this for initialization
+        void Start () {
+            camtrans = cam.transform;
+            thistrans = this.transform;
+        }
 	
-	// Update is called once per frame
-	void Update () {
+        // Update is called once per frame
+        void Update () {
 
-    //  Spupport for changing cameras at runtime.
-        if (!camtrans.gameObject.activeInHierarchy)
-        {
-            var t_camtrans = Camera.main.transform;
-            if (t_camtrans != null)
+            //  Spupport for changing cameras at runtime.
+            if (!camtrans.gameObject.activeInHierarchy)
             {
-                camtrans = t_camtrans;
+                var t_camtrans = Camera.main.transform;
+                if (t_camtrans != null)
+                {
+                    camtrans = t_camtrans;
+                }
+                else
+                {
+                    Debug.Log("No main camera found.");
+                    return;
+                }
             }
-            else
+
+            var campos = camtrans.position;
+            thispos = thistrans.position;
+
+            var cameraPosition = campos;
+            cameraPosition.y = 0f;
+            if (cameraPosition.magnitude > threshold)
             {
-                Debug.Log("No main camera found.");
-                return;
+                thistrans.position = thispos - cameraPosition;
+                //  Not needed if the camera is child of the world object.
+                //  camtrans.position = campos - cameraPosition;
             }
-        }
-
-        var campos = camtrans.position;
-        thispos = thistrans.position;
-
-        var cameraPosition = campos;
-        cameraPosition.y = 0f;
-        if (cameraPosition.magnitude > threshold)
-        {
-            thistrans.position = thispos - cameraPosition;
-        //  Not needed if the camera is child of the world object.
-        //  camtrans.position = campos - cameraPosition;
-        }
         
 
-       /*     
+            /*     
                     if (campos.x > 100) {
                         var diff = campos.x;
                         thispos.x -= diff;
@@ -87,4 +87,5 @@ public class MoveWorld : MonoBehaviour {
             */
 
         }
+    }
 }

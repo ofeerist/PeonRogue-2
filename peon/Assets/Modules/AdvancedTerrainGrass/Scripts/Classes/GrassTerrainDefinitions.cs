@@ -1,9 +1,8 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
-namespace AdvancedTerrainGrass {
+namespace Modules.AdvancedTerrainGrass.Scripts.Classes {
 	[PreferBinarySerialization]
 	[Serializable]
 	public class GrassTerrainDefinitions : ScriptableObject {

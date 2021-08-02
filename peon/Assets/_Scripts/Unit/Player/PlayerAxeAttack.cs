@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
-using ExitGames.Client.Photon;
+using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.Player
 {
     class PlayerAxeAttack : UnitAttack, IPunObservable, IOnEventCallback
     {
@@ -90,22 +90,22 @@ namespace Game.Unit
         {
             switch (photonEvent.Code)
             {
-                case (byte)PhotonEvent.Event.Damage:
+                case (byte)Event.Damage:
                     int attackNum = (int)photonEvent.CustomData;
                     DoDamage(attackNum);
                     break;
 
-                case (byte)PhotonEvent.Event.RollDamage:
+                case (byte)Event.RollDamage:
                     var data = (float[])photonEvent.CustomData;
                     var pos = new Vector3(data[0], data[1], data[2]);
                     DoRollDamage(pos);
                     break;
 
-                case (byte)PhotonEvent.Event.AttackEffect:
+                case (byte)Event.AttackEffect:
                     AttackEffect((int)photonEvent.CustomData);
                     break;
 
-                case (byte)PhotonEvent.Event.RollEffect:
+                case (byte)Event.RollEffect:
                     RollEffect((bool)photonEvent.CustomData);
                     break;
 
@@ -167,7 +167,7 @@ namespace Game.Unit
                         { 
                             RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                             SendOptions sendOptions = new SendOptions { Reliability = true };
-                            PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollEffect, true, options, sendOptions);
+                            PhotonNetwork.RaiseEvent((byte)Event.RollEffect, true, options, sendOptions);
                         }
                         if (_currentRollRateTimer <= Time.time)
                         {
@@ -181,7 +181,7 @@ namespace Game.Unit
 
                         RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                         SendOptions sendOptions = new SendOptions { Reliability = true };
-                        PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollEffect, false, options, sendOptions);
+                        PhotonNetwork.RaiseEvent((byte)Event.RollEffect, false, options, sendOptions);
 
                         _rollAudioSource.Stop();
                         _rollTimer = Mathf.Infinity;
@@ -197,7 +197,7 @@ namespace Game.Unit
 
                     RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                     SendOptions sendOptions = new SendOptions { Reliability = true };
-                    PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollEffect, false, options, sendOptions);
+                    PhotonNetwork.RaiseEvent((byte)Event.RollEffect, false, options, sendOptions);
 
                     _rollTimer = Mathf.Infinity;
                 }
@@ -222,7 +222,7 @@ namespace Game.Unit
                     SendOptions sendOptions = new SendOptions { Reliability = true };
 
                     var pos = transform.position;
-                    PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.RollDamage, new float[] { pos.x, pos.y, pos.z }, options, sendOptions);
+                    PhotonNetwork.RaiseEvent((byte)Event.RollDamage, new float[] { pos.x, pos.y, pos.z }, options, sendOptions);
                 }
 
                 if (_rollAudioSource.time >= 1f)
@@ -277,7 +277,7 @@ namespace Game.Unit
         {
             RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
             SendOptions sendOptions = new SendOptions { Reliability = true };
-            PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.AttackEffect, _currentAttackNum - 1, options, sendOptions);
+            PhotonNetwork.RaiseEvent((byte)Event.AttackEffect, _currentAttackNum - 1, options, sendOptions);
 
             yield return new WaitForSeconds(.4f);
             InAttack = false;
@@ -343,7 +343,7 @@ namespace Game.Unit
             {
                 RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
                 SendOptions sendOptions = new SendOptions { Reliability = true };
-                PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.Damage, attackNum, options, sendOptions);
+                PhotonNetwork.RaiseEvent((byte)Event.Damage, attackNum, options, sendOptions);
 
                 AddCombo();
             }
@@ -414,10 +414,10 @@ namespace Game.Unit
 
         private void OnDrawGizmos()
         {
-            var colors = new Color[3] { Color.green, Color.cyan, Color.blue };
+            var colors = new UnityEngine.Color[3] { UnityEngine.Color.green, UnityEngine.Color.cyan, UnityEngine.Color.blue };
             var _transform = _attackTransform;
 
-            Gizmos.color = Color.white;
+            Gizmos.color = UnityEngine.Color.white;
             Gizmos.DrawWireSphere(_transform.position, _rollRadius);
 
             for (int i = 0; i < _Range.Length; i++)

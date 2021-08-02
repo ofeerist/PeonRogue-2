@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
-using System;
 
-namespace Game.Tilemap
+namespace _Scripts.TerrainScripts
 {
     [Serializable]
     public class Cell : IComparable

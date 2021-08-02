@@ -1,21 +1,21 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
 
 //This code destroys the particle's GameObject once it's Start Time is over.
-public class AutoDestroyPS : MonoBehaviour
+namespace Modules.Hovl_Studio.AAA_Projectiles_Vol_1.Scripts
 {
-    private float timeLeft;
-
-    private void Awake()
+    public class AutoDestroyPS : MonoBehaviour
     {
-        ParticleSystem system = GetComponent<ParticleSystem>();
-        var main = system.main;
-        timeLeft = main.startLifetimeMultiplier + main.duration;
-        Destroy(gameObject, timeLeft);
-    }
+        private float timeLeft;
 
-    /*--------------------------bad variant------------------------
+        private void Awake()
+        {
+            ParticleSystem system = GetComponent<ParticleSystem>();
+            var main = system.main;
+            timeLeft = main.startLifetimeMultiplier + main.duration;
+            Destroy(gameObject, timeLeft);
+        }
+
+        /*--------------------------bad variant------------------------
     public void Awake()
     {
         ParticleSystem system = GetComponent<ParticleSystem>();
@@ -32,4 +32,5 @@ public class AutoDestroyPS : MonoBehaviour
         }
     }
     -----------------------------------------------------------*/
+    }
 }

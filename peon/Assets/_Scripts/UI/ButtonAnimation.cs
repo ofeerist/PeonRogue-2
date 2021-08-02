@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
-    public class ButtonAnimation : MonoCached, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+    public class ButtonAnimation : MonoCached.MonoCached, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
     {
         [Tooltip("optional")]
         [SerializeField] private RectTransform _target;

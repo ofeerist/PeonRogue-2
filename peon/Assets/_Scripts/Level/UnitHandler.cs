@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Level
+namespace _Scripts.Level
 {
     public class UnitHandler : MonoBehaviour
     {

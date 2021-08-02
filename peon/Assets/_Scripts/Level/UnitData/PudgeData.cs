@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using Game.Unit;
+﻿using _Scripts.Unit.AI;
+using _Scripts.Unit.AI.Pudge;
+using UnityEngine;
 
-namespace Game.Level.UnitData
+namespace _Scripts.Level.UnitData
 {
     [CreateAssetMenu(fileName = "New PudgeData", menuName = "UnitData/Pudge Data", order = 51)]
     class PudgeData : UnitData

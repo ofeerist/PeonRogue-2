@@ -1,8 +1,8 @@
-﻿using Game.Level._Interactable._Talents;
-using Game.Unit;
+﻿using _Scripts.Level.Interactable.Talants;
+using _Scripts.Unit;
 using UnityEngine;
 
-namespace Game.Level
+namespace _Scripts.Level
 {
     class LevelFaсtory : MonoBehaviour
     {

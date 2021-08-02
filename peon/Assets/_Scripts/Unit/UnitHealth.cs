@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit
 {
-    public class UnitHealth : MonoCached
+    public class UnitHealth : MonoCached.MonoCached
     {
         [HideInInspector] public Unit Unit;
 

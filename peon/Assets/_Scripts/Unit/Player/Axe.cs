@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+﻿using System.Collections;
 using Photon.Pun;
-using System.Collections;
+using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.Player
 {
-    class Axe : MonoCached
+    class Axe : MonoCached.MonoCached
     { 
         private float _damage;
         private float _knockback;

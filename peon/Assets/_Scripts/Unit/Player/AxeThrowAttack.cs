@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using Photon.Pun;
+using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.Player
 {
-    class AxeThrowAttack : MonoCached
+    class AxeThrowAttack : MonoCached.MonoCached
     {
         [Header("Regular")]
         [SerializeField] private float _damage;

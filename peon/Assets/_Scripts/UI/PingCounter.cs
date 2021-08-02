@@ -1,8 +1,8 @@
-﻿using UnityEngine;
-using Photon.Pun;
+﻿using Photon.Pun;
 using TMPro;
+using UnityEngine;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class PingCounter : MonoBehaviour
     {

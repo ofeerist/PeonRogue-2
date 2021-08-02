@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     [System.Serializable]
     class PreviewPeon

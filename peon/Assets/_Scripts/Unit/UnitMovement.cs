@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit
 {
-    public class UnitMovement : MonoCached
+    public class UnitMovement : MonoCached.MonoCached
     {
         [HideInInspector] public Unit Unit;
         public bool BlockMovement;

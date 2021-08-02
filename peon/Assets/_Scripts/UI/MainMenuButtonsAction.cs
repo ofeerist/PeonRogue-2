@@ -1,11 +1,11 @@
-using Cinemachine;
-using Game.Unit;
-using Photon.Pun;
 using System.Collections;
+using _Scripts.Unit.Doodads;
+using Cinemachine;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     public class MainMenuButtonsAction : MonoBehaviour
     {

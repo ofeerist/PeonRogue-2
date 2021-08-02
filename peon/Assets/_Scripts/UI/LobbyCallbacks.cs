@@ -1,10 +1,10 @@
-﻿using Game.Colorizing;
+﻿using _Scripts.Color;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class LobbyCallbacks : MonoBehaviourPunCallbacks
     {
@@ -16,7 +16,7 @@ namespace Game.UI
         [PunRPC]
         private void UpdatePreviewPeonsColor(int i, float r, float g, float b, float a)
         {
-            _previewPeons.Peons[i].MeshRenderer.material.SetColor("TeamColor", new Color(r, g, b, a));
+            _previewPeons.Peons[i].MeshRenderer.material.SetColor("TeamColor", new UnityEngine.Color(r, g, b, a));
         }
 
         [PunRPC]

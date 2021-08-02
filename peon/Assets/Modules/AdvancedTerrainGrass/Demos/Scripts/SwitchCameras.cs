@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Modules.AdvancedTerrainGrass.Scripts;
 using UnityEngine;
-namespace AdvancedTerrainGrass
+
+namespace Modules.AdvancedTerrainGrass.Demos.Scripts
 {
     public class SwitchCameras : MonoBehaviour
     {

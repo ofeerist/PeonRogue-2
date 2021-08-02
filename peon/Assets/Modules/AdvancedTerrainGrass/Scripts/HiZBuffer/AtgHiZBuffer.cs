@@ -4,7 +4,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace AdvancedTerrainGrass {
+namespace Modules.AdvancedTerrainGrass.Scripts.HiZBuffer {
 
     [RequireComponent(typeof(Camera))]
     public class AtgHiZBuffer : MonoBehaviour

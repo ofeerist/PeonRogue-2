@@ -1,13 +1,13 @@
 ﻿using System.Collections;
-using UnityEngine;
+using _Scripts.Color;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-using UnityEngine.UI;
+using UnityEngine;
 using UnityEngine.EventSystems;
-using Game.Colorizing;
+using UnityEngine.UI;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class LobbyChat : MonoBehaviourPun
     {

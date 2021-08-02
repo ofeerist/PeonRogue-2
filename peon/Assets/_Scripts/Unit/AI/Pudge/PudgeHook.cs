@@ -1,11 +1,11 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System;
+using _Scripts.Unit.AI.Banshee;
+using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.AI.Pudge
 {
-    class PudgeHook : MonoCached
+    class PudgeHook : MonoCached.MonoCached
     {
         [SerializeField] private LayerMask _layerMask;
 

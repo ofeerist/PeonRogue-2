@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using Photon.Pun;
 using TMPro;
-using Photon.Pun;
+using UnityEngine;
+using UnityEngine.UI;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class Lobby : MonoBehaviour
     {

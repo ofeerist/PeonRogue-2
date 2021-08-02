@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using Game.Unit;
+﻿using _Scripts.Unit.AI;
+using UnityEngine;
 
-namespace Game.Level.UnitData
+namespace _Scripts.Level.UnitData
 {
     [CreateAssetMenu(fileName = "New SkeletonData", menuName = "UnitData/Skeleton Data", order = 51)]
     class SkeletonData : UnitData

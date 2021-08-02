@@ -1,6 +1,6 @@
-﻿namespace Game.Level._Interactable
+﻿namespace _Scripts.Level.Interactable
 {
-    class Interactable : MonoCached, IInteractable
+    class Interactable : MonoCached.MonoCached, IInteractable
     {
         public delegate void Interacted(Interactable interactable);
         public event Interacted OnInteract;

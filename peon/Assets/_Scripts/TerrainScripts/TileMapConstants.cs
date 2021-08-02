@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Game.Tilemap
+namespace _Scripts.TerrainScripts
 {
     [System.Serializable]
     public class CornerPoints

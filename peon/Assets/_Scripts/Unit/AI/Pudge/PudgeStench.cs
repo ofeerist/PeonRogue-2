@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.AI.Pudge
 {
-    class PudgeStench : MonoCached
+    class PudgeStench : MonoCached.MonoCached
     {
         [SerializeField] private LayerMask _layerMask;
 
@@ -109,7 +108,7 @@ namespace Game.Unit
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.white;
+            Gizmos.color = UnityEngine.Color.white;
             Gizmos.DrawWireSphere(transform.position, _stenchRange);
             Gizmos.DrawWireSphere(transform.position, _stenchUseRange);
         }

@@ -10,20 +10,19 @@ copiedRenderer.realtimeLightmapScaleOffset = sourceRenderer.realtimeLightmapScal
 */
 
 using System;
-using System.Threading;
-
-using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Modules.AdvancedTerrainGrass.Scripts.Classes;
+using Modules.AdvancedTerrainGrass.Scripts.HiZBuffer;
 using UnityEngine;
 using UnityEngine.Rendering;
-
 #if UNITY_EDITOR
-    using UnityEditor;
+
 #endif
 
 
 
-namespace AdvancedTerrainGrass {
+namespace Modules.AdvancedTerrainGrass.Scripts {
 
     [System.Serializable]
     public enum GrassCameras {

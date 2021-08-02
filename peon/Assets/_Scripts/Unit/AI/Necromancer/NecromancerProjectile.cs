@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.AI.Necromancer
 {
-    class NecromancerProjectile : MonoCached
+    class NecromancerProjectile : MonoCached.MonoCached
     {
         private float _damage;
         private float _knockback;

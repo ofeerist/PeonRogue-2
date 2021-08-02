@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit
 {
     class FootStep : MonoBehaviour
     {

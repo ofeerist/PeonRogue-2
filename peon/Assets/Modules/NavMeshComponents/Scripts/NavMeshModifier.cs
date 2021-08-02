@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using UnityEngine;
 
-namespace UnityEngine.AI
+namespace Modules.NavMeshComponents.Scripts
 {
     [ExecuteInEditMode]
     [AddComponentMenu("Navigation/NavMeshModifier", 32)]

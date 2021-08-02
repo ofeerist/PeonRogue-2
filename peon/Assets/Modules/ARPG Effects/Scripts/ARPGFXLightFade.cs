@@ -1,7 +1,6 @@
 using UnityEngine;
-using System.Collections;
 
-namespace ARPGFX
+namespace Modules.ARPG_Effects.Scripts
 {
     public class ARPGFXLightFade : MonoBehaviour
     {

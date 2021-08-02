@@ -3,7 +3,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.Player
 {
     class PlayerMovement : UnitMovement, IOnEventCallback
     {
@@ -141,7 +141,7 @@ namespace Game.Unit
                     SendOptions sendOptions = new SendOptions { Reliability = true };
                     var pos = transform.position;
                     var fwd = transform.forward;
-                    PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.DashDamage, new float[] { pos.x, pos.y, pos .z, fwd.x, fwd.y, fwd.z}, options, sendOptions);
+                    PhotonNetwork.RaiseEvent((byte)Event.DashDamage, new float[] { pos.x, pos.y, pos .z, fwd.x, fwd.y, fwd.z}, options, sendOptions);
 
                 }
                 if (_dashAttackCount >= _dashAttackTimes || _dashAttackTimeOut + offset * _dashAttackTimes <= Time.time)
@@ -308,7 +308,7 @@ namespace Game.Unit
         {
             var _transform = transform;
 
-            Gizmos.color = Color.magenta;
+            Gizmos.color = UnityEngine.Color.magenta;
 
             var vectorTo1 = new Vector3(_transform.position.x + _dashAttackRange * Mathf.Sin((_dashAttackAngle + _transform.eulerAngles.y) * Mathf.Deg2Rad), _transform.position.y, _transform.position.z + _dashAttackRange * Mathf.Cos((_dashAttackAngle + _transform.eulerAngles.y) * Mathf.Deg2Rad));
             Gizmos.DrawLine(_transform.position, vectorTo1);
@@ -349,7 +349,7 @@ namespace Game.Unit
         {
             switch (photonEvent.Code)
             {
-                case (byte)PhotonEvent.Event.DashDamage:
+                case (byte)Event.DashDamage:
                     var data = (float[])photonEvent.CustomData;
                     var pos = new Vector3(data[0], data[1], data[2]);
                     var fwd = new Vector3(data[3], data[4], data[5]);

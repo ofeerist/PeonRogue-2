@@ -1,9 +1,9 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using _Scripts.Unit.Player;
 using TMPro;
-using Game.Unit;
-using System.Collections;
+using UnityEngine;
 
-namespace Game.UI.InGameUI
+namespace _Scripts.UI.InGameUI
 {
     class ThrowUpdater : MonoBehaviour
     {

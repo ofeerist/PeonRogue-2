@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Level._Interactable._Talents.Data
+namespace _Scripts.Level.Interactable.Talants.Data
 {
     [CreateAssetMenu(fileName = "New SkillMap", menuName = "SkillMap", order = 53)]
     class SkillMap : ScriptableObject

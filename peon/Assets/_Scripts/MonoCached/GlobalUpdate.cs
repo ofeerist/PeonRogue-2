@@ -1,17 +1,19 @@
 ﻿using UnityEngine;
 
-
-class GlobalUpdate : MonoBehaviour
+namespace _Scripts.MonoCached
 {
-    private void Start()
+    class GlobalUpdate : MonoBehaviour
     {
-        DontDestroyOnLoad(this);
-    }
-    private void Update()
-    {
-        for (int i = 0; i < MonoCached.allUpdate.Count; i++) MonoCached.allUpdate[i].Tick();
+        private void Start()
+        {
+            DontDestroyOnLoad(this);
+        }
+        private void Update()
+        {
+            for (int i = 0; i < MonoCached.allUpdate.Count; i++) MonoCached.allUpdate[i].Tick();
 
-        for (int i = 0; i < MonoCached.allFixedUpdate.Count; i++) MonoCached.allFixedUpdate[i].FixedTick();
+            for (int i = 0; i < MonoCached.allFixedUpdate.Count; i++) MonoCached.allFixedUpdate[i].FixedTick();
+        }
     }
 }
 

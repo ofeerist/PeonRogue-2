@@ -1,9 +1,9 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using _Scripts.Color;
 using Photon.Pun;
-using Game.Colorizing;
+using TMPro;
+using UnityEngine;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class OptionsApplier : MonoBehaviour
     {

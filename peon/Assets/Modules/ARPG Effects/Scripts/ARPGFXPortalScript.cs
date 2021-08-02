@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿using System.Collections;
+using UnityEngine;
 
-namespace ARPGFX
+namespace Modules.ARPG_Effects.Scripts
 {
 
 public class ARPGFXPortalScript : MonoBehaviour

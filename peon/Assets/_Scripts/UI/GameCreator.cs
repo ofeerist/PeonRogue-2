@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
-using Photon.Pun;
-using TMPro;
+﻿using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class GameCreator : MonoBehaviour
     {

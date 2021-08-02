@@ -1,11 +1,11 @@
-using UnityEngine;
-using Photon.Pun;
 using System.Collections.Generic;
-using Game.Level._Interactable._Talents.Data;
+using _Scripts.Level.Interactable.Talants.Data;
+using Photon.Pun;
+using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit
 {
-    public class Unit : MonoCached
+    public class Unit : MonoCached.MonoCached
     {
         [HideInInspector] public UnitHealth UnitHealth;
         [HideInInspector] public UnitMovement UnitMovement;
@@ -42,7 +42,7 @@ namespace Game.Unit
         {
             var peon = PhotonNetwork.GetPhotonView(peonViewId).gameObject;
             var skinnedMesh = peon.GetComponentInChildren<SkinnedMeshRenderer>();
-            skinnedMesh.material.SetColor("TeamColor", new Color(r, g, b, a));
+            skinnedMesh.material.SetColor("TeamColor", new UnityEngine.Color(r, g, b, a));
 
             if (peon.GetPhotonView().Owner != PhotonNetwork.LocalPlayer) peon.GetComponentInChildren<Light>().gameObject.SetActive(false);
         }

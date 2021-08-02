@@ -2,9 +2,9 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Game.Unit
+namespace _Scripts.Unit.AI.Skeleton
 {
-    class SkeletonDash : MonoCached
+    class SkeletonDash : MonoCached.MonoCached
     {
         [SerializeField] private LayerMask _layerMask;
 
@@ -143,10 +143,10 @@ namespace Game.Unit
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.green;
+            Gizmos.color = UnityEngine.Color.green;
             Gizmos.DrawWireSphere(transform.position, _dashDamageRange);
 
-            Gizmos.color = Color.white;
+            Gizmos.color = UnityEngine.Color.white;
             Gizmos.DrawWireSphere(transform.position, _dashMinDetectRange);
             Gizmos.DrawWireSphere(transform.position, _dashMaxDetectRange);
         }

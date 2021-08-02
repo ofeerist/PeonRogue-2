@@ -1000,7 +1000,7 @@ namespace Photon.Pun
             bool isViewListed = photonViewList.TryGetValue(netView.ViewID, out listedView);
             if (isViewListed)
             {
-                // if some other view is in the list already, we got a problem. it might be undestructible. print out error
+                // if some other view is in the list already, we got a problem. it might be indestructible. print out error
                 if (netView != listedView)
                 {
                     Debug.LogError(string.Format("PhotonView ID duplicate found: {0}. New: {1} old: {2}. Maybe one wasn't destroyed on scene load?! Check for 'DontDestroyOnLoad'. Destroying old entry, adding new.", netView.ViewID, netView, listedView));
@@ -1015,6 +1015,7 @@ namespace Photon.Pun
 
             // Debug.Log("adding view to known list: " + netView);
             photonViewList.Add(netView.ViewID, netView);
+            netView.removedFromLocalViewList = false;
 
             //Debug.LogError("view being added. " + netView);	// Exit Games internal log
 
@@ -2426,7 +2427,7 @@ namespace Photon.Pun
                         }
 
                         // Initialize all views. Typically this is just fired on a new client after it joins a room and gets the first OwnershipUpdate from the Master.
-                        // This was moved from PhotonHandler OnJoinedRoom to here, to allow objects to retain controller = -1 until an controller is actually knownn.
+                        // This was moved from PhotonHandler OnJoinedRoom to here, to allow objects to retain controller = -1 until an controller is actually known.
                         foreach (var view in PhotonViewCollection)
                         {
                             if (!reusablePVHashset.Contains(view))

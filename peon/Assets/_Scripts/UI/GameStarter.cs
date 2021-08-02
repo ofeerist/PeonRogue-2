@@ -1,11 +1,10 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System.Collections;
+using _Scripts.Level;
 using Photon.Pun;
-using Game.Level;
-using UnityEngine.SceneManagement;
-using System.Collections;
+using UnityEngine;
+using UnityEngine.UI;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class GameStarter : MonoBehaviour
     {

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace AdvancedTerrainGrass {
+namespace Modules.AdvancedTerrainGrass.Scripts.Wind {
 
 	[System.Serializable]
     public enum RTSize {

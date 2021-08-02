@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Game.Level
+namespace _Scripts.Level
 {
     class SpawnPosition : MonoBehaviour
     {
@@ -16,7 +16,7 @@ namespace Game.Level
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = UnityEngine.Color.red;
             Gizmos.DrawWireSphere(transform.position, _range);
         }
     }

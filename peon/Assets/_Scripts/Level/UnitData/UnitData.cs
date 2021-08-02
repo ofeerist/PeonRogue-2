@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Game.Level.UnitData
+namespace _Scripts.Level.UnitData
 {
     class UnitData : ScriptableObject
     {

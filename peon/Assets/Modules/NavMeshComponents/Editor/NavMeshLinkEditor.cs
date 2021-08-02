@@ -1,11 +1,13 @@
+using Modules.NavMeshComponents.Scripts;
+using UnityEditor;
+using UnityEditor.AI;
 using UnityEngine;
-using UnityEngine.AI;
 
-namespace UnityEditor.AI
+namespace Modules.NavMeshComponents.Editor
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(NavMeshLink))]
-    class NavMeshLinkEditor : Editor
+    class NavMeshLinkEditor : UnityEditor.Editor
     {
         SerializedProperty m_AgentTypeID;
         SerializedProperty m_Area;

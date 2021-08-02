@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-
-
-namespace AdvancedTerrainGrass.Demo {
+namespace Modules.AdvancedTerrainGrass.Demos.Scripts {
  
 	public class ExtendedFlycam : MonoBehaviour
 	{

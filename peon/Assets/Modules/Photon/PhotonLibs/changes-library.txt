@@ -3,10 +3,24 @@ Photon C# Client Library - Changelog
 Exit Games GmbH - www.photonengine.com - forum.photonengine.com
 
 
+Version 4.1.6.4 (26. July 2021 - rev6143)
+    Changed: ByteArraySlice and ByteArraySlicePool to achieve thread safety.
+    Changed: PhotonClientWebSocket.AsyncConnectAndReceive to reuse memory. It may still grow somewhat as memory allocated for very large messages is not released but rather held to receive as big messages. This class is not used for WebGL exports.
+    Removed: Surplus logging in PhotonClientWebSocket implementation.
+    Added: Null-check in PhotonClientWebSocket.Send() if the socket may be disconnecting already. Added fitting error log.
+    Changed: TCP implementation to avoid memory allocations. It now uses a Queue<StreamBuffer> which is pooled and re-used. DispatchIncomingCommands() releases the StreamBuffers back into the pool.
+    Fixed: TrafficStats counting of ping-result command size. This was still counting the buffer size instead of received-data size (usually less).
+
+Version 4.1.6.3 (24. June 2021 - rev6099)
+    Fixed: An issue with deserialization of custom types.
+
+Version 4.1.6.2 (23. June 2021 - rev6092)
+    Fixed: Potential NullReferenceException in PhotonClientWebSocket.Disconnect(). If called before the connect-flow finished, the instance was null.
+
 Version 4.1.6.1 (09. June 2021 - rev6086)
     Fixed: TPeer.TotalPacketCount and TotalCommandsInPackets counters. They were increased in two places for the Init message.
     Fixed: TPeer.TrafficStatsOutgoing.TotalCommandsInPackets counting in SendData, which was adding the remaining count in queues instead of +1.
-    Changed: TPeer.SendOutgoingCommands(), which will now stop sending if more than MTU size of data was sent. 
+    Changed: TPeer.SendOutgoingCommands(), which will now stop sending if more than MTU size of data was sent.
     Note: Messages are not fragmented for TCP/WSS, so they can be well over MTU size as such. But SendOutgoingCommands() will now return if there are more messages, so sending can be limited somewhat.
     Changed: PhotonClientWebSocket will pause the task only for 50ms if nothing was received.
     Changed: Log level of PhotonClientWebSocket incoming bytes logging. It's now level "ALL".
@@ -21,7 +35,7 @@ Version 4.1.6.0 (19. May 2021 - rev6070)
     Added: SerializeCommandToBuffer, which is split out of SerializeToBuffer(Queue<NCommand> commandList). Allows sending single commands.
     Changed: QueueSentCommand will not add reliable commands to the sentReliableCommands list, if the parameter signals it was in there already.
     Changed: PepareWebSocketUrl() will now write the parameter "libversion" instead of "clientversion". Renamed according to Slack discussion.
-    Changed: PhotonPeer time keeping to use a Stopwatch per peer, instead of one in the SupportClass. 
+    Changed: PhotonPeer time keeping to use a Stopwatch per peer, instead of one in the SupportClass.
     Changed: PeerBase now has a Stopwatch and PeerBase.timeInt will use that.
     Removed: All internal usages of SupportClass.GetTickCount().
     Note: Socket implementations should replace their usage of SupportClass.GetTickCount() - peerBase.timeBase with this.peerBase.timeInt.

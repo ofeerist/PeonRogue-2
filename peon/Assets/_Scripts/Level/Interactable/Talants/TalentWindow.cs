@@ -1,12 +1,11 @@
-﻿
-using Game.Level._Interactable._Talents.Data;
-using Game.UI.InGameUI;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using _Scripts.Level.Interactable.Talants.Data;
+using _Scripts.UI.InGameUI;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game.Level._Interactable._Talents
+namespace _Scripts.Level.Interactable.Talants
 {
     [System.Serializable]
     class TalentView

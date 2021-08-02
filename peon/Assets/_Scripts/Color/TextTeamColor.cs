@@ -1,4 +1,4 @@
-﻿namespace Game.Colorizing
+﻿namespace _Scripts.Color
 {
     public static class TextTeamColor
     {

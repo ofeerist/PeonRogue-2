@@ -1,10 +1,10 @@
-﻿using UnityEngine;
+﻿using _Scripts.Color;
 using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine;
 using UnityEngine.UI;
-using Game.Colorizing;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class PhotonConnector : MonoBehaviourPunCallbacks
     {

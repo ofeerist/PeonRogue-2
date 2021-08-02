@@ -1,4 +1,4 @@
-﻿namespace Game.Level._Interactable._Talents
+﻿namespace _Scripts.Level.Interactable.Talants
 {
     public enum Talents
     {

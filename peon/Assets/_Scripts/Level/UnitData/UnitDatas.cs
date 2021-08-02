@@ -1,4 +1,4 @@
-﻿namespace Game.Level.UnitData
+﻿namespace _Scripts.Level.UnitData
 {
     enum UnitDatas
     {

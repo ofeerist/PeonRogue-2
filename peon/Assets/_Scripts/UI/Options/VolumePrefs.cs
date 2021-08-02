@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Audio;
 
-namespace Game.UI
+namespace _Scripts.UI.Options
 {
     class VolumePrefs : MonoBehaviour
     {

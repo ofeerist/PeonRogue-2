@@ -1,10 +1,10 @@
-﻿using UnityEngine;
-using System.Collections;
-using Photon.Pun;
+﻿using System.Collections;
 using ExitGames.Client.Photon;
+using Photon.Pun;
 using Photon.Realtime;
+using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.Player
 {
     class Slam : MonoBehaviour, IOnEventCallback
     {
@@ -57,7 +57,7 @@ namespace Game.Unit
 
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.yellow;
+            Gizmos.color = UnityEngine.Color.yellow;
             Gizmos.DrawWireSphere(transform.position, _attackRadius);
         }
 
@@ -127,7 +127,7 @@ namespace Game.Unit
             yield return new WaitForSeconds(time);
             var options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
             var sendOptions = new SendOptions { Reliability = true };
-            PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.SlamDamage, null, options, sendOptions);
+            PhotonNetwork.RaiseEvent((byte)Event.SlamDamage, null, options, sendOptions);
         }
 
         private void DoDamage()
@@ -175,7 +175,7 @@ namespace Game.Unit
 
             switch (photonEvent.Code)
             {
-                case (byte)PhotonEvent.Event.SlamDamage:
+                case (byte)Event.SlamDamage:
                     DoDamage();
                     break;
 

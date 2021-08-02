@@ -1,7 +1,7 @@
 ﻿using TMPro;
 using UnityEngine;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class FPSCounter : MonoBehaviour
     {

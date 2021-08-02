@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.Doodads
 {
-    public class Door : MonoCached
+    public class Door : MonoCached.MonoCached
     {
         private Animator _animator;
 

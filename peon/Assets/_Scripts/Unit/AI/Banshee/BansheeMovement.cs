@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Game.Unit
+namespace _Scripts.Unit.AI.Banshee
 {
     class BansheeMovement : UnitMovement
     {
@@ -187,12 +187,12 @@ namespace Game.Unit
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = UnityEngine.Color.red;
             Gizmos.DrawWireSphere(transform.position, _distanceToRetreat);
 
-            Gizmos.color = Color.white;
+            Gizmos.color = UnityEngine.Color.white;
             Gizmos.DrawWireSphere(transform.position, _maxDistanceToChase);
-            Gizmos.color = Color.black;
+            Gizmos.color = UnityEngine.Color.black;
             Gizmos.DrawWireSphere(transform.position, _minDistanceToChase);
         }
 
@@ -205,11 +205,11 @@ namespace Game.Unit
                 var randomOffset = new Vector3(Random.Range(-.1f, .1f), Random.Range(-.1f, .1f), Random.Range(-.1f, .1f));
 
                 if (_textTag == null)
-                    _textTag = TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", Color.gray, 1, new Vector3(0, .005f), false, 0.2f);
+                    _textTag = TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", UnityEngine.Color.gray, 1, new Vector3(0, .005f), false, 0.2f);
                 else
                 {
                     _textTag.transform.position = transform.position + randomOffset;
-                    _textTag.Color = Color.gray;
+                    _textTag.Color = UnityEngine.Color.gray;
                 }
             }
         }

@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
-using UnityEngine.AI;
 
-namespace Game.Unit
+namespace _Scripts.Unit.AI
 {
     class AIAttack : UnitAttack
     {
@@ -104,11 +103,11 @@ namespace Game.Unit
             {
                 var randomOffset = new Vector3(Random.Range(-.1f, .1f), Random.Range(-.1f, .1f), Random.Range(-.1f, .1f));
                 if (_textTag == null)
-                    _textTag = TextTag.TextTag.Create(transform.position + randomOffset, "Промах!", Color.red, 1, new Vector3(0, .005f), false, 0.3f);
+                    _textTag = TextTag.TextTag.Create(transform.position + randomOffset, "Промах!", UnityEngine.Color.red, 1, new Vector3(0, .005f), false, 0.3f);
                 else
                 {
                     _textTag.transform.position = transform.position + randomOffset;
-                    _textTag.Color = Color.red;
+                    _textTag.Color = UnityEngine.Color.red;
                 }
             }
         }
@@ -117,7 +116,7 @@ namespace Game.Unit
         {
             var _transform = transform;
 
-            Gizmos.color = Color.red;
+            Gizmos.color = UnityEngine.Color.red;
 
             var vectorTo1 = new Vector3(_transform.position.x + _range * Mathf.Sin((_angle + _transform.eulerAngles.y) * Mathf.Deg2Rad), _transform.position.y, _transform.position.z + _range * Mathf.Cos((_angle + _transform.eulerAngles.y) * Mathf.Deg2Rad));
             Gizmos.DrawLine(_transform.position, vectorTo1);

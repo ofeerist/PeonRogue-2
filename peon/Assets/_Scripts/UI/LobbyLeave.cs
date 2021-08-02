@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
     class LobbyLeave : MonoBehaviour
     {

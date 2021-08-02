@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace AdvancedTerrainGrass {
+namespace Modules.AdvancedTerrainGrass.Scripts.Classes {
 
 	[Serializable]
 	public class GrassCell {

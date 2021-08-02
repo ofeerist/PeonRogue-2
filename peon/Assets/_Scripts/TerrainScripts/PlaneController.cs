@@ -1,9 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 using UnityEditor;
-using System.Collections.Generic;
+using UnityEngine;
 
-
-namespace Game.Tilemap
+namespace _Scripts.TerrainScripts
 {
 
     [RequireComponent(typeof(MeshFilter))]
@@ -268,11 +267,11 @@ namespace Game.Tilemap
             {
                 if (i % 4 == 0 && i != 0) { addX += 1024; addY = 0; }
 
-                Color[] main = TileTextures[i].GetPixels(0, 0, width, width);
+                UnityEngine.Color[] main = TileTextures[i].GetPixels(0, 0, width, width);
                 FatherTexture.SetPixels(addX, 2048 * addY, width, width, main);
                 if (TileTextures[i].width > 1024)
                 {
-                    Color[] variations = TileTextures[i].GetPixels(1024, 0, width, width);
+                    UnityEngine.Color[] variations = TileTextures[i].GetPixels(1024, 0, width, width);
                     FatherTexture.SetPixels(addX, 2048 * addY + 1024, width, width, variations);
                 }
 
@@ -289,11 +288,11 @@ namespace Game.Tilemap
             {
                 if (i % 4 == 0 && i != 0) { addX += 1024; addY = 0; }
 
-                Color[] main = TileNormalTextures[i].GetPixels(0, 0, width, width);
+                UnityEngine.Color[] main = TileNormalTextures[i].GetPixels(0, 0, width, width);
                 FatherNormalTexture.SetPixels(addX, 2048 * addY, width, width, main);
                 if (TileTextures[i].width > 1024)
                 {
-                    Color[] variations = TileNormalTextures[i].GetPixels(1024, 0, width, width);
+                    UnityEngine.Color[] variations = TileNormalTextures[i].GetPixels(1024, 0, width, width);
                     FatherNormalTexture.SetPixels(addX, 2048 * addY + 1024, width, width, variations);
                 }
 
@@ -311,11 +310,11 @@ namespace Game.Tilemap
             {
                 if (i % 4 == 0 && i != 0) { addX += 1024; addY = 0; }
 
-                Color[] main = TileOrmTextures[i].GetPixels(0, 0, width, width);
+                UnityEngine.Color[] main = TileOrmTextures[i].GetPixels(0, 0, width, width);
                 FatherOrmTexture.SetPixels(addX, 2048 * addY, width, width, main);
                 if (TileTextures[i].width > 1024)
                 {
-                    Color[] variations = TileOrmTextures[i].GetPixels(1024, 0, width, width);
+                    UnityEngine.Color[] variations = TileOrmTextures[i].GetPixels(1024, 0, width, width);
                     FatherOrmTexture.SetPixels(addX, 2048 * addY + 1024, width, width, variations);
                 }
 

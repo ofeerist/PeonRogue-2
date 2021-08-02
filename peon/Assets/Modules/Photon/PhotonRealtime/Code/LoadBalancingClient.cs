@@ -211,7 +211,9 @@ namespace Photon.Realtime
         /// <summary>Realtime apps are for gaming / interaction. Also used by PUN 2.</summary>
         Realtime,
         /// <summary>Voice apps stream audio.</summary>
-        Voice
+        Voice,
+        /// <summary>Fusion clients are for matchmaking and relay in Photon Fusion.</summary>
+        Fusion
     }
 
     /// <summary>
@@ -863,7 +865,19 @@ namespace Photon.Realtime
                 return false;
             }
 
-            this.AppId = this.ClientType == ClientAppType.Realtime ? appSettings.AppIdRealtime : appSettings.AppIdVoice;
+            switch (this.ClientType)
+            {
+                case ClientAppType.Realtime:
+                    this.AppId = appSettings.AppIdRealtime;
+                    break;
+                case ClientAppType.Voice: 
+                    this.AppId = appSettings.AppIdVoice;
+                    break;
+                case ClientAppType.Fusion:
+                    this.AppId = appSettings.AppIdFusion;
+                    break;
+            }
+
             this.AppVersion = appSettings.AppVersion;
 
             this.IsUsingNameServer = appSettings.UseNameServer;
@@ -1271,6 +1285,10 @@ namespace Photon.Realtime
 
         /// <summary>Disconnects the peer from a server or stays disconnected. If the client / peer was connected, a callback will be triggered.</summary>
         /// <remarks>
+        /// Disconnect will attempt to notify the server of the client closing the connection.
+        /// 
+        /// Clients that are in a room, will leave the room. If the room's playerTTL &gt; 0, the player will just become inactive (and may rejoin).
+        /// 
         /// This method will not change the current State, if this client State is PeerCreated, Disconnecting or Disconnected.
         /// In those cases, there is also no callback for the disconnect. The DisconnectedCause will only change if the client was connected.
         /// </remarks>
@@ -2646,6 +2664,7 @@ namespace Photon.Realtime
                                 case ErrorCode.MaxCcuReached:
                                     this.DisconnectedCause = DisconnectCause.MaxCcuReached;
                                     break;
+                                case ErrorCode.InvalidOperation:
                                 case ErrorCode.OperationNotAllowedInCurrentState:
                                     this.DisconnectedCause = DisconnectCause.OperationNotAllowedInCurrentState;
                                     break;

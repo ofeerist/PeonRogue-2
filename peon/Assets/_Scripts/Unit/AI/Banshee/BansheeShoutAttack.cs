@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.AI.Banshee
 {
-    class BansheeShoutAttack : MonoCached
+    class BansheeShoutAttack : MonoCached.MonoCached
     {
         [SerializeField] private LayerMask _layerMask;
 
@@ -181,10 +180,10 @@ namespace Game.Unit
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.cyan;
+            Gizmos.color = UnityEngine.Color.cyan;
             Gizmos.DrawWireSphere(transform.position, _attackDistance);
 
-            Gizmos.color = Color.red;
+            Gizmos.color = UnityEngine.Color.red;
             Gizmos.DrawWireSphere(transform.position, _damageDistance);
         }
 

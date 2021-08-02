@@ -1,10 +1,9 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.AI.Necromancer
 {
-    class NecromancerThrow : MonoCached
+    class NecromancerThrow : MonoCached.MonoCached
     {
         [SerializeField] private LayerMask _layerMask;
 

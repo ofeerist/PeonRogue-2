@@ -1,11 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Game.UI
+namespace _Scripts.UI
 {
-    public class DarknessTransition : MonoCached
+    public class DarknessTransition : MonoCached.MonoCached
     {
         public float Speed;
         private Image _image;
@@ -17,8 +15,8 @@ namespace Game.UI
 
         protected override void OnTick()
         {
-            if (_dark) { if (_image.color.a <= .99f) _image.color = Color.Lerp(_image.color, new Color(0, 0, 0, 1), Speed * Time.deltaTime); }
-            else { if (_image.color.a >= .01f) _image.color = Color.Lerp(_image.color, new Color(0, 0, 0, 0), Speed * Time.deltaTime); }
+            if (_dark) { if (_image.color.a <= .99f) _image.color = UnityEngine.Color.Lerp(_image.color, new UnityEngine.Color(0, 0, 0, 1), Speed * Time.deltaTime); }
+            else { if (_image.color.a >= .01f) _image.color = UnityEngine.Color.Lerp(_image.color, new UnityEngine.Color(0, 0, 0, 0), Speed * Time.deltaTime); }
         }
 
         public void ActivateDark()
@@ -28,7 +26,7 @@ namespace Game.UI
 
         public void ActivateDarkImmediatly()
         {
-            GetComponent<Image>().color = new Color(0, 0, 0, 1);
+            GetComponent<Image>().color = new UnityEngine.Color(0, 0, 0, 1);
             _dark = true;
         }
 
@@ -39,7 +37,7 @@ namespace Game.UI
 
         public void DeactivateDarkImmediatly()
         {
-            GetComponent<Image>().color = new Color(0, 0, 0, 0);
+            GetComponent<Image>().color = new UnityEngine.Color(0, 0, 0, 0);
             _dark = false;
         }
     }

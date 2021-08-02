@@ -1,8 +1,7 @@
-﻿using Game.Level.UnitData;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using _Scripts.Level.UnitData;
 
-
-namespace Game.Level
+namespace _Scripts.Level
 {
     [System.Serializable]
     class Wave

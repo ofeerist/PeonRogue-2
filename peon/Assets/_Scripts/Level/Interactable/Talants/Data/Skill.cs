@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Game.Level._Interactable._Talents.Data
+namespace _Scripts.Level.Interactable.Talants.Data
 {
     [CreateAssetMenu(fileName = "New Skill", menuName = "Skill", order = 52)]
     public class Skill : ScriptableObject

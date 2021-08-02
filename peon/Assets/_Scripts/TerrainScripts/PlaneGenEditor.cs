@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using UnityEditor;
 using UnityEngine;
-using UnityEditor;
 
 #if UNITY_EDITOR
-namespace Game.Tilemap
+namespace _Scripts.TerrainScripts
 {
     [CustomEditor(typeof(PlaneController))]
     [CanEditMultipleObjects]

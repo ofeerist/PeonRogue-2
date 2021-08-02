@@ -1,9 +1,9 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
-namespace Game.TextTag
+namespace _Scripts.TextTag
 {
-    class TextTag : MonoCached
+    class TextTag : MonoCached.MonoCached
     {
         private float _destroyTime = 0;
 
@@ -44,7 +44,7 @@ namespace Game.TextTag
             }
         }
 
-        public Color Color
+        public UnityEngine.Color Color
         {
             get
             {
@@ -60,7 +60,7 @@ namespace Game.TextTag
         protected override void OnTick()
         {
             var a = Color.a > .01f;
-            if (_destroyTime < Time.time && a) Color = Color.Lerp(Color, new Color(0, 0, 0, 0), Time.deltaTime * 5);
+            if (_destroyTime < Time.time && a) Color = UnityEngine.Color.Lerp(Color, new UnityEngine.Color(0, 0, 0, 0), Time.deltaTime * 5);
 
             if (!a)
             {
@@ -70,7 +70,7 @@ namespace Game.TextTag
             }
         }
 
-        public static TextTag Create(Vector3 position, string text, Color color, float lifeTime, Vector3 velocity, bool destroy, float fontSize = .35f)
+        public static TextTag Create(Vector3 position, string text, UnityEngine.Color color, float lifeTime, Vector3 velocity, bool destroy, float fontSize = .35f)
         {
             if (_textTag == null) Init();
 

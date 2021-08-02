@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Game.Unit
+namespace _Scripts.Unit.Player
 {
-    class RandomIdle : MonoCached
+    class RandomIdle : MonoCached.MonoCached
     {
         private Animator _animator;
 

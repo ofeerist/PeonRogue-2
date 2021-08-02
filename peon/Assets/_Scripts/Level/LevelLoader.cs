@@ -1,14 +1,14 @@
-﻿using Photon.Pun;
+﻿using _Scripts.UI;
+using _Scripts.UI.InGameUI;
+using ExitGames.Client.Photon;
+using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
-using ExitGames.Client.Photon;
-using Game.UI.InGameUI;
-using Game.UI;
-using System.Collections;
+using Event = _Scripts.Unit.Event;
 
-namespace Game.Level
+namespace _Scripts.Level
 {
     class LevelLoader : MonoBehaviour, IOnEventCallback
     {
@@ -55,7 +55,7 @@ namespace Game.Level
         {
             RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
             SendOptions sendOptions = new SendOptions { Reliability = true };
-            PhotonNetwork.RaiseEvent((byte)PhotonEvent.Event.GameStart, null, options, sendOptions);
+            PhotonNetwork.RaiseEvent((byte)Event.GameStart, null, options, sendOptions);
         }
 
         private void Start()
@@ -79,7 +79,7 @@ namespace Game.Level
         {
             switch (photonEvent.Code)
             {
-                case (byte)PhotonEvent.Event.GameStart:
+                case (byte)Event.GameStart:
                     GameInitilizer.CreatePlayerUnit(_photonView, transform, _unitObserver, _unitHandler);
 
                     _textMesh.enabled = false;

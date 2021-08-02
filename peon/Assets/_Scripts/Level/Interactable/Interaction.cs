@@ -1,9 +1,9 @@
-﻿using Game.Level._Interactable._Talents;
+﻿using _Scripts.Level.Interactable.Talants;
 using UnityEngine;
 
-namespace Game.Level._Interactable
+namespace _Scripts.Level.Interactable
 {
-    class Interaction : MonoCached
+    class Interaction : MonoCached.MonoCached
     {
         [SerializeField] private LayerMask _layerMask;
 
@@ -11,37 +11,37 @@ namespace Game.Level._Interactable
 
         [SerializeField] private TalentWindow _talantWindow;
 
+        // ReSharper disable Unity.PerformanceAnalysis
         protected override void OnTick()
         {
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                var position = transform.position;
+            if (!Input.GetKeyDown(KeyCode.E)) return;
+            
+            var position = transform.position;
                 
-                Collider[] results = null;
-                Physics.OverlapSphereNonAlloc(position, _radius, results, _layerMask);
+            var results = new Collider[10];
+            var lenght = Physics.OverlapSphereNonAlloc(position, _radius, results, _layerMask);
 
-                Collider closest = null;
-                float min = Mathf.Infinity;
-                for (int i = 0; i < results.Length; i++)
-                    if(Vector3.Distance(position, results[i].transform.position) < min)
-                        closest = results[i];
+            Collider closest = null;
+            var min = Mathf.Infinity;
+            for (int i = 0; i < lenght; i++)
+                if(Vector3.Distance(position, results[i].transform.position) < min)
+                    closest = results[i];
                     
-                if(closest != null)
+            if(closest != null)
+            {
+                var interactable = closest.GetComponent<Interactable>();
+                    
+                if(interactable is Talent talent)
                 {
-                    var interactable = closest.GetComponent<Interactable>();
-                    
-                    if(interactable is Talent talent)
-                    {
-                        talent.Interact();
-                        _talantWindow.Add(talent.TargetTalent);
-                    }
+                    talent.Interact();
+                    _talantWindow.Add(talent.TargetTalent);
                 }
             }
         }
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.white;
+            Gizmos.color = UnityEngine.Color.white;
             Gizmos.DrawWireSphere(transform.position, _radius);
         }
     }

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Game.Unit
+namespace _Scripts.Unit.AI.Necromancer
 {
     class NecromancerMovement : UnitMovement
     {
@@ -145,11 +145,12 @@ namespace Game.Unit
             if (_target == null || Vector3.Distance(_transform.position, _target.position) > _retreatDistance)
             {
                 _target = null;
-
-                var objects = Physics.OverlapSphere(_transform.position, _chase ? _maxDistanceToChase : _retreatDistance, _layerMask);
-                for(int i = 0; i < objects.Length; i++)
+                
+                var results = new Collider[10];
+                var size = Physics.OverlapSphereNonAlloc(_transform.position, _chase ? _maxDistanceToChase : _retreatDistance, results, _layerMask);
+                for(int i = 0; i < size;)
                 {           
-                    _target = objects[i].transform;
+                    _target = results[i].transform;
                     break;
                 }
             }
@@ -157,7 +158,7 @@ namespace Game.Unit
 
         private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.red;
+            Gizmos.color = UnityEngine.Color.red;
 
             Gizmos.DrawWireSphere(transform.position, _retreatDistance);
 
@@ -177,11 +178,11 @@ namespace Game.Unit
                 var randomOffset = new Vector3(Random.Range(-.1f, .1f), Random.Range(-.1f, .1f), Random.Range(-.1f, .1f));
 
                 if (_textTag == null)
-                    _textTag = TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", Color.gray, 1, new Vector3(0, .005f), false, 0.2f);
+                    _textTag = TextTag.TextTag.Create(transform.position + randomOffset, "Столкновение!", UnityEngine.Color.gray, 1, new Vector3(0, .005f), false, 0.2f);
                 else
                 {
                     _textTag.transform.position = transform.position + randomOffset;
-                    _textTag.Color = Color.gray;
+                    _textTag.Color = UnityEngine.Color.gray;
                 }
             }
         }

@@ -1,13 +1,11 @@
-﻿
-using UnityEngine;
-using UnityEditor;
-
-using System;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.IO;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
+using UnityEditor;
+using UnityEngine;
 
-namespace Game.Tilemap
+namespace _Scripts.TerrainScripts
 {
     [ExecuteInEditMode]
     public class TerrainEditor : MonoBehaviour
@@ -32,7 +30,7 @@ namespace Game.Tilemap
         }
         void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.green;
+            Gizmos.color = UnityEngine.Color.green;
 
             float x = BrushSize == 1 ? 1 : BrushSize * 2 - 1;
             Gizmos.DrawWireCube(CurrentIndicator.position, new Vector3(1f * x, .1f, 1f * x));
@@ -107,7 +105,7 @@ namespace Game.Tilemap
             {
                 for (int j = 0; j < widthSize; j++)
                 {
-                    Color[] main = terrainEditor.PlaneController.FatherTexture.GetPixels(j * 1024, i * 2048 + 768, 256, 256);
+                    UnityEngine.Color[] main = terrainEditor.PlaneController.FatherTexture.GetPixels(j * 1024, i * 2048 + 768, 256, 256);
                     if (main[0].a != 0)
                     {
                         _toolbarTextures[j * heightSize + i] = new Texture2D(256, 256);

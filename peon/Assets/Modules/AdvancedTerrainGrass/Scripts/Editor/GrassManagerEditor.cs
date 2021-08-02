@@ -1,15 +1,14 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.IO;
-using System;
-
+using Modules.AdvancedTerrainGrass.Scripts.Classes;
 using UnityEditor;
+using UnityEngine;
 
-namespace AdvancedTerrainGrass {
+namespace Modules.AdvancedTerrainGrass.Scripts.Editor {
 
 	[CustomEditor (typeof(GrassManager))]
-	public class GrassManagerEditor : Editor {
+	public class GrassManagerEditor : UnityEditor.Editor {
 
 
 		public int editorSelection = 0;
@@ -630,7 +629,7 @@ namespace AdvancedTerrainGrass {
 								EditorGUILayout.PropertyField(DoSoftMerge.GetArrayElementAtIndex(currentSelection), new GUIContent("    Soft Merge"));
 								GUILayout.Space(8);
 
-								_materialEditor = (MaterialEditor) Editor.CreateEditor ( (Material)v_mat.GetArrayElementAtIndex(currentSelection).objectReferenceValue );
+								_materialEditor = (MaterialEditor) UnityEditor.Editor.CreateEditor ( (Material)v_mat.GetArrayElementAtIndex(currentSelection).objectReferenceValue );
 								if (_materialEditor != null) {
 									_materialEditor.DrawHeader ();
 								    _materialEditor.OnInspectorGUI ();

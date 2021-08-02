@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Game.UI
+namespace _Scripts.UI.Options
 {
     class QualityPrefs : MonoBehaviour
     {

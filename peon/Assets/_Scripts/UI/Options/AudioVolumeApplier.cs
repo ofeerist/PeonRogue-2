@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Audio;
+using UnityEngine.UI;
 
-namespace Game.UI
+namespace _Scripts.UI.Options
 {
     class AudioVolumeApplier : MonoBehaviour
     {

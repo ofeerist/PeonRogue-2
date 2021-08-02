@@ -1,7 +1,7 @@
-﻿using Game.Level.UnitData;
+﻿using _Scripts.Level.UnitData;
 using UnityEngine;
 
-namespace Game.Level
+namespace _Scripts.Level
 {
     [System.Serializable]
     class MaxUsage

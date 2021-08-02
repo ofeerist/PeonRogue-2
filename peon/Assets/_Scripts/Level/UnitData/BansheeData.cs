@@ -1,7 +1,8 @@
-﻿using UnityEngine;
-using Game.Unit;
+﻿using _Scripts.Unit.AI;
+using _Scripts.Unit.AI.Banshee;
+using UnityEngine;
 
-namespace Game.Level.UnitData
+namespace _Scripts.Level.UnitData
 {
     [CreateAssetMenu(fileName = "New BansheeData", menuName = "UnitData/Banshee Data", order = 51)]
     class BansheeData : UnitData
