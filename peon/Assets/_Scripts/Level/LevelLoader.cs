@@ -1,4 +1,6 @@
-﻿using _Scripts.UI;
+﻿using System.Collections;
+using System.Collections.Generic;
+using _Scripts.UI;
 using _Scripts.UI.InGameUI;
 using ExitGames.Client.Photon;
 using Photon.Pun;
@@ -10,10 +12,11 @@ using Event = _Scripts.Unit.Event;
 
 namespace _Scripts.Level
 {
-    class LevelLoader : MonoBehaviour, IOnEventCallback
+    internal class LevelLoader : MonoBehaviour, IOnEventCallback
     {
         private int _loaded;
-        private int Loaded { get { return _loaded; } set { _loaded = value; Changed(); } }
+        private int Loaded { get => _loaded;
+            set { _loaded = value; Changed(); } }
 
         private PhotonView _photonView;
 
@@ -31,30 +34,42 @@ namespace _Scripts.Level
 
         public void LoadScene(string sceneName)
         {
+            Loaded = 0;
+            _textMesh.text = "Loading...";
+                
             _loadingCamera.gameObject.SetActive(true);
             _UI.SetActive(true);
-            _darkness.ActivateDarkImmediatly();
+            _darkness.Speed = 2f;
+            _darkness.ActivateDark();
 
+            StartCoroutine(Load(sceneName));
+        }
+
+        private IEnumerator Load(string sceneName)
+        {
+            yield return new WaitForSeconds(3f);
+            
             SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
             SceneManager.sceneLoaded += ActivateReady;
         }
-
+        
         private void Changed()
         {
             _textMesh.text = "Waiting for other players ..." + "(" + Loaded + "/" + PhotonNetwork.CountOfPlayers + ")";
 
             if (!PhotonNetwork.IsMasterClient) return;
 
-            if (Loaded == PhotonNetwork.CountOfPlayers)
+            if (Loaded >= PhotonNetwork.CountOfPlayers)
             {
+                print("da");
                 GameStart();
             }
         }
 
-        private void GameStart()
+        private static void GameStart()
         {
-            RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-            SendOptions sendOptions = new SendOptions { Reliability = true };
+            var options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+            var sendOptions = new SendOptions { Reliability = true };
             PhotonNetwork.RaiseEvent((byte)Event.GameStart, null, options, sendOptions);
         }
 
