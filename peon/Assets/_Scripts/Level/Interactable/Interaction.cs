@@ -1,5 +1,8 @@
-﻿using _Scripts.Level.Interactable.Talants;
+﻿using _Scripts.Level.Interactable.Talents;
+using _Scripts.UI.InGameUI;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Scripts.Level.Interactable
 {
@@ -11,19 +14,27 @@ namespace _Scripts.Level.Interactable
 
         [SerializeField] private TalentWindow _talantWindow;
 
+        [SerializeField] private Image _image;
+
+        [SerializeField] private UnitObserver _observer;
+
         // ReSharper disable Unity.PerformanceAnalysis
         protected override void OnTick()
         {
-            if (!Input.GetKeyDown(KeyCode.E)) return;
+            if (_observer.Unit == null) return;
             
-            var position = transform.position;
-                
+            var position = _observer.Unit.transform.position;
+            
             var results = new Collider[10];
-            var lenght = Physics.OverlapSphereNonAlloc(position, _radius, results, _layerMask);
+            var count = Physics.OverlapSphereNonAlloc(position, _radius, results, _layerMask);
+
+            _image.enabled = count > 0;
+            
+            if (!Input.GetKeyDown(KeyCode.E)) return;
 
             Collider closest = null;
             var min = Mathf.Infinity;
-            for (int i = 0; i < lenght; i++)
+            for (int i = 0; i < count; i++)
                 if(Vector3.Distance(position, results[i].transform.position) < min)
                     closest = results[i];
                     
@@ -31,10 +42,15 @@ namespace _Scripts.Level.Interactable
             {
                 var interactable = closest.GetComponent<Interactable>();
                     
-                if(interactable is Talent talent)
+                switch (interactable)
                 {
-                    talent.Interact();
-                    _talantWindow.Add(talent.TargetTalent);
+                    case Talent talent:
+                        talent.Interact();
+                        _talantWindow.Add(talent.TargetTalent);
+                        break;
+                    default:
+                        interactable.Interact();
+                        break;
                 }
             }
         }

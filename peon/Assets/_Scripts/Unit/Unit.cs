@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using _Scripts.Level.Interactable.Talants.Data;
+using _Scripts.Level.Interactable.Talents.Data;
 using Photon.Pun;
 using UnityEngine;
 

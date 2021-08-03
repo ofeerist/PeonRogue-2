@@ -23,7 +23,8 @@ namespace _Scripts.Level
         public SpawnPosition[] PlayerSpawnPositions;
         public SpawnPosition[] EnemySpawnPositions;
         public SpawnPosition[] TransferPositions;
-
+        public string[] PossibleScenes;
+        
         [Space]
 
         public WaveInfo[] WaveInfos;

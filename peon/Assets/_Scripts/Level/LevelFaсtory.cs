@@ -1,6 +1,8 @@
-﻿using _Scripts.Level.Interactable.Talants;
+﻿using _Scripts.Level.Interactable;
+using _Scripts.Level.Interactable.Talents;
 using _Scripts.Unit;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace _Scripts.Level
 {
@@ -8,14 +10,18 @@ namespace _Scripts.Level
     {
         [SerializeField] private UnitHandler _unitHandler;
         [SerializeField] private TalentWindow _talentWindow;
-
+        [SerializeField] private LevelLoader _levelLoader;
+        [SerializeField] private Transfer _transfer;
+        [SerializeField] private Talent _talent;
+        
         [Space]
 
         private WaveInfo[] _waveInfos;
         private SpawnPosition[] _playerSpawnPositions;
         private SpawnPosition[] _enemySpawnPositions;
         private SpawnPosition[] _transferPositions;
-
+        private string[] _possibleScenes;
+        
         public delegate void WaveStart(int enemys);
         public event WaveStart WaveStarted;
 
@@ -27,7 +33,8 @@ namespace _Scripts.Level
 
         private int _currentEnemyCount;
 
-        private int CurrentEnemyCount { get { return _currentEnemyCount; } set { _currentEnemyCount = value; EnemyCountChanged?.Invoke(value); } }
+        private int CurrentEnemyCount { get => _currentEnemyCount;
+            set { _currentEnemyCount = value; EnemyCountChanged?.Invoke(value); } }
 
         public delegate void EnemyCount(int count);
         public event EnemyCount EnemyCountChanged;
@@ -44,6 +51,7 @@ namespace _Scripts.Level
             _playerSpawnPositions = info.PlayerSpawnPositions;
             _enemySpawnPositions = info.EnemySpawnPositions;
             _transferPositions = info.TransferPositions;
+            _possibleScenes = info.PossibleScenes;
         }
 
         public void Process()
@@ -66,10 +74,10 @@ namespace _Scripts.Level
             _currentWave++;
 
             CurrentEnemyCount = wave.WaveEnemies.Count;
-            for (int i = 0; i < wave.WaveEnemies.Count; i++)
+            foreach (var t in wave.WaveEnemies)
             {
-                var u = Instantiate(wave.WaveEnemies[i].Prefab, _enemySpawnPositions[Random.Range(0, _enemySpawnPositions.Length)].GetPosition(), Quaternion.identity);
-                wave.WaveEnemies[i].SetData(u);
+                var u = Instantiate(t.Prefab, _enemySpawnPositions[Random.Range(0, _enemySpawnPositions.Length)].GetPosition(), Quaternion.identity);
+                t.SetData(u);
                 u.GetComponent<UnitHealth>().OnDeath += EnemyDeath;
             }
             
@@ -82,13 +90,14 @@ namespace _Scripts.Level
             if (CurrentEnemyCount == 0) EndWave(u);
         }
 
-        private void EndWave(Unit.Unit u)
+        private void EndWave(Component u)
         {
             WaveEnded?.Invoke();
 
             if (_currentWave >= _waveCount)
             {
                 SpawnReward(u);
+                SpawnTransfers();
             }
             else 
             {
@@ -96,15 +105,26 @@ namespace _Scripts.Level
             }
         }
 
-        private void SpawnReward(Unit.Unit u)
+        private void SpawnTransfers()
         {
-            _talentWindow.Add(Talents.Thrall);
-            ActivateTransfer();
+            foreach (var pos in _transferPositions)
+            {
+                var transfer = Instantiate(_transfer, pos.GetPosition(), Quaternion.identity);
+                transfer.Scene = _possibleScenes[Random.Range(0, _possibleScenes.Length)];
+                transfer.OnInteract += ActivateTransfer;
+            }
         }
 
-        private void ActivateTransfer()
+        private void SpawnReward(Component u)
         {
+            Instantiate(_talent, u.transform.position + new Vector3(0, .5f, 0), Quaternion.identity);
+        }
 
+        private void ActivateTransfer(Interactable.Interactable interactable)
+        {
+            if (!(interactable is Transfer transfer)) return;
+            
+            _levelLoader.LoadScene(transfer.Scene);
         }
     }
 }

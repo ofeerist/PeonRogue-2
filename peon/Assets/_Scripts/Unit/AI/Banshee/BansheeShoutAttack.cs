@@ -38,6 +38,7 @@ namespace _Scripts.Unit.AI.Banshee
 
         private AudioSource _audioSource;
         [SerializeField] private AudioClip _shoutClip;
+        private static readonly int Shout1 = Animator.StringToHash("Shout");
 
         public void SetData(float attackDistance, float prepareTime, float attackTime, float attackCooldown, float damage, float knockback)
         {
@@ -69,15 +70,16 @@ namespace _Scripts.Unit.AI.Banshee
 
             if (_attackCooldownTimer <= Time.time)
             {
-                var objects = Physics.OverlapSphere(_transform.position, _attackDistance, _layerMask);
+                var results = new Collider[10];
+                var size = Physics.OverlapSphereNonAlloc(_transform.position, _attackDistance, results, _layerMask);
 
                 Collider closest = null;
                 var minDistance = Mathf.Infinity;
-                for (int i = 0; i < objects.Length; i++)
+                for (int i = 0; i < size; i++)
                 {
-                    if (Vector3.Distance(_transform.position, objects[i].transform.position) < minDistance)
+                    if (Vector3.Distance(_transform.position, results[i].transform.position) < minDistance)
                     {
-                        closest = objects[i];
+                        closest = results[i];
                     }
                 }
 
@@ -98,22 +100,23 @@ namespace _Scripts.Unit.AI.Banshee
 
         protected override void OnTick()
         {
-            if (_unit.UnitAttack.InAttack) return;
-            if (!_unit.enabled) 
-            { 
-                if(_shout != null)
-                    StopShout();
-                
-                return;
+            if (_unit)
+            {
+                if (_unit.UnitAttack.InAttack) return;
+                if (!_unit.enabled)
+                {
+                    if (_shout)
+                        StopShout();
+                }
             }
         }
 
         protected override void OnFixedTick()
         {
-            if (_shout != null) return;
+            if (_shout) return;
 
             var _transform = transform;
-            if (_target != null)
+            if (_target)
             {
                 _transform.rotation = Quaternion.Lerp(_transform.rotation, Quaternion.LookRotation(_target.transform.position - _transform.position), _rotateSpeed * Time.fixedDeltaTime);
             }
@@ -126,7 +129,10 @@ namespace _Scripts.Unit.AI.Banshee
 
             _unit.UnitAttack.InAttack = true;
 
-            var eff = Instantiate(_prepareEffect, transform.position, transform.rotation);
+            var _transform = transform;
+            var position = _transform.position;
+            var rotation = _transform.rotation;
+            var eff = Instantiate(_prepareEffect, position, rotation);
             eff.Play();
 
             yield return new WaitForSeconds(_prepareTime);
@@ -134,25 +140,26 @@ namespace _Scripts.Unit.AI.Banshee
             eff.Stop();
             StartCoroutine(DestoyTimed(.5f, eff.gameObject));
 
-            _unit.Animator.SetBool("Shout", true);
+            _unit.Animator.SetBool(Shout1, true);
             _audioSource.PlayOneShot(_shoutClip);
 
-            var shoutPos = transform.position + new Vector3(0, .5f, 0) + transform.forward;
-            var shoutRot = transform.rotation * Quaternion.Euler(0, -90 - (_shoutEffect.shape.arc / 2), 0);
+            var shoutPos = position + new Vector3(0, .5f, 0) + _transform.forward;
+            var shoutRot = rotation * Quaternion.Euler(0, -90 - (_shoutEffect.shape.arc / 2), 0);
             _shout = Instantiate(_shoutEffect, shoutPos, shoutRot);
             _shout.Play();
 
             yield return new WaitForSeconds(.5f);
 
-            var objects = Physics.OverlapSphere(transform.position, _attackDistance, _layerMask);
-            foreach (var obj in objects)
+            var results = new Collider[10];
+            var size = Physics.OverlapSphereNonAlloc(position, _attackDistance, results, _layerMask);
+            for (int i = 0; i < size; i++)
             {
-                var posTo = (obj.transform.position - transform.position).normalized;
-                var dot = Vector3.Dot(posTo, transform.forward);
+                var posTo = (results[i].transform.position - transform.position).normalized;
+                var dot = Vector3.Dot(posTo, _transform.forward);
                 if (dot >= Mathf.Cos(_shoutEffect.shape.arc / 2 * Mathf.Deg2Rad))
                 {
-                    var unit = obj.GetComponent<Unit>();
-                    if (unit != null && unit.enabled)
+                    var unit = results[i].GetComponent<Unit>();
+                    if (unit && unit.enabled)
                     {
                         unit.UnitHealth.TakeDamage(_damage);
                         unit.UnitMovement.AddImpulse((_target.transform.position - transform.position) * _knockback, false);
@@ -167,7 +174,7 @@ namespace _Scripts.Unit.AI.Banshee
             _shout = null;
 
             _unit.UnitAttack.InAttack = false;
-            _unit.Animator.SetBool("Shout", false);
+            _unit.Animator.SetBool(Shout1, false);
 
             _target = null;
         }
@@ -181,10 +188,11 @@ namespace _Scripts.Unit.AI.Banshee
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = UnityEngine.Color.cyan;
-            Gizmos.DrawWireSphere(transform.position, _attackDistance);
+            var position = transform.position;
+            Gizmos.DrawWireSphere(position, _attackDistance);
 
             Gizmos.color = UnityEngine.Color.red;
-            Gizmos.DrawWireSphere(transform.position, _damageDistance);
+            Gizmos.DrawWireSphere(position, _damageDistance);
         }
 
         private void OnDestroy() => RemoveFixedUpdate();
