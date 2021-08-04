@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Scripts.Level.Interactable;
 using _Scripts.Level.Interactable.Talents;
 using _Scripts.UI.InGameUI;
 using _Scripts.Unit;
+using ExitGames.Client.Photon;
+using Photon.Pun;
+using Photon.Realtime;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Event = _Scripts.Unit.Event;
 using Random = UnityEngine.Random;
 
 namespace _Scripts.Level
 {
-    class LevelFaсtory : MonoBehaviour
+    class LevelFaсtory : MonoBehaviour, IOnEventCallback
     {
         [SerializeField] private UnitHandler _unitHandler;
         [SerializeField] private UnitObserver _unitObserver;
@@ -71,9 +76,17 @@ namespace _Scripts.Level
 
         private void StartRandomWave()
         {
-            StartWave(Wave.Generate(_waveInfos[_currentWave].UnitData, 5 + _currentWave, _waveInfos[_currentWave].MaxUsages));
+            if (PhotonNetwork.IsMasterClient)
+            {
+                var wave = Wave.Generate(_waveInfos[_currentWave].UnitData, 5 + _currentWave,
+                    _waveInfos[_currentWave].MaxUsages);
+                
+                var options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
+                var sendOptions = new SendOptions { Reliability = true };
+                PhotonNetwork.RaiseEvent((byte)Event.SyncWaves, wave.Indexes.ToArray(), options, sendOptions);
+            }
         }
-
+        
         private void StartWave(Wave wave)
         {
             _currentWave++;
@@ -136,6 +149,29 @@ namespace _Scripts.Level
         private void Reset()
         {
             _currentWave = 0;
+        }
+        
+        public void OnEvent(EventData photonEvent)
+        {
+            switch (photonEvent.Code)
+            {
+                case (byte)Event.SyncWaves:
+                    var indexes = (int[])photonEvent.CustomData;
+
+                    var wave = Wave.CreateByIndexes(_waveInfos[_currentWave].UnitData, indexes);
+                    
+                    StartWave(wave);
+                    
+                    break;
+            }
+        }
+        public void OnEnable()
+        {
+            PhotonNetwork.AddCallbackTarget(this);
+        }
+        public void OnDisable()
+        {
+            PhotonNetwork.RemoveCallbackTarget(this);
         }
     }
 }

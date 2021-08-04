@@ -8,6 +8,7 @@
         DashDamage = 5,
         AttackEffect = 6,
         RollEffect = 7,
-        GameStart = 8
+        SyncWaves = 8,
+        GameStart = 9
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using _Scripts.Level.UnitData;
+using UnityEngine;
 
 namespace _Scripts.Level
 {
@@ -7,6 +8,7 @@ namespace _Scripts.Level
     class Wave
     {
         public List<UnitData.UnitData> WaveEnemies = new List<UnitData.UnitData>();
+        public List<int> Indexes = new List<int>();
 
         public static Wave Generate(UnitData.UnitData[] unitData, float maxPower, MaxUsage[] maxUsages)
         {
@@ -14,17 +16,18 @@ namespace _Scripts.Level
 
             var dict = new Dictionary<UnitDatas, MaxUsage>();
 
-            for (int k = 0; k < maxUsages.Length; k++)
+            foreach (var t in maxUsages)
             {
-                dict.Add(maxUsages[k].Target, maxUsages[k]);
-                maxUsages[k].CurrentUsageTimes = 0;
+                dict.Add(t.Target, t);
+                t.CurrentUsageTimes = 0;
             }
 
             int i = 0;
             float currentPower = 0;
             while(++i < 100)
             {
-                var data = unitData[UnityEngine.Random.Range(0, unitData.Length)];
+                var rnd = Random.Range(0, unitData.Length);
+                var data = unitData[rnd];
                 
                 if (data.UnitPower + currentPower <= maxPower)
                 {
@@ -35,12 +38,24 @@ namespace _Scripts.Level
                         maxUsage.CurrentUsageTimes += 1;
 
                         currentPower += data.UnitPower;
+                        
+                        wave.Indexes.Add(rnd);
                         wave.WaveEnemies.Add(data);
                     }
                     
                 }
             }
 
+            return wave;
+        }
+
+        public static Wave CreateByIndexes(UnitData.UnitData[] unitData, int[] indexes)
+        {
+            var wave = new Wave();
+            
+            foreach (var index in indexes)
+                wave.WaveEnemies.Add(unitData[index]);
+            
             return wave;
         }
 

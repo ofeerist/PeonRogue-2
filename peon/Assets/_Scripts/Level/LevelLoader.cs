@@ -57,7 +57,7 @@ namespace _Scripts.Level
 
             if (!PhotonNetwork.IsMasterClient) return;
 
-            if (Loaded >= PhotonNetwork.CountOfPlayers)
+            if (Loaded >= PhotonNetwork.CurrentRoom.PlayerCount)
             {
                 GameStart();
             }
