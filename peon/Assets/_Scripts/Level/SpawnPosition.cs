@@ -2,7 +2,7 @@
 
 namespace _Scripts.Level
 {
-    class SpawnPosition : MonoBehaviour
+    public class SpawnPosition : MonoBehaviour
     {
         [SerializeField] private float _range;
 

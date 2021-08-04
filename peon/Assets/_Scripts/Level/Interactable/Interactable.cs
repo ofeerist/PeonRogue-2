@@ -4,6 +4,9 @@
     {
         public delegate void Interacted(Interactable interactable);
         public event Interacted OnInteract;
+
+        public SpawnPosition ArrowPosition;
+        
         public void Interact()
         {
             OnInteract?.Invoke(this);
