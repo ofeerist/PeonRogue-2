@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f52c4e3b8ecf8646b35c42a7bb4ec24, type: 3}
+  m_Name: s
+  m_EditorClassIdentifier: 
+  UnitPower: 0
+  Prefab: {fileID: 0}
+  Type: 0
+  _maxHealth:
+    _min: 130
+    _max: 170
+  _stanTime:
+    _min: 1
+    _max: 1
+  _detectionRange:
+    _min: 10
+    _max: 10
+  _rotateSpeed:
+    _min: 1000
+    _max: 1000
+  _speed:
+    _min: 1.9
+    _max: 1.9
+  _attackSpeed:
+    _min: 0.1
+    _max: 0.1
+  _range:
+    _min: 1
+    _max: 1
+  _angle:
+    _min: 120
+    _max: 120
+  _damage:
+    _min: 8
+    _max: 12
+  _dashMaxDetectRange:
+    _min: 9
+    _max: 12
+  _dashMinDetectRange:
+    _min: 5
+    _max: 7
+  _dashDamageRange:
+    _min: 2
+    _max: 2
+  _dashDamage:
+    _min: 30
+    _max: 50
+  _dashSpeed:
+    _min: 15
+    _max: 15
+  _timeToPrepare:
+    _min: 0.2
+    _max: 0.4
+  _dashCooldown:
+    _min: 6
+    _max: 9

@@ -4927,14 +4927,22 @@ MonoBehaviour:
   - FirstLocation
   WaveInfos:
   - UnitData:
+    - {fileID: 11400000, guid: 7e26ce1a9f2e78012980adbab7553ab9, type: 2}
+    MaxUsages:
+    - Target: 2
+      MaxUsageTimes: 10
+      CurrentUsageTimes: 0
+  - UnitData:
     - {fileID: 11400000, guid: 7534286543f9c4f4f95ff43966a3c631, type: 2}
+    MaxUsages:
+    - Target: 3
+      MaxUsageTimes: 10
+      CurrentUsageTimes: 0
+  - UnitData:
     - {fileID: 11400000, guid: 35bb103b9b392184b9dcbb18369414e2, type: 2}
     MaxUsages:
     - Target: 0
-      MaxUsageTimes: 1
-      CurrentUsageTimes: 0
-    - Target: 3
-      MaxUsageTimes: 1
+      MaxUsageTimes: 10
       CurrentUsageTimes: 0
 --- !u!4 &1120854112
 Transform:

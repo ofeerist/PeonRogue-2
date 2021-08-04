@@ -1449,7 +1449,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -1823754836589956214, guid: d3858b92a4097d04faa601aee35ea402, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.2
+  m_Volume: 0.1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -45517,14 +45517,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
---- !u!4 &4648035778709384314 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8310177917896328309, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
-  m_PrefabInstance: {fileID: 3734202225019774991}
-  m_PrefabAsset: {fileID: 0}
 --- !u!198 &8955083352778473995 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 5734302777470282244, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
+  m_PrefabInstance: {fileID: 3734202225019774991}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4648035778709384314 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8310177917896328309, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
   m_PrefabInstance: {fileID: 3734202225019774991}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &3734202225355205032
@@ -45620,13 +45620,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
---- !u!4 &3734202225355028732 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 479572, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
-  m_PrefabInstance: {fileID: 3734202225355205032}
-  m_PrefabAsset: {fileID: 0}
 --- !u!198 &3734202225340866336 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 19887752, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
+  m_PrefabInstance: {fileID: 3734202225355205032}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3734202225355028732 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 479572, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
   m_PrefabInstance: {fileID: 3734202225355205032}
   m_PrefabAsset: {fileID: 0}
