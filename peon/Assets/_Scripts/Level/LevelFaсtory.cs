@@ -1,14 +1,18 @@
-﻿using _Scripts.Level.Interactable;
+﻿using System;
+using _Scripts.Level.Interactable;
 using _Scripts.Level.Interactable.Talents;
+using _Scripts.UI.InGameUI;
 using _Scripts.Unit;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 namespace _Scripts.Level
 {
     class LevelFaсtory : MonoBehaviour
     {
         [SerializeField] private UnitHandler _unitHandler;
+        [SerializeField] private UnitObserver _unitObserver;
         [SerializeField] private TalentWindow _talentWindow;
         [SerializeField] private LevelLoader _levelLoader;
         [SerializeField] private Transfer _transfer;
@@ -58,9 +62,10 @@ namespace _Scripts.Level
         {
             ApplyLevelData(FindObjectOfType<LevelInformation>());
             
-            for (int i = 0; i < _unitHandler.Units.Count; i++)
-                _unitHandler.Units[i].transform.position = _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition();
+            foreach (var t in _unitHandler.Units)
+                t.transform.position = _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition();
             
+            GameInitilizer.CreatePlayerUnit(_playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition(), _unitObserver, _unitHandler);
             StartRandomWave();
         }
 
@@ -98,6 +103,7 @@ namespace _Scripts.Level
             {
                 SpawnReward(u);
                 SpawnTransfers();
+                Reset();
             }
             else 
             {
@@ -123,8 +129,13 @@ namespace _Scripts.Level
         private void ActivateTransfer(Interactable.Interactable interactable)
         {
             if (!(interactable is Transfer transfer)) return;
-            
+
             _levelLoader.LoadScene(transfer.Scene);
+        }
+
+        private void Reset()
+        {
+            _currentWave = 0;
         }
     }
 }

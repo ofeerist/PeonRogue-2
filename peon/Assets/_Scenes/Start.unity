@@ -7619,6 +7619,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitHandler: {fileID: 307493210}
+  _unitObserver: {fileID: 2098869688}
   _talentWindow: {fileID: 1524233644}
   _levelLoader: {fileID: 224837005}
   _transfer: {fileID: 3870410050970730758, guid: c3010fdb1def8e389a28107301def986, type: 3}
@@ -7676,8 +7677,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _textMesh: {fileID: 1219347331}
-  _unitHandler: {fileID: 307493210}
-  _unitObserver: {fileID: 2098869688}
   _levelFactory: {fileID: 224837002}
   _darkness: {fileID: 2084533231}
   _UI: {fileID: 2098869687}
@@ -28405,7 +28404,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7771739, y: 1}
+    m_SensorSize: {x: 1.7779816, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0

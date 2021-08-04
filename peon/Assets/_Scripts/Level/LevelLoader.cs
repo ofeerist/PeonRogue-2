@@ -21,9 +21,7 @@ namespace _Scripts.Level
         private PhotonView _photonView;
 
         [SerializeField] private TextMeshProUGUI _textMesh;
-
-        [SerializeField] private UnitHandler _unitHandler;
-        [SerializeField] private UnitObserver _unitObserver;
+        
         [SerializeField] private LevelFaсtory _levelFactory;
         [SerializeField] private DarknessTransition _darkness;
 
@@ -36,8 +34,7 @@ namespace _Scripts.Level
         {
             Loaded = 0;
             _textMesh.text = "Loading...";
-                
-            _loadingCamera.gameObject.SetActive(true);
+            
             _UI.SetActive(true);
             _darkness.Speed = 2f;
             _darkness.ActivateDark();
@@ -49,6 +46,7 @@ namespace _Scripts.Level
         {
             yield return new WaitForSeconds(3f);
             
+            _loadingCamera.gameObject.SetActive(true);
             SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
             SceneManager.sceneLoaded += ActivateReady;
         }
@@ -61,7 +59,6 @@ namespace _Scripts.Level
 
             if (Loaded >= PhotonNetwork.CountOfPlayers)
             {
-                print("da");
                 GameStart();
             }
         }
@@ -82,6 +79,7 @@ namespace _Scripts.Level
         private void ActivateReady(Scene scene, LoadSceneMode loadSceneMode)
         {
             _photonView.RPC(nameof(Ready), RpcTarget.AllBufferedViaServer);
+            SceneManager.sceneLoaded -= ActivateReady;
         }
 
         [PunRPC]
@@ -95,8 +93,6 @@ namespace _Scripts.Level
             switch (photonEvent.Code)
             {
                 case (byte)Event.GameStart:
-                    GameInitilizer.CreatePlayerUnit(_photonView, transform, _unitObserver, _unitHandler);
-
                     _textMesh.enabled = false;
 
                     _loadingCamera.gameObject.SetActive(false);
@@ -104,9 +100,6 @@ namespace _Scripts.Level
                     _darkness.DeactivateDark();
 
                     _levelFactory.Process();
-                    break;
-
-                default:
                     break;
             }
         }

@@ -7,11 +7,12 @@ namespace _Scripts
     {
         private PhotonView _photonView;
 
-        void Start()
+        private void Start()
         {
             _photonView = GetComponent<PhotonView>();
         }
-        void Update()
+
+        private void Update()
         {
             if (!_photonView.IsMine) gameObject.SetActive(false);
         }
