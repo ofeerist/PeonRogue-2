@@ -13,6 +13,7 @@ namespace _Scripts.Unit.AI
 
         public float BounceDamage;
         private TextTag.TextTag _textTag;
+        private static readonly int Speed1 = Animator.StringToHash("Speed");
 
         public void SetData(float detectionRange, float rotateSpeed, float speed)
         {
@@ -27,20 +28,19 @@ namespace _Scripts.Unit.AI
 
             _navMeshAgent.speed = Speed;
             _navMeshAgent.angularSpeed = _rotateSpeed;
-
-            InvokeRepeating(nameof(FindTarget), 1, .5f);
-
-            InvokeRepeating(nameof(UpdateAnim), 1, .1f);
+            
+            InvokeRepeating(nameof(UpdateAnim), 0, .1f);
+            InvokeRepeating(nameof(FindTarget), 0, .5f);
         }
-
+        
         private void UpdateAnim()
         {
             if (!Unit.enabled) return;
 
             if (!Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
-                Unit.Animator.SetFloat("Speed", _navMeshAgent.velocity.magnitude);
+                Unit.Animator.SetFloat(Speed1, _navMeshAgent.velocity.magnitude);
             else
-                Unit.Animator.SetFloat("Speed", 0);
+                Unit.Animator.SetFloat(Speed1, 0);
         }
 
         private void FindTarget()
@@ -58,7 +58,7 @@ namespace _Scripts.Unit.AI
                 else
                 {
                     _navMeshAgent.SetDestination(transform.position);
-                    Unit.Animator.SetFloat("Speed", 0);
+                    Unit.Animator.SetFloat(Speed1, 0);
                 }
 
 
@@ -76,7 +76,7 @@ namespace _Scripts.Unit.AI
         protected override void OnTick()
         {
             if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || !Unit.enabled || Unit.UnitHealth.InStan) BlockMovement = true;
-            else BlockMovement = false;      
+            else BlockMovement = false;
         }
 
         public override void AddImpulse(Vector3 direction, bool stan = true, float stanTime = 1f)
@@ -92,15 +92,16 @@ namespace _Scripts.Unit.AI
             {
                 _target = null;
 
-                var objects = Physics.OverlapSphere(_transform.position, _detectionRange, _layerMask);
+                var results = new Collider[10];
+                var size = Physics.OverlapSphereNonAlloc(_transform.position, _detectionRange, results, _layerMask);
 
                 Collider closest = null;
                 var minDistance = Mathf.Infinity;
-                for (int i = 0; i < objects.Length; i++)
+                for (int i = 0; i < size; i++)
                 {
-                    if (Vector3.Distance(_transform.position, objects[i].transform.position) < minDistance)
+                    if (Vector3.Distance(_transform.position, results[i].transform.position) < minDistance)
                     {
-                        closest = objects[i];
+                        closest = results[i];
                     }
                 }
 

@@ -47,13 +47,13 @@ namespace _Scripts.Level
             yield return new WaitForSeconds(3f);
             
             _loadingCamera.gameObject.SetActive(true);
-            SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+            if(PhotonNetwork.IsMasterClient) SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
             SceneManager.sceneLoaded += ActivateReady;
         }
         
         private void Changed()
         {
-            _textMesh.text = "Waiting for other players ..." + "(" + Loaded + "/" + PhotonNetwork.CountOfPlayers + ")";
+            _textMesh.text = "Waiting for other players ..." + "(" + Loaded + "/" + PhotonNetwork.CurrentRoom.PlayerCount + ")";
 
             if (!PhotonNetwork.IsMasterClient) return;
 
@@ -79,7 +79,6 @@ namespace _Scripts.Level
         private void ActivateReady(Scene scene, LoadSceneMode loadSceneMode)
         {
             _photonView.RPC(nameof(Ready), RpcTarget.AllBufferedViaServer);
-            SceneManager.sceneLoaded -= ActivateReady;
         }
 
         [PunRPC]
@@ -103,6 +102,7 @@ namespace _Scripts.Level
                     break;
             }
         }
+
         public void OnEnable()
         {
             PhotonNetwork.AddCallbackTarget(this);

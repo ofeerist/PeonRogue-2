@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using _Scripts.Level.Interactable.Talents.Data;
+using _Scripts.Unit.Player;
 using Photon.Pun;
 using UnityEngine;
 
@@ -45,6 +46,13 @@ namespace _Scripts.Unit
             skinnedMesh.material.SetColor("TeamColor", new UnityEngine.Color(r, g, b, a));
 
             if (peon.GetPhotonView().Owner != PhotonNetwork.LocalPlayer) peon.GetComponentInChildren<Light>().gameObject.SetActive(false);
+        }
+
+        [PunRPC]
+        public void DontDestroy()
+        {
+            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(GetComponent<PlayerMovement>().MainCamera);
         }
     }
 }

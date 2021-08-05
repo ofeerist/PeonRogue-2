@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AppSettings:
     AppIdRealtime: 2e8fa920-0593-4aa2-a7dd-4e9e02922d9f
+    AppIdFusion: 
     AppIdChat: 42c47af6-c675-43db-8a78-4f86b03964c0
     AppIdVoice: 
     AppVersion: 
@@ -59,6 +60,8 @@ MonoBehaviour:
   - PlayEffect
   - Ready
   - ChangeColor
+  - SpawnEnemies
+  - RPCStartRandomWave
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

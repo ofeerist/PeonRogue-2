@@ -40,10 +40,7 @@ namespace _Scripts.Unit.Player
         private int _rollingTime;
         public int RollingTime
         {
-            get
-            {
-                return _rollingTime;
-            }
+            get => _rollingTime;
             private set
             {
                 _rollingTime = value;
@@ -107,9 +104,6 @@ namespace _Scripts.Unit.Player
 
                 case (byte)Event.RollEffect:
                     RollEffect((bool)photonEvent.CustomData);
-                    break;
-
-                default:
                     break;
             }
         }

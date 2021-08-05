@@ -2,8 +2,6 @@
 using System.Collections;
 using _Scripts.Level.Interactable.Talents;
 using _Scripts.UI.InGameUI;
-using TMPro.EditorUtilities;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 

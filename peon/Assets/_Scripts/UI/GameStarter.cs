@@ -19,7 +19,7 @@ namespace _Scripts.UI
                 GetComponent<PhotonView>().RPC(nameof(StartGame), RpcTarget.All);
             });
 
-            if (PhotonNetwork.MasterClient != PhotonNetwork.LocalPlayer) _startButton.gameObject.SetActive(false);
+            if (!PhotonNetwork.IsMasterClient) _startButton.gameObject.SetActive(false);
         }
 
         [PunRPC]
@@ -30,9 +30,8 @@ namespace _Scripts.UI
 
             PhotonNetwork.CurrentRoom.IsOpen = false;
             PhotonNetwork.CurrentRoom.IsVisible = false;
-
-            if (PhotonNetwork.MasterClient == PhotonNetwork.LocalPlayer)
-                StartCoroutine(LoadLevel());
+            
+            _darkness.StartCoroutine(LoadLevel());
         }
 
         public void StartSingleGame()
@@ -44,9 +43,6 @@ namespace _Scripts.UI
 
         private IEnumerator LoadLevel()
         {
-            _darkness.Speed = 1;
-            _darkness.ActivateDark();
-
             yield return new WaitForSeconds(3f);
             FindObjectOfType<LevelLoader>().LoadScene("FirstLocation");
         }

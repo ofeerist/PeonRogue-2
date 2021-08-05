@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Scripts.Level.Interactable;
 using _Scripts.Level.Interactable.Talents;
@@ -14,7 +15,7 @@ using Random = UnityEngine.Random;
 
 namespace _Scripts.Level
 {
-    class LevelFaсtory : MonoBehaviour, IOnEventCallback
+    class LevelFaсtory : MonoBehaviour
     {
         [SerializeField] private UnitHandler _unitHandler;
         [SerializeField] private UnitObserver _unitObserver;
@@ -40,16 +41,22 @@ namespace _Scripts.Level
         private int _currentWave = 0;
         private int _waveCount;
 
+        private Wave _wave;
+        
         private int _currentEnemyCount;
-
+        
         private int CurrentEnemyCount { get => _currentEnemyCount;
             set { _currentEnemyCount = value; EnemyCountChanged?.Invoke(value); } }
 
         public delegate void EnemyCount(int count);
         public event EnemyCount EnemyCountChanged;
 
+        private PhotonView _photonView;
+        
         private void Start()
         {
+            _photonView = GetComponent<PhotonView>();
+            
             DontDestroyOnLoad(this);
         }
 
@@ -71,37 +78,57 @@ namespace _Scripts.Level
                 t.transform.position = _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition();
             
             GameInitilizer.CreatePlayerUnit(_playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition(), _unitObserver, _unitHandler);
+
+            StartCoroutine(DelayedStart());
+        }
+
+        private IEnumerator DelayedStart()
+        {
+            yield return new WaitForSeconds(3);
             StartRandomWave();
         }
 
         private void StartRandomWave()
         {
-            if (PhotonNetwork.IsMasterClient)
-            {
-                var wave = Wave.Generate(_waveInfos[_currentWave].UnitData, 5 + _currentWave,
-                    _waveInfos[_currentWave].MaxUsages);
-                
-                var options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                var sendOptions = new SendOptions { Reliability = true };
-                PhotonNetwork.RaiseEvent((byte)Event.SyncWaves, wave.Indexes.ToArray(), options, sendOptions);
-            }
+            if (!PhotonNetwork.IsMasterClient) return;
+
+            _photonView.RPC(nameof(RPCStartRandomWave), RpcTarget.AllBufferedViaServer, Random.Range(0, 100000));
+
+        }
+        
+        [PunRPC]
+        private void RPCStartRandomWave(int seed)
+        {
+            var wave = Wave.Generate(_waveInfos[_currentWave].UnitData, 5 + _currentWave, _waveInfos[_currentWave].MaxUsages, seed);
+            StartWave(wave);
         }
         
         private void StartWave(Wave wave)
         {
+            _wave = wave;
+            
             _currentWave++;
 
             CurrentEnemyCount = wave.WaveEnemies.Count;
-            foreach (var t in wave.WaveEnemies)
+
+            if(PhotonNetwork.IsMasterClient)
+                _photonView.RPC(nameof(SpawnEnemies), RpcTarget.AllBufferedViaServer, Random.Range(0, 100000));
+        }
+
+        [PunRPC]
+        private void SpawnEnemies(int seed)
+        {
+            var r = new System.Random(seed);
+            foreach (var t in _wave.WaveEnemies)
             {
-                var u = Instantiate(t.Prefab, _enemySpawnPositions[Random.Range(0, _enemySpawnPositions.Length)].GetPosition(), Quaternion.identity);
+                var u = Instantiate(t.Prefab, _enemySpawnPositions[r.Next(0, _enemySpawnPositions.Length)].GetPosition(), Quaternion.identity);
                 t.SetData(u);
                 u.GetComponent<UnitHealth>().OnDeath += EnemyDeath;
             }
             
-            WaveStarted?.Invoke(wave.WaveEnemies.Count);
+            WaveStarted?.Invoke(_wave.WaveEnemies.Count);
         }
-
+        
         private void EnemyDeath(Unit.Unit u)
         {
             CurrentEnemyCount--;
@@ -149,29 +176,6 @@ namespace _Scripts.Level
         private void Reset()
         {
             _currentWave = 0;
-        }
-        
-        public void OnEvent(EventData photonEvent)
-        {
-            switch (photonEvent.Code)
-            {
-                case (byte)Event.SyncWaves:
-                    var indexes = (int[])photonEvent.CustomData;
-
-                    var wave = Wave.CreateByIndexes(_waveInfos[_currentWave].UnitData, indexes);
-                    
-                    StartWave(wave);
-                    
-                    break;
-            }
-        }
-        public void OnEnable()
-        {
-            PhotonNetwork.AddCallbackTarget(this);
-        }
-        public void OnDisable()
-        {
-            PhotonNetwork.RemoveCallbackTarget(this);
         }
     }
 }

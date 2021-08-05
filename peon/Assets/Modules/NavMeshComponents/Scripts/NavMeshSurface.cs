@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 #if UNITY_EDITOR
-
+using UnityEditor.SceneManagement;
 #endif
 
 namespace Modules.NavMeshComponents.Scripts

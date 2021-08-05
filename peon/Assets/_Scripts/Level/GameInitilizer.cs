@@ -34,8 +34,8 @@ namespace _Scripts.Level
                 movement.MainCamera = camera.GetComponentInChildren<Camera>();
 
                 unitObserver.Unit = unit;
-                Object.DontDestroyOnLoad(unit);
-                Object.DontDestroyOnLoad(camera);
+
+                unitObserver.StartCoroutine(Suka(peonPhotonView));
             }
             else
             {
@@ -43,6 +43,12 @@ namespace _Scripts.Level
             }
         }
 
+        private static IEnumerator Suka(PhotonView pv)
+        {
+            yield return null;
+            pv.RPC("DontDestroy", RpcTarget.All);
+        }
+        
         private static IEnumerator Blyat(Vector3 vpizdu, UnitObserver pizda)
         {
             yield return null;
