@@ -188,6 +188,7 @@ GameObject:
   - component: {fileID: 6003235405508743439}
   - component: {fileID: 6003235405508743432}
   - component: {fileID: 6003235405508743438}
+  - component: {fileID: 2607040736114693466}
   m_Layer: 12
   m_Name: ThrallTalent
   m_TagString: Untagged
@@ -225,6 +226,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ArrowPosition: {fileID: 9105376079816223530}
+  PhotonView: {fileID: 2607040736114693466}
   TargetTalent: 0
   Image: {fileID: 6003235404331680985}
 --- !u!65 &6003235405508743438
@@ -240,6 +242,28 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.5, y: 0.5, z: 0.5}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2607040736114693466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6003235405508743433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1001 &1050234585455214544
 PrefabInstance:
   m_ObjectHideFlags: 0

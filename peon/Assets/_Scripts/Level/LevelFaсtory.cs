@@ -153,7 +153,7 @@ namespace _Scripts.Level
         {
             foreach (var pos in _transferPositions)
             {
-                var transfer = Instantiate(_transfer, pos.GetPosition(), Quaternion.identity);
+                var transfer = PhotonNetwork.Instantiate(_transfer.name, pos.GetPosition(), Quaternion.identity).GetComponent<Transfer>();
                 transfer.Scene = _possibleScenes[Random.Range(0, _possibleScenes.Length)];
                 transfer.OnInteract += ActivateTransfer;
             }
@@ -161,7 +161,7 @@ namespace _Scripts.Level
 
         private void SpawnReward(Component u)
         {
-            Instantiate(_talent, u.transform.position + new Vector3(0, .5f, 0), Quaternion.identity);
+            PhotonNetwork.Instantiate(_talent.name, u.transform.position + new Vector3(0, .5f, 0), Quaternion.identity);
         }
 
         private void ActivateTransfer(Interactable.Interactable interactable)

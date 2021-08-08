@@ -2,6 +2,7 @@
 using System.Collections;
 using _Scripts.Level.Interactable.Talents;
 using _Scripts.UI.InGameUI;
+using Photon.Pun;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -23,8 +24,12 @@ namespace _Scripts.Level.Interactable
         private static readonly int Birth = Animator.StringToHash("Birth");
         private static readonly int Death = Animator.StringToHash("Death");
 
+        private PhotonView _photonView;
+        
         private void Start()
         {
+            _photonView = GetComponent<PhotonView>();
+            
             _arrow = Instantiate(_arrow, transform);
             _arrow.gameObject.SetActive(false);
         }
@@ -61,16 +66,7 @@ namespace _Scripts.Level.Interactable
                 if (!Input.GetKeyDown(KeyCode.E)) return;
                 
                 interactable = closest.GetComponent<Interactable>();
-                switch (interactable)
-                {
-                    case Talent talent:
-                        talent.Interact();
-                        _talantWindow.Add(talent.TargetTalent);
-                        break;
-                    default:
-                        interactable.Interact();
-                        break;
-                }
+                _photonView.RPC(nameof(E), RpcTarget.AllViaServer, interactable.PhotonView.ViewID);
             }
             else
             {
@@ -79,6 +75,25 @@ namespace _Scripts.Level.Interactable
             }
         }
 
+        [PunRPC]
+        private void E(int id)
+        {
+            var interactable = PhotonView.Find(id).GetComponent<Interactable>();
+
+            if (interactable == null) return;
+            
+            switch (interactable)
+            {
+                case Talent talent:
+                    talent.Interact();
+                    _talantWindow.Add(talent.TargetTalent);
+                    break;
+                default:
+                    interactable.Interact();
+                    break;
+            }
+        }
+        
         private IEnumerator DisableArrow()
         {
             _arrow.SetTrigger(Death);

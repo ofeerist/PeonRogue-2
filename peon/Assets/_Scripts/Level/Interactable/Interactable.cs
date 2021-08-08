@@ -1,4 +1,6 @@
-﻿namespace _Scripts.Level.Interactable
+﻿using Photon.Pun;
+
+namespace _Scripts.Level.Interactable
 {
     public class Interactable : MonoCached.MonoCached, IInteractable
     {
@@ -6,6 +8,8 @@
         public event Interacted OnInteract;
 
         public SpawnPosition ArrowPosition;
+
+        public PhotonView PhotonView;
         
         public void Interact()
         {

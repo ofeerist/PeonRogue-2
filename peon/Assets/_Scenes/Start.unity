@@ -28404,7 +28404,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.7779661, y: 1}
+    m_SensorSize: {x: 1.7789116, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -67005,6 +67005,7 @@ GameObject:
   - component: {fileID: 2098869689}
   - component: {fileID: 2098869688}
   - component: {fileID: 2098869692}
+  - component: {fileID: 2098869693}
   m_Layer: 5
   m_Name: GameUI
   m_TagString: Untagged
@@ -67114,6 +67115,28 @@ MonoBehaviour:
   _image: {fileID: 232753854}
   _observer: {fileID: 2098869688}
   _arrow: {fileID: 587950618042707023, guid: 0e5e1eb1780db3b12a2ad39795306b6d, type: 3}
+--- !u!114 &2098869693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098869687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 4
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &2102344683
 GameObject:
   m_ObjectHideFlags: 0
