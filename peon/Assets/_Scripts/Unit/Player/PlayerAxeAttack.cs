@@ -97,14 +97,6 @@ namespace _Scripts.Unit.Player
                     var pos = new Vector3(data[0], data[1], data[2]);
                     DoRollDamage(pos);
                     break;
-
-                case (byte)Event.AttackEffect:
-                    AttackEffect((int)photonEvent.CustomData);
-                    break;
-
-                case (byte)Event.RollEffect:
-                    RollEffect((bool)photonEvent.CustomData);
-                    break;
             }
         }
 
@@ -159,9 +151,7 @@ namespace _Scripts.Unit.Player
                     {
                         if (!_rollEffect.isPlaying)
                         { 
-                            RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                            SendOptions sendOptions = new SendOptions { Reliability = true };
-                            PhotonNetwork.RaiseEvent((byte)Event.RollEffect, true, options, sendOptions);
+                            Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.AllViaServer, true);
                         }
                         if (_currentRollRateTimer <= Time.time)
                         {
@@ -173,9 +163,7 @@ namespace _Scripts.Unit.Player
                     {
                         InAttack = false;
 
-                        RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                        SendOptions sendOptions = new SendOptions { Reliability = true };
-                        PhotonNetwork.RaiseEvent((byte)Event.RollEffect, false, options, sendOptions);
+                        Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.AllViaServer, false);
 
                         _rollAudioSource.Stop();
                         _rollTimer = Mathf.Infinity;
@@ -189,9 +177,7 @@ namespace _Scripts.Unit.Player
                 {
                     InAttack = false;
 
-                    RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-                    SendOptions sendOptions = new SendOptions { Reliability = true };
-                    PhotonNetwork.RaiseEvent((byte)Event.RollEffect, false, options, sendOptions);
+                    Unit.PhotonView.RPC(nameof(RollEffect), RpcTarget.AllViaServer, false);
 
                     _rollTimer = Mathf.Infinity;
                 }
@@ -236,7 +222,8 @@ namespace _Scripts.Unit.Player
                 StartCoroutine(AttackCheck());
             }
         }
-
+        
+        [PunRPC]
         private void RollEffect(bool start)
         {
             if (start)
@@ -261,7 +248,8 @@ namespace _Scripts.Unit.Player
                 transform.rotation = Quaternion.Euler(0, _rotation, 0);
             }
         }
-
+        
+        [PunRPC]
         private void AttackEffect(int attackNum)
         {
             StartCoroutine(StartAttackEffect(attackNum));
@@ -269,10 +257,8 @@ namespace _Scripts.Unit.Player
 
         private IEnumerator AttackCheck()
         {
-            RaiseEventOptions options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-            SendOptions sendOptions = new SendOptions { Reliability = true };
-            PhotonNetwork.RaiseEvent((byte)Event.AttackEffect, _currentAttackNum - 1, options, sendOptions);
-
+            Unit.PhotonView.RPC(nameof(AttackEffect), RpcTarget.AllViaServer,_currentAttackNum - 1);
+            
             yield return new WaitForSeconds(.4f);
             InAttack = false;
 
@@ -351,13 +337,14 @@ namespace _Scripts.Unit.Player
                 var unit = obj.GetComponent<Unit>();
                 if (unit != null && !unit.CompareTag("Player") && unit.UnitHealth != null && unit != Unit && obj.GetComponent<Unit>().enabled)
                 {
-                    var posTo = (unit.transform.position - position).normalized;
+                    var position1 = unit.transform.position;
+                    var posTo = (position1 - position).normalized;
 
                     unit.UnitHealth.TakeDamage(_rollDamage);
                     _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
 
                     var p = Instantiate(_hitEffects[0]);
-                    p.transform.position = unit.transform.position + new Vector3(0, .5f, 0);
+                    p.transform.position = position1 + new Vector3(0, .5f, 0);
                     StartCoroutine(DestroyEffectTimed(p, .5f));
 
                     posTo.y = 0;

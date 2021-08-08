@@ -109,21 +109,32 @@ namespace _Scripts.Level
 
             CurrentEnemyCount = wave.WaveEnemies.Count;
 
-            if(PhotonNetwork.IsMasterClient)
-                _photonView.RPC(nameof(SpawnEnemies), RpcTarget.AllBufferedViaServer, Random.Range(0, 100000));
+            if (PhotonNetwork.IsMasterClient)
+                SpawnEnemies();
         }
 
         [PunRPC]
-        private void SpawnEnemies(int seed)
+        private void SpawnEnemies()
         {
-            var r = new System.Random(seed);
+            if (PhotonNetwork.IsMasterClient) return;
+            
+            var r = new System.Random();
             foreach (var t in _wave.WaveEnemies)
             {
-                var u = PhotonNetwork.Instantiate(t.Prefab.name, _enemySpawnPositions[r.Next(0, _enemySpawnPositions.Length)].GetPosition(), Quaternion.identity).GetComponent<Unit.Unit>();
+                var u = PhotonNetwork.Instantiate(t.Prefab.name,
+                        _enemySpawnPositions[r.Next(0, _enemySpawnPositions.Length)].GetPosition(),
+                        Quaternion.identity)
+                    .GetComponent<Unit.Unit>();
                 t.SetData(u);
                 u.GetComponent<UnitHealth>().OnDeath += EnemyDeath;
             }
-            
+
+            _photonView.RPC(nameof(WaveStarting), RpcTarget.AllViaServer);
+        }
+
+        [PunRPC]
+        private void WaveStarting()
+        {
             WaveStarted?.Invoke(_wave.WaveEnemies.Count);
         }
         
