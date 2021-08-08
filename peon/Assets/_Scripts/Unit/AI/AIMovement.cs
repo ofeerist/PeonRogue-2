@@ -57,20 +57,13 @@ namespace _Scripts.Unit.AI
             DetectEnemy(_transform);
 
             if (Unit.enabled && _navMeshAgent.enabled)
-                if (!BlockMovement)
-                {
-                    if (_target == null) return;
-                    
-                    var position = _target.transform.position;
-                    _photonView.RPC(nameof(SetDestination), RpcTarget.AllViaServer, position.x, position.y, position.z);
-                }
-                else
-                {
-                    var position = _transform.position;
-                    _photonView.RPC(nameof(SetDestination), RpcTarget.AllViaServer, position.x, position.y, position.z);
-                    Unit.Animator.SetFloat(Speed1, 0);
-                }
+            {
+                var position = BlockMovement ? _transform.position : (_target != null ? _target.transform.position : Vector3.zero);
 
+                if (_target == null) return;
+
+                _photonView.RPC(nameof(SetDestination), RpcTarget.AllViaServer, position.x, position.y, position.z);
+            }
 
             if (Unit.Rigidbody.velocity.magnitude <= 0.1f)
             {

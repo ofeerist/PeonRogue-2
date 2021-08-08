@@ -172,6 +172,7 @@ namespace _Scripts.Level
 
         private void SpawnReward(Component u)
         {
+            if (!PhotonNetwork.IsMasterClient) return;
             PhotonNetwork.Instantiate(_talent.name, u.transform.position + new Vector3(0, .5f, 0), Quaternion.identity);
         }
 
