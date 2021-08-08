@@ -52,7 +52,10 @@ namespace _Scripts.Level
         private static IEnumerator Blyat(Vector3 vpizdu, UnitObserver pizda)
         {
             yield return null;
+
+            pizda.Unit.gameObject.SetActive(false);
             pizda.Unit.transform.SetPositionAndRotation(vpizdu, Quaternion.identity);
+            pizda.Unit.gameObject.SetActive(true);
         }
     }
 }

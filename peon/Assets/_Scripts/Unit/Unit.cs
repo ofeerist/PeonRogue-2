@@ -52,7 +52,7 @@ namespace _Scripts.Unit
         public void DontDestroy()
         {
             DontDestroyOnLoad(this);
-            DontDestroyOnLoad(GetComponent<PlayerMovement>().MainCamera);
+            DontDestroyOnLoad(GetComponent<PlayerMovement>().MainCamera.transform.parent.gameObject);
         }
     }
 }

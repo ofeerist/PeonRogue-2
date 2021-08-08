@@ -74,10 +74,8 @@ namespace _Scripts.Level
         {
             ApplyLevelData(FindObjectOfType<LevelInformation>());
             
-            foreach (var t in _unitHandler.Units)
-                t.transform.position = _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition();
-            
-            GameInitilizer.CreatePlayerUnit(_playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition(), _unitObserver, _unitHandler);
+            var pos = _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition();
+            GameInitilizer.CreatePlayerUnit(pos, _unitObserver, _unitHandler);
 
             StartCoroutine(DelayedStart());
         }
