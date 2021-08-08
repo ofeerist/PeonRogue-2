@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Photon.Pun;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace _Scripts.Unit.AI
@@ -11,6 +12,8 @@ namespace _Scripts.Unit.AI
         private Unit _target;
         private NavMeshAgent _navMeshAgent;
 
+        private PhotonView _photonView;
+        
         public float BounceDamage;
         private TextTag.TextTag _textTag;
         private static readonly int Speed1 = Animator.StringToHash("Speed");
@@ -25,10 +28,11 @@ namespace _Scripts.Unit.AI
         private void Start()
         {
             _navMeshAgent = GetComponent<NavMeshAgent>();
+            _photonView = GetComponent<PhotonView>();
 
             _navMeshAgent.speed = Speed;
             _navMeshAgent.angularSpeed = _rotateSpeed;
-            
+
             InvokeRepeating(nameof(UpdateAnim), 0, .1f);
             InvokeRepeating(nameof(FindTarget), 0, .5f);
         }
@@ -45,6 +49,8 @@ namespace _Scripts.Unit.AI
 
         private void FindTarget()
         {
+            if (!PhotonNetwork.IsMasterClient) return;
+        
             if (!Unit.enabled) return;
 
             var _transform = transform;
@@ -53,11 +59,15 @@ namespace _Scripts.Unit.AI
             if (Unit.enabled && _navMeshAgent.enabled)
                 if (!BlockMovement)
                 {
-                    if (_target != null) _navMeshAgent.SetDestination(_target.transform.position);
+                    if (_target == null) return;
+                    
+                    var position = _target.transform.position;
+                    _photonView.RPC(nameof(SetDestination), RpcTarget.AllViaServer, position.x, position.y, position.z);
                 }
                 else
                 {
-                    _navMeshAgent.SetDestination(transform.position);
+                    var position = _transform.position;
+                    _photonView.RPC(nameof(SetDestination), RpcTarget.AllViaServer, position.x, position.y, position.z);
                     Unit.Animator.SetFloat(Speed1, 0);
                 }
 
@@ -73,6 +83,17 @@ namespace _Scripts.Unit.AI
             }
         }
 
+        [PunRPC]
+        private void SetDestination(float x, float y, float z)
+        {
+            OnTick();
+
+            if (BlockMovement) return;
+            
+            var position = new Vector3(x, y, z);
+            if(_navMeshAgent.enabled) _navMeshAgent.SetDestination(position);
+        }
+        
         protected override void OnTick()
         {
             if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || !Unit.enabled || Unit.UnitHealth.InStan) BlockMovement = true;

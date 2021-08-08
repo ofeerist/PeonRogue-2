@@ -630,7 +630,7 @@ MonoBehaviour:
   ObservedComponentsFoldoutOpen: 1
   Group: 0
   prefixField: -1
-  Synchronization: 3
+  Synchronization: 2
   OwnershipTransfer: 0
   observableSearch: 2
   ObservedComponents:
@@ -671,7 +671,7 @@ MonoBehaviour:
   m_SynchronizeVelocity: 1
   m_SynchronizeAngularVelocity: 1
   m_TeleportEnabled: 1
-  m_TeleportIfDistanceGreaterThan: 3
+  m_TeleportIfDistanceGreaterThan: 0.2
 --- !u!136 &4938188580037423427
 CapsuleCollider:
   m_ObjectHideFlags: 0

@@ -121,7 +121,7 @@ namespace _Scripts.Level
             var r = new System.Random(seed);
             foreach (var t in _wave.WaveEnemies)
             {
-                var u = Instantiate(t.Prefab, _enemySpawnPositions[r.Next(0, _enemySpawnPositions.Length)].GetPosition(), Quaternion.identity);
+                var u = PhotonNetwork.Instantiate(t.Prefab.name, _enemySpawnPositions[r.Next(0, _enemySpawnPositions.Length)].GetPosition(), Quaternion.identity).GetComponent<Unit.Unit>();
                 t.SetData(u);
                 u.GetComponent<UnitHealth>().OnDeath += EnemyDeath;
             }
