@@ -36,9 +36,11 @@ namespace _Scripts.Level
             _textMesh.text = "Loading...";
             
             _UI.SetActive(true);
+            _textMesh.enabled = true;
+            
             _darkness.Speed = 2f;
             _darkness.ActivateDark();
-
+            
             StartCoroutine(Load(sceneName));
         }
 

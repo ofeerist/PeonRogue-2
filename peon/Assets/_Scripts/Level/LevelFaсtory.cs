@@ -116,7 +116,7 @@ namespace _Scripts.Level
         [PunRPC]
         private void SpawnEnemies()
         {
-            if (PhotonNetwork.IsMasterClient) return;
+            if (!PhotonNetwork.IsMasterClient) return;
             
             var r = new System.Random();
             foreach (var t in _wave.WaveEnemies)
