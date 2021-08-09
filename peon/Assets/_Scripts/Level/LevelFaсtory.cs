@@ -85,6 +85,7 @@ namespace _Scripts.Level
         {
             if (!PhotonNetwork.IsMasterClient) return;
 
+            print("wave");
             _photonView.RPC(nameof(RPCStartRandomWave), RpcTarget.AllBufferedViaServer, Random.Range(0, 100000));
 
         }

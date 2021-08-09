@@ -4,9 +4,9 @@
     {
         public override void TakeDamage(float damage)
         {
-            _currentHealth -= damage;
+            CurrentHealth -= damage;
 
-            if (_currentHealth <= 0) Death();
+            if (CurrentHealth <= 0) Death();
         }
 
         private void Death()

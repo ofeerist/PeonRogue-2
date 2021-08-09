@@ -11,13 +11,24 @@ namespace _Scripts.Unit
 
         [SerializeField] public float _maxHealth;
         protected float _currentHealth;
-
+        
+        public delegate void ValueChanged(float value);
+        public event ValueChanged OnValueChanged;
+        
+        public float CurrentHealth {
+            get => _currentHealth;
+            protected set
+            {
+                _currentHealth = value;
+                OnValueChanged?.Invoke(_currentHealth);
+            } }
+        
         public delegate void Dead(Unit u);
         public virtual event Dead OnDeath;
 
         private void Start()
         {
-            _currentHealth = _maxHealth;
+            CurrentHealth = _maxHealth;
         }
 
         private void Update()
@@ -27,7 +38,7 @@ namespace _Scripts.Unit
 
         public virtual void TakeDamage(float damage)
         {
-            _currentHealth -= damage;
+            CurrentHealth -= damage;
         }
 
         public virtual void Stan(float time)
