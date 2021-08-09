@@ -1,21 +1,16 @@
-﻿using System;
+﻿
 using System.Collections;
-using System.Collections.Generic;
 using _Scripts.Level.Interactable;
 using _Scripts.Level.Interactable.Talents;
 using _Scripts.UI.InGameUI;
 using _Scripts.Unit;
-using ExitGames.Client.Photon;
 using Photon.Pun;
-using Photon.Realtime;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using Event = _Scripts.Unit.Event;
 using Random = UnityEngine.Random;
 
 namespace _Scripts.Level
 {
-    class LevelFaсtory : MonoBehaviour
+    public class LevelFaсtory : MonoBehaviour
     {
         [SerializeField] private UnitHandler _unitHandler;
         [SerializeField] private UnitObserver _unitObserver;

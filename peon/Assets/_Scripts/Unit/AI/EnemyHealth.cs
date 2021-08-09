@@ -28,6 +28,7 @@ namespace _Scripts.Unit.AI
         [SerializeField] private AudioSource _onHit;
         [SerializeField] private AudioClip[] _onHitSounds;
         [SerializeField] private AudioSource _onDeath;
+        private static readonly int Dead1 = Animator.StringToHash("Dead");
 
         public override event Dead OnDeath;
 
@@ -94,11 +95,27 @@ namespace _Scripts.Unit.AI
             Unit.enabled = false;
             _stanChannelEffect.Stop();
             Unit.Animator.speed = 1;
-            Unit.Animator.SetBool("Dead", true);
+            Unit.Animator.SetBool(Dead1, true);
 
             OnDeath?.Invoke(Unit);
+
+            StartCoroutine(DeathDispose());
         }
 
+        private IEnumerator DeathDispose()
+        {
+            yield return new WaitForSeconds(2f);
+            
+            int k = 0;
+            var _transform = transform;
+            while (++k <= 500)
+            {
+                yield return null;
+                _transform.position -= new Vector3(0, .3f * Time.deltaTime, 0);
+            }
+            Destroy(gameObject);
+        }
+        
         private IEnumerator SetKinematic()
         {
             yield return null;
