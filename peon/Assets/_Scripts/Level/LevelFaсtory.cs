@@ -104,7 +104,7 @@ namespace _Scripts.Level
         {
             _currentWave++;
             
-            WaveStarted?.Invoke(_wave.WaveEnemies.Count);
+            WaveStarted?.Invoke(wave.WaveEnemies.Count);
             CurrentEnemyCount = wave.WaveEnemies.Count;
             
             _wave = wave;

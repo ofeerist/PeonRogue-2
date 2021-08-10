@@ -27100,7 +27100,7 @@ MonoBehaviour:
   - UnitData:
     - {fileID: 11400000, guid: 7e26ce1a9f2e78012980adbab7553ab9, type: 2}
     MaxUsages:
-    - Target: 4
+    - Target: 2
       MaxUsageTimes: 5
       CurrentUsageTimes: 0
 --- !u!1001 &1964407290
