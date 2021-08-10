@@ -34,7 +34,7 @@ namespace _Scripts.Unit.AI
 
         public void SetData(float maxHealth, float stanTime)
         {
-            _maxHealth = maxHealth;
+            MaxHealth = maxHealth;
             _stanTime = stanTime;
         }
 
@@ -43,7 +43,7 @@ namespace _Scripts.Unit.AI
             if (damage == 0) return;
 
             _currentHealth -= damage;
-            _healthSlider.value = _currentHealth / _maxHealth;
+            _healthSlider.value = _currentHealth / MaxHealth;
             SetTextTag(damage);
 
             _onHit.clip = _onHitSounds[Random.Range(0, _onHitSounds.Length)];

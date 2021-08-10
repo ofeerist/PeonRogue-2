@@ -9,19 +9,41 @@ namespace _Scripts.Unit
 
         public bool InStan { get; protected set; }
 
-        [SerializeField] public float _maxHealth;
+        [SerializeField] private float _maxHealth;
         protected float _currentHealth;
+
+        [SerializeField] private float _regenPerSecond;
+        public float Regen {
+            get => _regenPerSecond;
+            protected set
+            {
+                _regenPerSecond = value;
+                RegenChanged?.Invoke(_regenPerSecond);
+            } 
+        }
         
         public delegate void ValueChanged(float value);
-        public event ValueChanged OnValueChanged;
+        public event ValueChanged MaxHealthChanged;
+        public event ValueChanged HealthChanged;
+        public event ValueChanged RegenChanged;
+        
+        public float MaxHealth {
+            get => _maxHealth;
+            protected set
+            {
+                _maxHealth = value;
+                MaxHealthChanged?.Invoke(value);
+            } 
+        }
         
         public float CurrentHealth {
             get => _currentHealth;
             protected set
             {
                 _currentHealth = value;
-                OnValueChanged?.Invoke(_currentHealth);
-            } }
+                HealthChanged?.Invoke(_currentHealth);
+            } 
+        }
         
         public delegate void Dead(Unit u);
         public virtual event Dead OnDeath;
@@ -33,7 +55,10 @@ namespace _Scripts.Unit
 
         private void Update()
         {
-
+            if (CurrentHealth + _regenPerSecond * Time.deltaTime <= MaxHealth)
+                CurrentHealth += _regenPerSecond * Time.deltaTime;
+            else
+                CurrentHealth = MaxHealth;
         }
 
         public virtual void TakeDamage(float damage)
