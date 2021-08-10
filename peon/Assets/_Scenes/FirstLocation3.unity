@@ -4004,6 +4004,50 @@ Transform:
   m_Father: {fileID: 1254318078}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &249678969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 249678970}
+  - component: {fileID: 249678971}
+  m_Layer: 0
+  m_Name: TransferPos (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &249678970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249678969}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2.78, y: 0.675, z: 22.87}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 871056150}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &249678971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 249678969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ba341d94933b3b45b27bdee2e2bc524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _range: 0
 --- !u!1 &268258733
 GameObject:
   m_ObjectHideFlags: 0
@@ -14590,6 +14634,7 @@ Transform:
   - {fileID: 1768559454}
   - {fileID: 658980302}
   - {fileID: 350935070}
+  - {fileID: 249678970}
   m_Father: {fileID: 0}
   m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -20205,7 +20250,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1354771874}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -11.5, y: 0.675, z: 14.02}
+  m_LocalPosition: {x: 2.891, y: 0.675, z: 23.634}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 871056150}
@@ -20249,7 +20294,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1381027827}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.739, y: 0.418, z: 22.299}
+  m_LocalPosition: {x: -10.01, y: 0.418, z: 13.56}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 871056150}
@@ -27042,6 +27087,7 @@ MonoBehaviour:
   - {fileID: 350935071}
   TransferPositions:
   - {fileID: 1354771876}
+  - {fileID: 249678971}
   PossibleScenes:
   - FirstLocation2
   WaveInfos:
@@ -27052,16 +27098,10 @@ MonoBehaviour:
       MaxUsageTimes: 3
       CurrentUsageTimes: 0
   - UnitData:
-    - {fileID: 11400000, guid: 7534286543f9c4f4f95ff43966a3c631, type: 2}
+    - {fileID: 11400000, guid: 7e26ce1a9f2e78012980adbab7553ab9, type: 2}
     MaxUsages:
-    - Target: 3
-      MaxUsageTimes: 10
-      CurrentUsageTimes: 0
-  - UnitData:
-    - {fileID: 11400000, guid: 35bb103b9b392184b9dcbb18369414e2, type: 2}
-    MaxUsages:
-    - Target: 0
-      MaxUsageTimes: 10
+    - Target: 4
+      MaxUsageTimes: 5
       CurrentUsageTimes: 0
 --- !u!1001 &1964407290
 PrefabInstance:

@@ -43,16 +43,13 @@ namespace _Scripts.UI
 
             if (_button != null && !_manualListener)
             {
-                _button.onClick.AddListener(() =>
-                {
-                    SoundClick();
-                });
+                _button.onClick.AddListener(SoundClick);
             }
 
             _targetGameObject = _targetTransform.gameObject;
         }
 
-        public void SoundClick()
+        private void SoundClick()
         {
             if (_sound)
             {

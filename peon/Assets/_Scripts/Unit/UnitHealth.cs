@@ -40,7 +40,7 @@ namespace _Scripts.Unit
             get => _currentHealth;
             protected set
             {
-                _currentHealth = value;
+                _currentHealth = value < 0 ? 0 : value;
                 HealthChanged?.Invoke(_currentHealth);
             } 
         }

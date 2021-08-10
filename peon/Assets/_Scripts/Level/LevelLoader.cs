@@ -18,6 +18,8 @@ namespace _Scripts.Level
         private int Loaded { get => _loaded;
             set { _loaded = value; Changed(); } }
 
+        private bool _started;
+
         private PhotonView _photonView;
 
         [SerializeField] private TextMeshProUGUI _textMesh;
@@ -33,6 +35,8 @@ namespace _Scripts.Level
         public void LoadScene(string sceneName)
         {
             Loaded = 0;
+            _started = false;
+            
             _textMesh.text = "Loading...";
             
             _UI.SetActive(true);
@@ -59,8 +63,9 @@ namespace _Scripts.Level
 
             if (!PhotonNetwork.IsMasterClient) return;
 
-            if (Loaded >= PhotonNetwork.CurrentRoom.PlayerCount)
+            if (Loaded >= PhotonNetwork.CurrentRoom.PlayerCount && !_started)
             {
+                _started = true;
                 GameStart();
             }
         }

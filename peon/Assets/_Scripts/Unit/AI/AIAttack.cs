@@ -51,7 +51,6 @@ namespace _Scripts.Unit.AI
             
             if (_attackCooldown + _Speed <= Time.time)
             {
-                print('d');
                 var results = new Collider[10];
                 var size = Physics.OverlapSphereNonAlloc(transform.position, _range, results, _layerMask);
                 for (int i = 0; i < size; i++)

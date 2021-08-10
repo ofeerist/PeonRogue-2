@@ -18,6 +18,10 @@ namespace _Scripts.Level
         [SerializeField] private LevelLoader _levelLoader;
         [SerializeField] private Transfer _transfer;
         [SerializeField] private Talent _talent;
+
+        [Space] 
+        
+        [SerializeField] private ParticleSystem _spawnEffect;
         
         [Space]
 
@@ -36,8 +40,6 @@ namespace _Scripts.Level
         private int _currentWave = 0;
         private int _waveCount;
 
-        private Wave _wave;
-        
         private int _currentEnemyCount;
         
         private int CurrentEnemyCount { get => _currentEnemyCount;
@@ -47,6 +49,8 @@ namespace _Scripts.Level
         public event EnemyCount EnemyCountChanged;
 
         private PhotonView _photonView;
+
+        private Wave _wave;
         
         private void Start()
         {
@@ -84,8 +88,7 @@ namespace _Scripts.Level
         private void StartRandomWave()
         {
             if (!PhotonNetwork.IsMasterClient) return;
-
-            print("wave");
+            
             _photonView.RPC(nameof(RPCStartRandomWave), RpcTarget.AllBufferedViaServer, Random.Range(0, 100000));
 
         }
@@ -94,46 +97,67 @@ namespace _Scripts.Level
         private void RPCStartRandomWave(int seed)
         {
             var wave = Wave.Generate(_waveInfos[_currentWave].UnitData, 5 + _currentWave, _waveInfos[_currentWave].MaxUsages, seed);
-            StartWave(wave);
+            StartWave(wave, seed);
         }
         
-        private void StartWave(Wave wave)
+        private void StartWave(Wave wave, int seed)
         {
+            _currentWave++;
+            
+            WaveStarted?.Invoke(_wave.WaveEnemies.Count);
+            CurrentEnemyCount = wave.WaveEnemies.Count;
+            
             _wave = wave;
             
-            _currentWave++;
-
-            CurrentEnemyCount = wave.WaveEnemies.Count;
-
-            if (PhotonNetwork.IsMasterClient)
-                SpawnEnemies();
+            StartCoroutine(SpawnEffect(wave, seed));
         }
 
-        [PunRPC]
-        private void SpawnEnemies()
+        private IEnumerator SpawnEffect(Wave wave, int seed)
+        {
+            var effs = new ParticleSystem[wave.WaveEnemies.Count];
+            
+            var r = new System.Random(seed);
+
+            for (int i = 0; i < wave.WaveEnemies.Count; i++)
+            {
+                var pos = _enemySpawnPositions[r.Next(0, _enemySpawnPositions.Length)].GetPosition(r);
+                effs[i] = Instantiate(_spawnEffect,
+                    pos,
+                    Quaternion.identity);
+
+                effs[i].Play();
+            }
+
+            yield return new WaitForSeconds(3f);
+            
+            SpawnEnemies(wave, seed);
+
+            foreach (var e in effs)
+                e.Stop();
+            
+            yield return new WaitForSeconds(1f);
+
+            foreach (var e in effs)
+                Destroy(e.gameObject);
+        }
+        
+        private void SpawnEnemies(Wave wave, int seed)
         {
             if (!PhotonNetwork.IsMasterClient) return;
             
-            var r = new System.Random();
-            foreach (var t in _wave.WaveEnemies)
+            var r = new System.Random(seed);
+            foreach (var t in wave.WaveEnemies)
             {
+                var pos = _enemySpawnPositions[r.Next(0, _enemySpawnPositions.Length)].GetPosition(r);
                 var u = PhotonNetwork.Instantiate(t.Prefab.name,
-                        _enemySpawnPositions[r.Next(0, _enemySpawnPositions.Length)].GetPosition(),
+                        pos,
                         Quaternion.identity)
                     .GetComponent<Unit.Unit>();
                 t.SetData(u);
                 u.GetComponent<UnitHealth>().OnDeath += EnemyDeath;
             }
-
-            _photonView.RPC(nameof(WaveStarting), RpcTarget.AllViaServer);
         }
 
-        [PunRPC]
-        private void WaveStarting()
-        {
-            WaveStarted?.Invoke(_wave.WaveEnemies.Count);
-        }
-        
         private void EnemyDeath(Unit.Unit u)
         {
             CurrentEnemyCount--;
@@ -146,7 +170,7 @@ namespace _Scripts.Level
 
             if (_currentWave >= _waveCount)
             {
-                SpawnReward(u);
+                //SpawnReward(u);
                 SpawnTransfers();
                 Reset();
             }

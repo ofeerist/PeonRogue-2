@@ -485,6 +485,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Unit: {fileID: 0}
   _maxHealth: 150
+  _regenPerSecond: 0
   _stanTime: 1
   _stanChannelEffect: {fileID: 103954830445341243}
   _stanFinishlEffect: {fileID: 103954830894141300}
