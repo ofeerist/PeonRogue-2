@@ -1,6 +1,7 @@
 using _Scripts.Level;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Scripts.UI.InGameUI
 {
@@ -9,7 +10,8 @@ namespace _Scripts.UI.InGameUI
         [SerializeField] private LevelFaсtory _levelFactory;
 
         [SerializeField] private TextMeshProUGUI _textMesh;
-
+        [SerializeField] private Image _image; 
+        
         private int _maxEnemies;
 
         private void Start()
@@ -19,11 +21,16 @@ namespace _Scripts.UI.InGameUI
             _levelFactory.WaveEnded += OnWaveEnded;
         }
 
-        private void OnWaveEnded() => _textMesh.text = "";
+        private void OnWaveEnded()
+        {
+            _textMesh.text = "";
+            _image.enabled = false;
+        }
 
         private void OnWaveStarted(int enemys)
         {
             _maxEnemies = enemys;
+            _image.enabled = true;
             EnemyCount(enemys);
         }
 
