@@ -64,16 +64,6 @@ namespace _Scripts.Unit.AI
 
                 _photonView.RPC(nameof(SetDestination), RpcTarget.AllViaServer, position.x, position.y, position.z);
             }
-
-            if (Unit.Rigidbody.velocity.magnitude <= 0.1f)
-            {
-                _navMeshAgent.enabled = true;
-                Unit.Rigidbody.isKinematic = true;
-            }
-            else
-            {
-                _navMeshAgent.enabled = false;
-            }
         }
 
         [PunRPC]
@@ -89,15 +79,18 @@ namespace _Scripts.Unit.AI
         
         protected override void OnTick()
         {
-            if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || !Unit.enabled || Unit.UnitHealth.InStan) BlockMovement = true;
+            if (Unit.Animator.GetCurrentAnimatorStateInfo(0).IsTag("Attack") || !Unit.enabled || Unit.UnitHealth.InStan || Unit.Rigidbody.velocity.magnitude > .01) BlockMovement = true;
             else BlockMovement = false;
-        }
 
-        public override void AddImpulse(Vector3 direction, bool stan = true, float stanTime = 1f)
-        {
-            _navMeshAgent.enabled = false;
-            Unit.Rigidbody.isKinematic = false;
-            base.AddImpulse(direction, stan, stanTime);
+            if (BlockMovement)
+            {
+                Unit.Rigidbody.isKinematic = false;
+                _navMeshAgent.velocity = Unit.Rigidbody.velocity;
+            }
+            else
+            {
+                Unit.Rigidbody.isKinematic = true;
+            }
         }
 
         private void DetectEnemy(Transform _transform)
@@ -132,7 +125,7 @@ namespace _Scripts.Unit.AI
 
         private void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.layer == 9 && !_navMeshAgent.enabled && enabled)
+            if (collision.gameObject.layer == 9 && Unit.Rigidbody.velocity.magnitude > 0.5f && enabled)
             {
                 Unit.UnitHealth.TakeDamage(BounceDamage);
 
