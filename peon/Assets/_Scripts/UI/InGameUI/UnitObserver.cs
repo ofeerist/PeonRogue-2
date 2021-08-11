@@ -1,5 +1,4 @@
-﻿using UnityEditorInternal;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace _Scripts.UI.InGameUI
 {
