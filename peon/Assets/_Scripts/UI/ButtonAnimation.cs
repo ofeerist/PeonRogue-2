@@ -36,7 +36,7 @@ namespace _Scripts.UI
             _targetTransform = _button != null ? _button.targetGraphic.rectTransform : _target != null ? _target : GetComponent<RectTransform>();
 
             if (_sound) 
-                _audio = GameObject.Find("Canvas").GetComponent<AudioSource>();
+                _audio = GameObject.Find("MenuCanvas").GetComponent<AudioSource>();
 
             _hover = Resources.Load<AudioClip>("Sound/UI/mouseover1");
             _click = Resources.Load<AudioClip>("Sound/UI/mouseclick1");

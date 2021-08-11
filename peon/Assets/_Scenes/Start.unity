@@ -14360,8 +14360,8 @@ Transform:
   m_LocalPosition: {x: -534, y: -300.51703, z: 0}
   m_LocalScale: {x: 1.1361703, y: 1.1361703, z: 1.1361703}
   m_Children: []
-  m_Father: {fileID: 1524233643}
-  m_RootOrder: 0
+  m_Father: {fileID: 1693303046}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &439942023
 MonoBehaviour:
@@ -28725,7 +28725,7 @@ MonoBehaviour:
     ModeOverride: 0
     LensShift: {x: 0, y: 0}
     GateFit: 2
-    m_SensorSize: {x: 1.777592, y: 1}
+    m_SensorSize: {x: 1.7772194, y: 1}
   m_Transitions:
     m_BlendHint: 0
     m_InheritPosition: 0
@@ -36281,7 +36281,7 @@ RectTransform:
   - {fileID: 771860621}
   - {fileID: 250276461}
   m_Father: {fileID: 1524233643}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -48732,7 +48732,6 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
-  - {fileID: 439942022}
   - {fileID: 1138846441}
   m_Father: {fileID: 224837003}
   m_RootOrder: 3
@@ -54391,7 +54390,7 @@ GameObject:
   - component: {fileID: 1693303052}
   - component: {fileID: 1693303053}
   m_Layer: 2
-  m_Name: Canvas
+  m_Name: MenuCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54489,6 +54488,7 @@ RectTransform:
   - {fileID: 1097442106}
   - {fileID: 504202287}
   - {fileID: 803837196}
+  - {fileID: 439942022}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -59815,7 +59815,7 @@ MonoBehaviour:
     m_PressedTrigger: Pressed
     m_SelectedTrigger: Selected
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 516511079}
   m_OnClick:
     m_PersistentCalls:

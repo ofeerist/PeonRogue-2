@@ -5,6 +5,7 @@ using _Scripts.Level.Interactable.Talents;
 using _Scripts.UI.InGameUI;
 using _Scripts.Unit;
 using Photon.Pun;
+using UnityEditorInternal;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -161,9 +162,17 @@ namespace _Scripts.Level
         private void EnemyDeath(Unit.Unit u)
         {
             CurrentEnemyCount--;
+            _photonView.RPC(nameof(ChangeCurrentEnemy), RpcTarget.Others, CurrentEnemyCount);
+            
             if (CurrentEnemyCount == 0) EndWave(u);
         }
 
+        [PunRPC]
+        private void ChangeCurrentEnemy(int enemies)
+        {
+            CurrentEnemyCount = enemies;
+        }
+        
         private void EndWave(Component u)
         {
             WaveEnded?.Invoke();

@@ -4022,7 +4022,19 @@ PrefabInstance:
     - target: {fileID: 8639640529424400682, guid: 463bcab6753777d4c837b4d4257a8d21, type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: c330445409644174fb04e1e320096df2, type: 2}
+      objectReference: {fileID: 23800000, guid: 950493bd34c647ebeab302e0105d89ce, type: 2}
+    - target: {fileID: 8639640529424400682, guid: 463bcab6753777d4c837b4d4257a8d21, type: 3}
+      propertyPath: m_LayerMask.m_Bits
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8639640529424400682, guid: 463bcab6753777d4c837b4d4257a8d21, type: 3}
+      propertyPath: m_OverrideTileSize
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8639640529424400682, guid: 463bcab6753777d4c837b4d4257a8d21, type: 3}
+      propertyPath: m_OverrideVoxelSize
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 463bcab6753777d4c837b4d4257a8d21, type: 3}
 --- !u!4 &1308815631 stripped
