@@ -16,8 +16,8 @@ MonoBehaviour:
   Prefab: {fileID: 4938188580037423424, guid: 61014857e347d0143ba8df4d5fa08e7b, type: 3}
   Type: 2
   _maxHealth:
-    _min: 130
-    _max: 170
+    _min: 170
+    _max: 220
   _stanTime:
     _min: 1
     _max: 1

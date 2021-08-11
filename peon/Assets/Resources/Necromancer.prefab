@@ -44623,6 +44623,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Unit: {fileID: 0}
   _maxHealth: 100
+  _regenPerSecond: 0
   _stanTime: 1
   _stanChannelEffect: {fileID: 3800654273921498481}
   _stanFinishlEffect: {fileID: 3800654273304975422}

@@ -49,11 +49,11 @@ MonoBehaviour:
     _min: 1
     _max: 3
   _stenchDamage:
-    _min: 2
-    _max: 6
+    _min: 0.5
+    _max: 1
   _stenchUsingTime:
-    _min: 5
-    _max: 10
+    _min: 2
+    _max: 5
   _stenchCooldown:
     _min: 15
     _max: 30
@@ -61,17 +61,17 @@ MonoBehaviour:
     _min: 9
     _max: 13
   _hookSpeed:
-    _min: 8
-    _max: 11
+    _min: 9
+    _max: 9
   _hookBackwardSpeed:
-    _min: 8
-    _max: 11
+    _min: 9
+    _max: 9
   _rangeToUseHook:
-    _min: 8
+    _min: 11
     _max: 11
   _minRangeToUseHook:
     _min: 5
-    _max: 7
+    _max: 5
   _hookCooldown:
     _min: 10
     _max: 20
