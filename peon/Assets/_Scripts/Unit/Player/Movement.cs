@@ -1,8 +1,7 @@
-
 using System;
-using System.Numerics;
 using KinematicCharacterController;
-using Unity.VisualScripting;
+using Photon.Pun;
+using UniRx;
 using UnityEngine;
 using Quaternion = UnityEngine.Quaternion;
 using Vector3 = UnityEngine.Vector3;
@@ -44,27 +43,75 @@ namespace _Scripts.Unit.Player
         [SerializeField] private float _dashLenght;
         private float _dashTimer;
         
+        [SerializeField] private float _dashCooldownTime;
+        private float _dashCooldownTimer;
+        
+        [SerializeField] private int _dashMaxStock;
+
+        private int _dashCurrentStock;
+        public int DashCurrentStock
+        {
+            get => _dashCurrentStock;
+            private set
+            {
+                _dashCurrentStock = value <= _dashMaxStock ? value : _dashMaxStock;
+                ChargeChanged?.Invoke(value);
+            }
+        }
+        
+        public delegate void ValueChanged(int charges);
+        public event ValueChanged ChargeChanged;
+        
+        [SerializeField] private float _dashRefreshTime;
+        public float DashRefreshTime
+        {
+            get => _dashRefreshTime;
+            private set => _dashRefreshTime = value;
+        }
+        
         private Vector3 _internalVelocityAdd;
         
         private static readonly int Walk = Animator.StringToHash("Walk");
         private static readonly int Dash = Animator.StringToHash("Dash");
-
-
+        
         private void Start()
         {
+
             _motor = GetComponent<KinematicCharacterMotor>();
             _unit = GetComponent<Unit>();
             
             _motor.CharacterController = this;
+            
+            Observable.EveryUpdate() 
+                .Where(_ => Input.GetKeyDown(KeyCode.Space))
+                .Subscribe (x =>
+                {
+                    if(_dashCooldownTimer <= Time.time) _unit.PhotonView.RPC(nameof(DashProccess), RpcTarget.AllViaServer);
+                }).AddTo (this); 
+            
+            DashCurrentStock = _dashMaxStock;
+            DashRefreshTime = _dashRefreshTime;
+
+            Observable.Interval(TimeSpan.FromSeconds(_dashRefreshTime)).Subscribe(_ =>
+            {
+                DashCurrentStock++;
+            }).AddTo(this);
+            
+        }
+
+        private void DashProccess()
+        {
+            _toDash = true;
+            Physics.IgnoreLayerCollision(11, 8, true);
         }
 
         private void Update()
         {
+            if (!_unit.PhotonView.IsMine) return;
+            
             _moveInputVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
             
             _unit.Animator.SetBool(Walk, _motor.Velocity.magnitude > 0.01f && _unit.CurrentState == PlayerState.Default);
-
-            _toDash = Input.GetKey(KeyCode.Space);
         }
 
         private Vector3 GetReorientedInput(ref Vector3 currentVelocity, Vector3 input)
@@ -102,7 +149,7 @@ namespace _Scripts.Unit.Player
                     {
                         if (_moveInputVector.sqrMagnitude > 0f)
                         {
-                            var addedVelocity = _moveInputVector * _airAccelerationSpeed * deltaTime;
+                            var addedVelocity = _moveInputVector * (_airAccelerationSpeed * deltaTime);
 
                             var currentVelocityOnInputsPlane = Vector3.ProjectOnPlane(currentVelocity, _motor.CharacterUp);
                             
@@ -139,6 +186,8 @@ namespace _Scripts.Unit.Player
                     // Dash
                     if (_toDash)
                     {
+                        _toDash = false;
+                        
                         _unit.CurrentState = PlayerState.Dash;
                         _unit.Animator.SetTrigger(Dash);
 
@@ -155,6 +204,11 @@ namespace _Scripts.Unit.Player
                         }
 
                         _dashTimer = Time.time + _dashLenght;
+                        _dashCooldownTimer = Time.time + _dashCooldownTime;
+                    }
+                    else
+                    {
+                        Physics.IgnoreLayerCollision(11, 8, false);
                     }
 
                     if (_internalVelocityAdd.sqrMagnitude > 0f)
@@ -174,6 +228,8 @@ namespace _Scripts.Unit.Player
                     
                     break;
                 }
+                default:
+                    throw new ArgumentOutOfRangeException();
             }
         }
         
