@@ -17,6 +17,9 @@ namespace _Scripts.Unit
         [HideInInspector] public Rigidbody Rigidbody;
         [HideInInspector] public PhotonView PhotonView;
 
+        public Camera Camera;
+        public PlayerState CurrentState;
+        
         public Dictionary<uint, Skill> Skills = new Dictionary<uint, Skill>();
 
         private bool _isHooked;
