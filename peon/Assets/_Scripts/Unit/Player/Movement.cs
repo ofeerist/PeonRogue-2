@@ -83,6 +83,7 @@ namespace _Scripts.Unit.Player
         private static readonly int Walk = Animator.StringToHash("Walk");
         private static readonly int Dash = Animator.StringToHash("Dash");
         private PhotonView _photonView;
+        private AxeAttack _axeAttack;
         
         private IDisposable _interval;
 
@@ -92,6 +93,7 @@ namespace _Scripts.Unit.Player
             _motor = GetComponent<KinematicCharacterMotor>();
             _unit = GetComponent<Unit>();
             _photonView = GetComponent<PhotonView>();
+            _axeAttack = GetComponent<AxeAttack>();
             
             _motor.CharacterController = this;
             
@@ -232,8 +234,15 @@ namespace _Scripts.Unit.Player
 
                     break;
                 }
-                default:
-                    throw new ArgumentOutOfRangeException();
+                case PlayerState.Attack:
+                {
+                    if (_internalVelocityAdd.sqrMagnitude > 0f)
+                    {
+                        currentVelocity += _internalVelocityAdd;
+                        _internalVelocityAdd = Vector3.zero;
+                    }
+                    break;
+                }
             }
         }
         
@@ -262,6 +271,11 @@ namespace _Scripts.Unit.Player
                 case PlayerState.Dash:
                 {
                     currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(_dashDirection, Vector3.up), _rotationSpeed * Time.deltaTime);
+                    break;
+                }
+                case PlayerState.Attack:
+                {
+                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation((_axeAttack.LookPosition - transform.position).normalized, Vector3.up), 10 * _rotationSpeed * Time.deltaTime);
                     break;
                 }
             }

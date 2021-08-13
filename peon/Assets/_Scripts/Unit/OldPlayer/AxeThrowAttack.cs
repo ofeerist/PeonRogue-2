@@ -62,7 +62,7 @@ namespace _Scripts.Unit.Player
         {
             _unit = GetComponent<Unit>();
             _animator = _unit.Animator;
-            _mainCamera = (_unit.UnitMovement as PlayerMovement).MainCamera;
+            _mainCamera = _unit.Camera;
             _collider = _unit.GetComponentInChildren<Collider>();
             _photonView = _unit.PhotonView;
 
@@ -84,7 +84,7 @@ namespace _Scripts.Unit.Player
 
             if (!_unit.enabled) return;
 
-            if (CurrentThrowCharges > 0 && _unit.UnitMovement is PlayerMovement pm && !pm.InDash)
+            if (CurrentThrowCharges > 0 && _unit.CurrentState != PlayerState.Dash)
             {
                 if (Input.GetMouseButtonDown(1) && _attackCooldownTimer + _attackCooldown < Time.time)
                 {

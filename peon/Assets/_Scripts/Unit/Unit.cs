@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using _Scripts.Level.Interactable.Talents.Data;
 using _Scripts.Unit.Player;
+using KinematicCharacterController;
 using Photon.Pun;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace _Scripts.Unit
         [HideInInspector] public UnitAttack UnitAttack;
 
         [HideInInspector] public Animator Animator;
-        [HideInInspector] public CharacterController Controller;
+        [HideInInspector] public KinematicCharacterMotor Controller;
         [HideInInspector] public Rigidbody Rigidbody;
         [HideInInspector] public PhotonView PhotonView;
 
@@ -27,18 +28,9 @@ namespace _Scripts.Unit
         private void Start()
         {
             Animator = GetComponentInChildren<Animator>();
-            Controller = GetComponent<CharacterController>();
+            Controller = GetComponent<KinematicCharacterMotor>();
             Rigidbody = GetComponent<Rigidbody>();
             PhotonView = GetComponent<PhotonView>();
-
-            UnitHealth = GetComponent<UnitHealth>();
-            if (UnitHealth != null) UnitHealth.Unit = this;
-
-            UnitMovement = GetComponent<UnitMovement>();
-            if (UnitMovement != null) UnitMovement.Unit = this;
-
-            UnitAttack = GetComponent<UnitAttack>();
-            if (UnitAttack != null) UnitAttack.Unit = this;
         }
 
         [PunRPC]
@@ -55,7 +47,7 @@ namespace _Scripts.Unit
         public void DontDestroy()
         {
             DontDestroyOnLoad(this);
-            DontDestroyOnLoad(GetComponent<PlayerMovement>().MainCamera.transform.parent.gameObject);
+            DontDestroyOnLoad(Camera.transform.parent.gameObject);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace _Scripts.Unit.Player
                 .Where(_ => Input.GetKeyDown(KeyCode.Mouse0))
                 .Subscribe (x =>
                 {
-                    if (_unit.CurrentState != PlayerState.Dash) return;
+                    if (_unit.CurrentState != PlayerState.Dash && !_attack) return;
                     _photonView.RPC(nameof(Proccess), RpcTarget.AllViaServer);
                 }).AddTo (this); 
             
@@ -52,6 +52,7 @@ namespace _Scripts.Unit.Player
                 else
                 {
                     _unit.Animator.SetBool(Attack, false);
+                    _attack = false;
                 }
             }).AddTo(this);
         }
