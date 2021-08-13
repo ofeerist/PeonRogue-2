@@ -66,19 +66,32 @@ namespace _Scripts.Unit.Player
         public float DashRefreshTime
         {
             get => _dashRefreshTime;
-            private set => _dashRefreshTime = value;
+            private set
+            {
+                _dashRefreshTime = value; 
+                
+                _interval?.Dispose();
+                _interval = Observable.Interval(TimeSpan.FromSeconds(value)).Subscribe(_ =>
+                {
+                    DashCurrentStock++;
+                }).AddTo(this);
+            }
         }
         
         private Vector3 _internalVelocityAdd;
         
         private static readonly int Walk = Animator.StringToHash("Walk");
         private static readonly int Dash = Animator.StringToHash("Dash");
+        private PhotonView _photonView;
         
+        private IDisposable _interval;
+
         private void Start()
         {
 
             _motor = GetComponent<KinematicCharacterMotor>();
             _unit = GetComponent<Unit>();
+            _photonView = GetComponent<PhotonView>();
             
             _motor.CharacterController = this;
             
@@ -86,21 +99,17 @@ namespace _Scripts.Unit.Player
                 .Where(_ => Input.GetKeyDown(KeyCode.Space))
                 .Subscribe (x =>
                 {
-                    if(_dashCooldownTimer <= Time.time) _unit.PhotonView.RPC(nameof(DashProccess), RpcTarget.AllViaServer);
+                    if(_dashCooldownTimer <= Time.time && DashCurrentStock > 0) _photonView.RPC(nameof(DashProccess), RpcTarget.AllViaServer);
                 }).AddTo (this); 
             
             DashCurrentStock = _dashMaxStock;
             DashRefreshTime = _dashRefreshTime;
-
-            Observable.Interval(TimeSpan.FromSeconds(_dashRefreshTime)).Subscribe(_ =>
-            {
-                DashCurrentStock++;
-            }).AddTo(this);
-            
         }
 
+        [PunRPC]
         private void DashProccess()
         {
+            DashCurrentStock--;
             _toDash = true;
             Physics.IgnoreLayerCollision(11, 8, true);
         }

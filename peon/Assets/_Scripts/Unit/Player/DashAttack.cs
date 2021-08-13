@@ -39,6 +39,7 @@ namespace _Scripts.Unit.Player
                 .Where(_ => Input.GetKeyDown(KeyCode.Mouse0))
                 .Subscribe (x =>
                 {
+                    if (_unit.CurrentState != PlayerState.Dash) return;
                     _photonView.RPC(nameof(Proccess), RpcTarget.AllViaServer);
                 }).AddTo (this); 
             
