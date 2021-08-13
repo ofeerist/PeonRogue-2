@@ -29,9 +29,8 @@ namespace _Scripts.Level
                 var cinemaMachine = camera.GetComponentInChildren<CinemachineVirtualCamera>();
                 cinemaMachine.Follow = peon.transform;
                 cinemaMachine.LookAt = peon.transform;
-
-                var movement = peon.GetComponent<PlayerMovement>();
-                movement.MainCamera = camera.GetComponentInChildren<Camera>();
+                
+                unit.Camera = camera.GetComponentInChildren<Camera>();
 
                 unitObserver.Unit = unit;
 

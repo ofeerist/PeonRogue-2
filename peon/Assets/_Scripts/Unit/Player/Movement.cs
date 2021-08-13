@@ -111,7 +111,6 @@ namespace _Scripts.Unit.Player
         {
             DashCurrentStock--;
             _toDash = true;
-            Physics.IgnoreLayerCollision(11, 8, true);
         }
 
         private void Update()
@@ -215,10 +214,6 @@ namespace _Scripts.Unit.Player
                         _dashTimer = Time.time + _dashLenght;
                         _dashCooldownTimer = Time.time + _dashCooldownTime;
                     }
-                    else
-                    {
-                        Physics.IgnoreLayerCollision(11, 8, false);
-                    }
 
                     if (_internalVelocityAdd.sqrMagnitude > 0f)
                     {
@@ -234,7 +229,7 @@ namespace _Scripts.Unit.Player
                     var targetMovementVelocity = GetReorientedInput(ref currentVelocity, _dashDirection) * _dashSpeed;
                     
                     currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-_stableMovementSharpness * deltaTime));
-                    
+
                     break;
                 }
                 default:
@@ -290,6 +285,8 @@ namespace _Scripts.Unit.Player
 
         public bool IsColliderValidForCollisions(Collider coll)
         {
+            if (_unit.CurrentState == PlayerState.Dash && coll.gameObject.layer == 8) return false;
+            
             return true;
         }
 

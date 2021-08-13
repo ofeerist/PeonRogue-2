@@ -2,7 +2,7 @@ using System;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using Random = System.Random;
 
 namespace _Scripts.Unit.Player
 {
@@ -47,10 +47,7 @@ namespace _Scripts.Unit.Player
             {
                 if (_attack && _unit.CurrentState == PlayerState.Dash)
                 {
-                    var _transform = transform;
-                    var position = _transform.position;
-                    var forward = _transform.forward;
-                    _photonView.RPC(nameof(AttackDamage), RpcTarget.AllViaServer, position.x, position.y, position.z, forward.x, forward.y, forward.z);
+                    AttackDamage();
                 }
                 else
                 {
@@ -58,7 +55,7 @@ namespace _Scripts.Unit.Player
                 }
             }).AddTo(this);
         }
-
+        
         [PunRPC]
         private void Proccess()
         {
@@ -67,11 +64,11 @@ namespace _Scripts.Unit.Player
             _unit.Animator.SetBool(Attack, _attack);
         }
         
-        [PunRPC]
-        private void AttackDamage(float x, float y, float z, float fx, float fy, float fz)
+        private void AttackDamage()
         {
-            var position = new Vector3(x, y, z);
-            var forward = new Vector3(fx, fy, fz);
+            var transform1 = transform;
+            var position = transform1.position;
+            var forward = transform1.forward;
             
             var results = new Collider[10];
             var size = Physics.OverlapSphereNonAlloc(position, _dashAttackRange, results, _layerMask);
@@ -84,14 +81,21 @@ namespace _Scripts.Unit.Player
                     var dot = Vector3.Dot(posTo, forward);
                     if (dot >= Mathf.Cos(_dashAttackAngle))
                     {
-                        unit.UnitHealth.TakeDamage(_dashAttackDamage);
-                        _audioSource.PlayOneShot(_dashHit[Random.Range(0, _dashHit.Length)]);
+                        unit.PhotonView.RPC(nameof(unit.UnitHealth.TakeDamage), RpcTarget.AllViaServer,
+                            _dashAttackDamage);
+                        _photonView.RPC(nameof(PlayHit), RpcTarget.AllViaServer, new Random().Next(0));
 
                         posTo.y = 0;
                         unit.UnitMovement.AddImpulse((posTo) * _dashAttackKnockback);
                     }
                 }
             }
+        }
+
+        [PunRPC]
+        private void PlayHit(int seed)
+        {
+            _audioSource.PlayOneShot(_dashHit[new Random(seed).Next(0, _dashHit.Length)]);
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Photon.Pun;
+using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
@@ -38,6 +40,7 @@ namespace _Scripts.Unit.AI
             _stanTime = stanTime;
         }
 
+        [PunRPC]
         public override void TakeDamage(float damage)
         {
             if (damage == 0) return;
@@ -61,7 +64,8 @@ namespace _Scripts.Unit.AI
             _stanTime = time;
             _currentStanTime = Time.time + time;
             InStan = true;
-            StartCoroutine(Stagger());
+            
+            Observable.FromCoroutine(Stagger).Subscribe().AddTo(this);
         }
 
         private void SetTextTag(float damage)
@@ -74,8 +78,7 @@ namespace _Scripts.Unit.AI
             else
             {
                 _textTag.transform.position = transform.position + randomOffset;
-                if(_textTag.Color.a >= .2f) _textTag.Text = (System.Convert.ToInt32(_textTag.Text) + Mathf.RoundToInt(damage)).ToString();
-                else _textTag.Text = Mathf.RoundToInt(damage).ToString();
+                _textTag.Text = _textTag.Color.a >= .2f ? (System.Convert.ToInt32(_textTag.Text) + Mathf.RoundToInt(damage)).ToString() : Mathf.RoundToInt(damage).ToString();
 
                 _textTag.Color = UnityEngine.Color.Lerp(_textTag.Color, UnityEngine.Color.red, _textTagColorizingTime * Time.deltaTime) + new UnityEngine.Color(0, 0, 0, 1);
                 _textTag.LifeTime = _textTagLifetime;
@@ -87,9 +90,9 @@ namespace _Scripts.Unit.AI
             _onDeath.Play();
             Unit.GetComponent<NavMeshAgent>().enabled = false;
             Unit.UnitMovement.enabled = false;
-
-            StartCoroutine(SetKinematic());
-
+            
+            Observable.FromCoroutine(SetKinematic).Subscribe().AddTo(this);
+            
             _healthSlider.gameObject.SetActive(false);
 
             Unit.enabled = false;
@@ -99,7 +102,7 @@ namespace _Scripts.Unit.AI
 
             OnDeath?.Invoke(Unit);
 
-            StartCoroutine(DeathDispose());
+            Observable.FromCoroutine(DeathDispose).Subscribe().AddTo(this);
         }
 
         private IEnumerator DeathDispose()

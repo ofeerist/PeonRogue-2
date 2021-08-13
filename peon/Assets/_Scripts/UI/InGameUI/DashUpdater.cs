@@ -15,7 +15,7 @@ namespace _Scripts.UI.InGameUI
             _unitObserver = GetComponentInParent<UnitObserver>();
 
             yield return new WaitUntil(() => _unitObserver.Unit != null);
-            var obj = _unitObserver.Unit.GetComponent<PlayerMovement>();
+            var obj = _unitObserver.Unit.GetComponent<Movement>();
             obj.ChargeChanged += UpdateCharge;
             UpdateCharge(obj.DashCurrentStock);
         }
