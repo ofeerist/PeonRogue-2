@@ -1,5 +1,6 @@
 using System.Globalization;
 using _Scripts.Unit;
+using _Scripts.Unit.Player;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -21,6 +22,8 @@ namespace _Scripts.UI.InGameUI
 
         [SerializeField] private Graphic[] _toColorize;
         [SerializeField] private Gradient _gradient;
+
+        private PlayerHealth _playerHealth;
         
         private void Start()
         {
@@ -29,15 +32,15 @@ namespace _Scripts.UI.InGameUI
 
         private void OnUnitChanged(Unit.Unit u)
         {
-            var h = u.GetComponent<UnitHealth>();
+            _playerHealth = u.GetComponent<PlayerHealth>();
             
-            h.MaxHealthChanged += MaxHealthChanged;
-            h.HealthChanged += HealthChanged;
-            h.RegenChanged += RegenChanged;
+            _playerHealth.MaxHealthChanged += MaxHealthChanged;
+            _playerHealth.HealthChanged += HealthChanged;
+            _playerHealth.RegenChanged += RegenChanged;
 
-            _maxHP.text = h.MaxHealth.ToString(CultureInfo.InvariantCulture);
-            _currentHP.text = h.CurrentHealth.ToString(CultureInfo.InvariantCulture);
-            _regen.text = h.Regen.ToString(CultureInfo.InvariantCulture);
+            _maxHP.text = _playerHealth.MaxHealth.ToString(CultureInfo.InvariantCulture);
+            _currentHP.text = _playerHealth.CurrentHealth.ToString(CultureInfo.InvariantCulture);
+            _regen.text = _playerHealth.Regen.ToString(CultureInfo.InvariantCulture);
         }
 
         private void Update()
@@ -61,7 +64,7 @@ namespace _Scripts.UI.InGameUI
 
         private void HealthChanged(float value)
         {
-            _currentValue = value / _unitObserver.Unit.UnitHealth.MaxHealth;
+            _currentValue = value / _playerHealth.MaxHealth;
             _currentHP.text = Mathf.RoundToInt(value).ToString(CultureInfo.InvariantCulture);
         }
     }

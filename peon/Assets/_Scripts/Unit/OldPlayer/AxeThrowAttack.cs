@@ -84,7 +84,7 @@ namespace _Scripts.Unit.Player
 
             if (!_unit.enabled) return;
 
-            if (CurrentThrowCharges > 0 && _unit.CurrentState != PlayerState.Dash)
+            if (CurrentThrowCharges > 0 && _unit.CurrentState != UnitState.Dash)
             {
                 if (Input.GetMouseButtonDown(1) && _attackCooldownTimer + _attackCooldown < Time.time)
                 {

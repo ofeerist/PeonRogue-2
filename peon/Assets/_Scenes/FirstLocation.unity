@@ -727,7 +727,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 40920229}
   m_LocalRotation: {x: 0.17983028, y: 0.68248755, z: 0.68385756, w: -0.1849615}
-  m_LocalPosition: {x: 17.8, y: 0.92, z: 13.85}
+  m_LocalPosition: {x: 17.801, y: 0.728, z: 13.849}
   m_LocalScale: {x: 0.33, y: 0.33, z: 0.33}
   m_Children: []
   m_Father: {fileID: 1602639217}
@@ -7166,7 +7166,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415054200}
   m_LocalRotation: {x: 0.5993234, y: 0.35039815, z: 0.370212, w: -0.6172323}
-  m_LocalPosition: {x: 25.33, y: 1.89, z: 6.82}
+  m_LocalPosition: {x: 25.329, y: 1.78, z: 6.816}
   m_LocalScale: {x: 0.32, y: 0.32000002, z: 0.31999996}
   m_Children: []
   m_Father: {fileID: 1602639217}
@@ -10948,7 +10948,7 @@ MonoBehaviour:
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 513
-  m_UseGeometry: 1
+  m_UseGeometry: 0
   m_DefaultArea: 0
   m_IgnoreNavMeshAgent: 1
   m_IgnoreNavMeshObstacle: 1

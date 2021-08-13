@@ -19,7 +19,7 @@ namespace _Scripts.Unit
         [HideInInspector] public PhotonView PhotonView;
 
         public Camera Camera;
-        public PlayerState CurrentState;
+        public UnitState CurrentState;
         
         public Dictionary<uint, Skill> Skills = new Dictionary<uint, Skill>();
 

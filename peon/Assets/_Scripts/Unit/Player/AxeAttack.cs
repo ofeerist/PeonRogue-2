@@ -66,11 +66,11 @@ namespace _Scripts.Unit.Player
                 .Subscribe (x =>
                 {
                     if (_attackCooldownTimer + _attackCooldown > Time.time) return;
-                    if (_unit.CurrentState != PlayerState.Default) return;
+                    if (_unit.CurrentState != UnitState.Default) return;
 
                     Observable.NextFrame().Subscribe(z =>
                     {
-                        if (_unit.CurrentState != PlayerState.Default) return;
+                        if (_unit.CurrentState != UnitState.Default) return;
                         Attack();
 
                     }).AddTo(this);
@@ -79,7 +79,7 @@ namespace _Scripts.Unit.Player
 
         private void Attack()
         {
-            _unit.CurrentState = PlayerState.Attack;
+            _unit.CurrentState = UnitState.Attack;
             
             var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hit))
@@ -111,7 +111,7 @@ namespace _Scripts.Unit.Player
             Observable.Timer(TimeSpan.FromSeconds(_attackTime)).Subscribe(x =>
             {
                 _attackCooldownTimer = Time.time;
-                _unit.CurrentState = PlayerState.Default;
+                _unit.CurrentState = UnitState.Default;
             }).AddTo(this);
         }
         

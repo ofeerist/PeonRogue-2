@@ -121,7 +121,7 @@ namespace _Scripts.Unit.Player
             
             _moveInputVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
             
-            _unit.Animator.SetBool(Walk, _motor.Velocity.magnitude > 0.01f && _unit.CurrentState == PlayerState.Default);
+            _unit.Animator.SetBool(Walk, _motor.Velocity.magnitude > 0.01f && _unit.CurrentState == UnitState.Default);
         }
 
         private Vector3 GetReorientedInput(ref Vector3 currentVelocity, Vector3 input)
@@ -147,7 +147,7 @@ namespace _Scripts.Unit.Player
             // code from example
             switch (_unit.CurrentState)
             {
-                case PlayerState.Default:
+                case UnitState.Default:
                 {
                     if (_motor.GroundingStatus.IsStableOnGround)
                     {
@@ -198,7 +198,7 @@ namespace _Scripts.Unit.Player
                     {
                         _toDash = false;
                         
-                        _unit.CurrentState = PlayerState.Dash;
+                        _unit.CurrentState = UnitState.Dash;
                         _unit.Animator.SetTrigger(Dash);
 
                         _dashDirection = _moveInputVector;
@@ -224,9 +224,9 @@ namespace _Scripts.Unit.Player
                     }
                     break;
                 }
-                case PlayerState.Dash:
+                case UnitState.Dash:
                 {
-                    if (_dashTimer <= Time.time) _unit.CurrentState = PlayerState.Default;
+                    if (_dashTimer <= Time.time) _unit.CurrentState = UnitState.Default;
                     
                     var targetMovementVelocity = GetReorientedInput(ref currentVelocity, _dashDirection) * _dashSpeed;
                     
@@ -234,7 +234,7 @@ namespace _Scripts.Unit.Player
 
                     break;
                 }
-                case PlayerState.Attack:
+                case UnitState.Attack:
                 {
                     if (_internalVelocityAdd.sqrMagnitude > 0f)
                     {
@@ -250,7 +250,7 @@ namespace _Scripts.Unit.Player
         {
             switch (_unit.CurrentState)
             {
-                case PlayerState.Default:
+                case UnitState.Default:
                 {
                     _internalVelocityAdd += velocity;
                     break;
@@ -262,18 +262,18 @@ namespace _Scripts.Unit.Player
         {
             switch (_unit.CurrentState)
             {
-                case PlayerState.Default:
+                case UnitState.Default:
                 {
                     if(_moveInputVector != Vector3.zero)
                         currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(_moveInputVector, Vector3.up), _rotationSpeed * Time.deltaTime);
                     break;
                 }
-                case PlayerState.Dash:
+                case UnitState.Dash:
                 {
                     currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(_dashDirection, Vector3.up), _rotationSpeed * Time.deltaTime);
                     break;
                 }
-                case PlayerState.Attack:
+                case UnitState.Attack:
                 {
                     currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation((_axeAttack.LookPosition - transform.position).normalized, Vector3.up), 10 * _rotationSpeed * Time.deltaTime);
                     break;
@@ -299,7 +299,7 @@ namespace _Scripts.Unit.Player
 
         public bool IsColliderValidForCollisions(Collider coll)
         {
-            if (_unit.CurrentState == PlayerState.Dash && coll.gameObject.layer == 8) return false;
+            if (_unit.CurrentState == UnitState.Dash && coll.gameObject.layer == 8) return false;
             
             return true;
         }

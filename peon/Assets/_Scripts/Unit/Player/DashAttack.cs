@@ -39,13 +39,13 @@ namespace _Scripts.Unit.Player
                 .Where(_ => Input.GetKeyDown(KeyCode.Mouse0))
                 .Subscribe (x =>
                 {
-                    if (_unit.CurrentState != PlayerState.Dash && !_attack) return;
+                    if (_unit.CurrentState != UnitState.Dash && !_attack) return;
                     _photonView.RPC(nameof(Proccess), RpcTarget.AllViaServer);
                 }).AddTo (this); 
             
             Observable.Interval(TimeSpan.FromSeconds(_damageInterval)).Subscribe(_ =>
             {
-                if (_attack && _unit.CurrentState == PlayerState.Dash)
+                if (_attack && _unit.CurrentState == UnitState.Dash)
                 {
                     AttackDamage();
                 }
