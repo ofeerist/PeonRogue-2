@@ -52,6 +52,8 @@ namespace _Scripts.Unit.AI
         
         [SerializeField] private bool _retreat;
         [SerializeField] private float _retreatDistance;
+
+        private MeleeAIAttack _aiAttack;
         
         private NavMeshPath _path;
         private Vector3[] _corners;
@@ -63,7 +65,8 @@ namespace _Scripts.Unit.AI
             _motor = GetComponent<KinematicCharacterMotor>();
             _unit = GetComponent<Unit>();
             _photonView = GetComponent<PhotonView>();
-
+            _aiAttack = GetComponent<MeleeAIAttack>();
+            
             _motor.CharacterController = this;
 
             if (!PhotonNetwork.IsMasterClient) return;
@@ -132,6 +135,8 @@ namespace _Scripts.Unit.AI
 
         private void Update()
         {
+            if (!PhotonNetwork.IsMasterClient) return;
+            
             if (_corners == null || _corners.Length < 2 || _corners.Length <= _currentCorner) return;
                 
             _moveInputVector = (_corners[_currentCorner] - transform.position).normalized;
@@ -246,6 +251,13 @@ namespace _Scripts.Unit.AI
                 {
                     if(_moveInputVector != Vector3.zero)
                         currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(_moveInputVector, Vector3.up), _rotationSpeed * Time.deltaTime);
+                    break;
+                }
+                case UnitState.Attack:
+                {
+                    if (_aiAttack == null) return;
+                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(_aiAttack.ToTarget, Vector3.up), _rotationSpeed * Time.deltaTime);
+                    
                     break;
                 }
             }

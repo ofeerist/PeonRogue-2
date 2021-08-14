@@ -413,13 +413,14 @@ GameObject:
   m_Component:
   - component: {fileID: 5986869738430752034}
   - component: {fileID: 4938188580037423424}
+  - component: {fileID: 5131982670618141336}
+  - component: {fileID: 6672828457133383446}
+  - component: {fileID: 4285803888989673807}
+  - component: {fileID: 7036984511264671669}
+  - component: {fileID: 6955506119341450070}
   - component: {fileID: 4938188580037423423}
   - component: {fileID: 4938188580037423422}
   - component: {fileID: 1360062014993246820}
-  - component: {fileID: 6955506119341450070}
-  - component: {fileID: 5131982670618141336}
-  - component: {fileID: 4285803888989673807}
-  - component: {fileID: 7036984511264671669}
   m_Layer: 8
   m_Name: OrcSkeleton
   m_TagString: Untagged
@@ -467,6 +468,126 @@ MonoBehaviour:
   PhotonView: {fileID: 0}
   Camera: {fileID: 0}
   CurrentState: 0
+--- !u!114 &5131982670618141336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938188580037423430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37333b74920e4e8ab63f022a5752ef2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _gravity: {x: 0, y: -30, z: 0}
+  _maxStableMoveSpeed: 2
+  _stableMovementSharpness: 50
+  _airAccelerationSpeed: 2
+  _maxAirMoveSpeed: 2
+  _drag: 0.1
+  _rotationSpeed: 5
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  _chase: 0
+  _detectionRange: 15
+  _retreat: 1
+  _retreatDistance: 3
+--- !u!114 &6672828457133383446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938188580037423430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfdf365512e44a6b662c99f511b58cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  _speed: 0.2
+  _range: 1
+  _angle: 100
+  _damage: 30
+  _audioSource: {fileID: 1360062014993246820}
+  _preAttack:
+  - {fileID: 8300000, guid: 88b4f5929efa49b4f98d527f4659c9ea, type: 3}
+  - {fileID: 8300000, guid: 7918882e7cfa89a498562c7be143d78b, type: 3}
+  - {fileID: 8300000, guid: 81395841453bba148a3993e6770a9ea8, type: 3}
+  - {fileID: 8300000, guid: 60f308c1329ca9c4282ba41e631bb05c, type: 3}
+  _hit:
+  - {fileID: 8300000, guid: b91e0b617df05784ba108f169bd86749, type: 3}
+  - {fileID: 8300000, guid: 785a559543d2f9d42985556e1db529da, type: 3}
+  - {fileID: 8300000, guid: 89136d45775fdf34a898a91be33b8e1c, type: 3}
+  - {fileID: 8300000, guid: 706a49ea71e5fc6488268acc029d5230, type: 3}
+  - {fileID: 8300000, guid: 977f1c3c6c9d6674383d3559cdc2c793, type: 3}
+  ToTarget: {x: 0, y: 0, z: 0}
+--- !u!136 &4285803888989673807
+CapsuleCollider:
+  m_ObjectHideFlags: 8
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938188580037423430}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.2
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &7036984511264671669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938188580037423430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68a4499f5dd18a84fba27fb469430ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Capsule: {fileID: 4285803888989673807}
+  CapsuleRadius: 0.2
+  CapsuleHeight: 2
+  CapsuleYOffset: 1
+  CapsulePhysicsMaterial: {fileID: 0}
+  GroundDetectionExtraDistance: 0
+  MaxStableSlopeAngle: 60
+  StableGroundLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  DiscreteCollisionEvents: 0
+  StepHandling: 1
+  MaxStepHeight: 0.5
+  AllowSteppingWithoutStableGrounding: 0
+  MinRequiredStepDepth: 0.1
+  LedgeAndDenivelationHandling: 1
+  MaxStableDistanceFromLedge: 0.2
+  MaxVelocityForLedgeSnap: 0
+  MaxStableDenivelationAngle: 180
+  InteractiveRigidbodyHandling: 1
+  RigidbodyInteractionType: 0
+  PreserveAttachedRigidbodyMomentum: 1
+  HasPlanarConstraint: 0
+  PlanarConstraintAxis: {x: 0, y: 0, z: 1}
+--- !u!114 &6955506119341450070
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4938188580037423430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 545ef707abd6c664e9eb98dac5e26737, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &4938188580037423423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -603,94 +724,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &6955506119341450070
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4938188580037423430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 545ef707abd6c664e9eb98dac5e26737, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &5131982670618141336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4938188580037423430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 37333b74920e4e8ab63f022a5752ef2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _gravity: {x: 0, y: -30, z: 0}
-  _maxStableMoveSpeed: 2
-  _stableMovementSharpness: 50
-  _airAccelerationSpeed: 2
-  _maxAirMoveSpeed: 2
-  _drag: 0.1
-  _rotationSpeed: 5
-  _layerMask:
-    serializedVersion: 2
-    m_Bits: 2048
-  _chase: 0
-  _detectionRange: 15
-  _retreat: 1
-  _retreatDistance: 3
---- !u!136 &4285803888989673807
-CapsuleCollider:
-  m_ObjectHideFlags: 8
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4938188580037423430}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.2
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &7036984511264671669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4938188580037423430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68a4499f5dd18a84fba27fb469430ac0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Capsule: {fileID: 4285803888989673807}
-  CapsuleRadius: 0.2
-  CapsuleHeight: 2
-  CapsuleYOffset: 1
-  CapsulePhysicsMaterial: {fileID: 0}
-  GroundDetectionExtraDistance: 0
-  MaxStableSlopeAngle: 60
-  StableGroundLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  DiscreteCollisionEvents: 0
-  StepHandling: 1
-  MaxStepHeight: 0.5
-  AllowSteppingWithoutStableGrounding: 0
-  MinRequiredStepDepth: 0.1
-  LedgeAndDenivelationHandling: 1
-  MaxStableDistanceFromLedge: 0.2
-  MaxVelocityForLedgeSnap: 0
-  MaxStableDenivelationAngle: 180
-  InteractiveRigidbodyHandling: 1
-  RigidbodyInteractionType: 0
-  PreserveAttachedRigidbodyMomentum: 1
-  HasPlanarConstraint: 0
-  PlanarConstraintAxis: {x: 0, y: 0, z: 1}
 --- !u!1 &5007721043180368106
 GameObject:
   m_ObjectHideFlags: 0

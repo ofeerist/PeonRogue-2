@@ -6,14 +6,55 @@ using UnityEngine;
 
 namespace _Scripts.Unit.Player
 {
-    public class PlayerHealth : UnitHealth
+    public class PlayerHealth : MonoBehaviour
     {
         private static readonly int Dead1 = Animator.StringToHash("Dead");
 
+        [SerializeField] private float _maxHealth;
+        protected float _currentHealth;
+
+        [SerializeField] private float _regenPerSecond;
+        public float Regen {
+            get => _regenPerSecond;
+            protected set
+            {
+                _regenPerSecond = value;
+                RegenChanged?.Invoke(_regenPerSecond);
+            } 
+        }
+        
+        public delegate void ValueChanged(float value);
+        public event ValueChanged MaxHealthChanged;
+        public event ValueChanged HealthChanged;
+        public event ValueChanged RegenChanged;
+        
+        public float MaxHealth {
+            get => _maxHealth;
+            protected set
+            {
+                _maxHealth = value;
+                MaxHealthChanged?.Invoke(value);
+            } 
+        }
+        
+        public float CurrentHealth {
+            get => _currentHealth;
+            protected set
+            {
+                _currentHealth = value < 0 ? 0 : value;
+                HealthChanged?.Invoke(_currentHealth);
+            } 
+        }
+        
+        public delegate void Dead(Unit u);
+        public virtual event Dead OnDeath;
+
+        
         [SerializeField] private int _maxRevives;
         [SerializeField] private int _startRevives;
         private int _currentRevives;
-            
+        private Unit _unit;
+
         public int CurrentRiveves
         {
             get => _currentRevives;
@@ -30,14 +71,16 @@ namespace _Scripts.Unit.Player
         
         private void Start()
         {
+            _unit = GetComponent<Unit>();
+            
             CurrentHealth = MaxHealth;
             CurrentRiveves = _startRevives;
         }
         
         [PunRPC]
-        public override void TakeDamage(float damage)
+        public void TakeDamage(float damage)
         {
-            if (!Unit.enabled) return;
+            if (!_unit.enabled) return;
             
             CurrentHealth -= damage;
 
@@ -46,9 +89,8 @@ namespace _Scripts.Unit.Player
 
         private void Death()
         {
-            Unit.Animator.SetBool(Dead1, true);
-            Unit.enabled = false;
-            Unit.Controller.enabled = false;
+            _unit.Animator.SetBool(Dead1, true);
+            _unit.CurrentState = UnitState.Dead;
 
             if (_currentRevives > 0)
             {
@@ -57,9 +99,8 @@ namespace _Scripts.Unit.Player
                 Observable.Timer(TimeSpan.FromSeconds(5f)).Subscribe (_ => { 
                     
                     CurrentHealth = MaxHealth;
-                    Unit.Animator.SetBool(Dead1, false);
-                    Unit.enabled = true;
-                    Unit.Controller.enabled = true;
+                    _unit.Animator.SetBool(Dead1, false);
+                    _unit.CurrentState = UnitState.Default;
                     
                 }).AddTo (this);
             }

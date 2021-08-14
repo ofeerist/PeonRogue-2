@@ -4,6 +4,7 @@ namespace _Scripts.Unit
     {
         Default,
         Dash,
-        Attack
+        Attack,
+        Dead
     }
 }

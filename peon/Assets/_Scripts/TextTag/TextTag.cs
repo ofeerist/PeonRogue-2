@@ -11,15 +11,9 @@ namespace _Scripts.TextTag
 
         public float LifeTime
         {
-            get
-            {
-                return _destroyTime - Time.time;
-            }
+            get => _destroyTime - Time.time;
 
-            set
-            {
-                _destroyTime = value + Time.time;
-            }
+            set => _destroyTime = value + Time.time;
         }
 
         public Vector3 Velocity;
@@ -33,28 +27,16 @@ namespace _Scripts.TextTag
 
         public string Text
         {
-            get
-            {
-                return textMesh.text;
-            }
+            get => textMesh.text;
 
-            set
-            {
-                textMesh.text = value;
-            }
+            set => textMesh.text = value;
         }
 
         public UnityEngine.Color Color
         {
-            get
-            {
-                return textMesh.color;
-            }
+            get => textMesh.color;
 
-            set
-            {
-                textMesh.color = value;
-            }
+            set => textMesh.color = value;
         }
 
         protected override void OnTick()
@@ -66,7 +48,7 @@ namespace _Scripts.TextTag
             {
                 if (_destroy) Destroy(gameObject);
 
-                if (Velocity != null) transform.position += Velocity;
+                transform.position += Velocity;
             }
         }
 
