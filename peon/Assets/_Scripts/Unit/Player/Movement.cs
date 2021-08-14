@@ -94,6 +94,12 @@ namespace _Scripts.Unit.Player
             _unit = GetComponent<Unit>();
             _photonView = GetComponent<PhotonView>();
             _axeAttack = GetComponent<AxeAttack>();
+
+            if (!_photonView.IsMine)
+            {
+                _motor.enabled = false;
+                return;
+            }
             
             _motor.CharacterController = this;
             

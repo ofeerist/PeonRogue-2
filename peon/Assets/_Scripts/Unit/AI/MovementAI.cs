@@ -69,7 +69,11 @@ namespace _Scripts.Unit.AI
             
             _motor.CharacterController = this;
 
-            if (!PhotonNetwork.IsMasterClient) return;
+            if (!PhotonNetwork.IsMasterClient)
+            {
+                _motor.enabled = false;
+                return;
+            }
              
             Observable.Interval(TimeSpan.FromSeconds(.5f)).Subscribe(_ =>
             {
