@@ -637,7 +637,10 @@ MonoBehaviour:
   _layerMask:
     serializedVersion: 2
     m_Bits: 2048
+  _chase: 0
   _detectionRange: 15
+  _retreat: 1
+  _retreatDistance: 3
 --- !u!136 &4285803888989673807
 CapsuleCollider:
   m_ObjectHideFlags: 8
@@ -1336,15 +1339,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 97fcdabf93bb9b547bb0f09c9ab4294e, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 97fcdabf93bb9b547bb0f09c9ab4294e, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 97fcdabf93bb9b547bb0f09c9ab4294e, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 97fcdabf93bb9b547bb0f09c9ab4294e, type: 3}
       propertyPath: m_LocalPosition.x

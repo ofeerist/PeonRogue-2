@@ -83,9 +83,12 @@ namespace _Scripts.Unit.Player
             
             var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hit))
+            {
                 LookPosition = hit.point;
-            
-            
+                LookPosition.y = 0;
+            }
+
+
             _currentAttackNum = GetAttackNumFromCombo(_attackComboCount);
             var i = _currentAttackNum - 1;
             

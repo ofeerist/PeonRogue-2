@@ -236,6 +236,8 @@ namespace _Scripts.Unit.Player
                 }
                 case UnitState.Attack:
                 {
+                    currentVelocity = Vector3.zero;
+                    
                     if (_internalVelocityAdd.sqrMagnitude > 0f)
                     {
                         currentVelocity += _internalVelocityAdd;

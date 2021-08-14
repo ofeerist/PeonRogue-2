@@ -6,6 +6,7 @@ using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
 namespace _Scripts.Unit.AI
 {
@@ -45,12 +46,18 @@ namespace _Scripts.Unit.AI
         [Space]
         
         [SerializeField] private LayerMask _layerMask;
-        [SerializeField] private float _detectionRange;
 
+        [SerializeField] private bool _chase;
+        [SerializeField] private float _detectionRange;
+        
+        [SerializeField] private bool _retreat;
+        [SerializeField] private float _retreatDistance;
+        
         private NavMeshPath _path;
         private Vector3[] _corners;
         private int _currentCorner;
-        
+        private static readonly int Speed = Animator.StringToHash("Speed");
+
         private void Start()
         {
             _motor = GetComponent<KinematicCharacterMotor>();
@@ -58,19 +65,60 @@ namespace _Scripts.Unit.AI
             _photonView = GetComponent<PhotonView>();
 
             _motor.CharacterController = this;
-            
+
+            if (!PhotonNetwork.IsMasterClient) return;
+             
             Observable.Interval(TimeSpan.FromSeconds(.5f)).Subscribe(_ =>
             {
-                var results = new Collider[1];
-                var size = Physics.OverlapSphereNonAlloc(transform.position, _detectionRange, results, _layerMask);
-                for (int i = 0; i < size; i++)
+                if (_chase)
                 {
-                    var position = results[i].transform.position;
-                    SetDestination(position.x, position.y, position.z);
+                    var results = new Collider[1];
+                    var size = Physics.OverlapSphereNonAlloc(transform.position, _detectionRange, results, _layerMask);
+                    
+                    for (int i = 0; i < size; i++)
+                    {
+                        var position = results[i].transform.position;
+                        
+                        if(_retreat && Vector3.Distance(transform.position, position) < _retreatDistance) continue;
+                        
+                        _photonView.RPC(nameof(SetDestination), RpcTarget.AllViaServer, position.x, position.y,
+                            position.z);
+                    }
+                }
+
+                if (_retreat)
+                {
+                    var results = new Collider[1];
+                    var size = Physics.OverlapSphereNonAlloc(transform.position, _retreatDistance, results, _layerMask);
+                    for (int i = 0; i < size; i++)
+                    {
+                        var selfp = transform.position;
+                        var targetp = results[i].transform.position;
+                        var position = selfp + (selfp - targetp).normalized * _retreatDistance;
+
+                        _path = new NavMeshPath();
+                        if (!NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path) || _motor.Velocity.magnitude < 0.1f)
+                            position = RandomNavmeshLocation(1);
+
+                        _photonView.RPC(nameof(SetDestination), RpcTarget.AllViaServer, position.x, position.y,
+                            position.z);
+                    }
                 }
             }).AddTo(this);
         }
 
+        private Vector3 RandomNavmeshLocation(float radius)
+        {
+            var randomDirection = (Random.insideUnitSphere * radius) + transform.position;
+            var finalPosition = Vector3.zero;
+
+            if (NavMesh.SamplePosition(randomDirection, out var hit, radius, 1))
+            {
+                finalPosition = hit.position;
+            }
+            return finalPosition;
+        }
+        
         [PunRPC]
         private void SetDestination(float x, float y, float z)
         {
@@ -84,7 +132,7 @@ namespace _Scripts.Unit.AI
 
         private void Update()
         {
-            if (_corners.Length < 2) return;
+            if (_corners == null || _corners.Length < 2 || _corners.Length <= _currentCorner) return;
                 
             _moveInputVector = (_corners[_currentCorner] - transform.position).normalized;
 
@@ -161,11 +209,18 @@ namespace _Scripts.Unit.AI
                         currentVelocity *= (1f / (1f + (_drag * deltaTime)));
                     }
 
+                    _unit.Animator.SetFloat(Speed, currentVelocity.magnitude);
+                    
                     if (_internalVelocityAdd.sqrMagnitude > 0f)
                     {
                         currentVelocity += _internalVelocityAdd;
                         _internalVelocityAdd = Vector3.zero;
                     }
+                    break;
+                }
+                case UnitState.Attack:
+                {
+                    currentVelocity = Vector3.zero;
                     break;
                 }
             }
