@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using _Scripts.Level.Interactable.Talents.Data;
-using _Scripts.Unit.Player;
 using KinematicCharacterController;
 using Photon.Pun;
 using UnityEngine;
@@ -20,6 +19,9 @@ namespace _Scripts.Unit
 
         public Camera Camera;
         public UnitState CurrentState;
+
+        public float TimeToStan;
+        public float BounceDamage;
         
         public Dictionary<uint, Skill> Skills = new Dictionary<uint, Skill>();
 

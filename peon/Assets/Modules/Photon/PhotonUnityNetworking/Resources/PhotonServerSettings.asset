@@ -73,6 +73,8 @@ MonoBehaviour:
   - PlayHit
   - TakeDamage
   - DamageEffect
+  - PlayPreAttack
+  - SetTexttag
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -137,6 +137,8 @@ namespace _Scripts.Unit.AI
         {
             if (!PhotonNetwork.IsMasterClient) return;
             
+            _unit.Animator.SetFloat(Speed, _motor.Velocity.magnitude);
+            
             if (_corners == null || _corners.Length < 2 || _corners.Length <= _currentCorner) return;
                 
             _moveInputVector = (_corners[_currentCorner] - transform.position).normalized;
@@ -214,8 +216,6 @@ namespace _Scripts.Unit.AI
                         currentVelocity *= (1f / (1f + (_drag * deltaTime)));
                     }
 
-                    _unit.Animator.SetFloat(Speed, currentVelocity.magnitude);
-                    
                     if (_internalVelocityAdd.sqrMagnitude > 0f)
                     {
                         currentVelocity += _internalVelocityAdd;

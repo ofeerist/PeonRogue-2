@@ -1,4 +1,5 @@
 using System;
+using _Scripts.Unit.AI;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
@@ -82,8 +83,8 @@ namespace _Scripts.Unit.Player
                     var dot = Vector3.Dot(posTo, forward);
                     if (dot >= Mathf.Cos(_dashAttackAngle))
                     {
-                        unit.PhotonView.RPC(nameof(unit.UnitHealth.TakeDamage), RpcTarget.AllViaServer,
-                            _dashAttackDamage);
+                        unit.PhotonView.RPC(nameof(AIHealth.TakeDamage), RpcTarget.AllViaServer,
+                            _dashAttackDamage, _unit.BounceDamage, _unit.TimeToStan);
                         _photonView.RPC(nameof(PlayHit), RpcTarget.AllViaServer, new Random().Next(0));
 
                         posTo.y = 0;

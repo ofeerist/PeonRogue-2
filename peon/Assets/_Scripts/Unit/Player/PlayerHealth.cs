@@ -45,11 +45,7 @@ namespace _Scripts.Unit.Player
                 HealthChanged?.Invoke(_currentHealth);
             } 
         }
-        
-        public delegate void Dead(Unit u);
-        public virtual event Dead OnDeath;
 
-        
         [SerializeField] private int _maxRevives;
         [SerializeField] private int _startRevives;
         private int _currentRevives;

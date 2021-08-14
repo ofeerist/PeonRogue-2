@@ -277,7 +277,9 @@ namespace _Scripts.Unit.Player
                 }
                 case UnitState.Attack:
                 {
-                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation((_axeAttack.LookPosition - transform.position).normalized, Vector3.up), 10 * _rotationSpeed * Time.deltaTime);
+                    var dir = (_axeAttack.LookPosition - transform.position).normalized;
+                    dir.y = 0;
+                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(dir, Vector3.up), 10 * _rotationSpeed * Time.deltaTime);
                     break;
                 }
             }

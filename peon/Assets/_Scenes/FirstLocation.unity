@@ -5451,13 +5451,9 @@ MonoBehaviour:
   WaveInfos:
   - UnitData:
     - {fileID: 11400000, guid: 7e26ce1a9f2e78012980adbab7553ab9, type: 2}
-    - {fileID: 11400000, guid: acdfe86eba0c405eda6a4d45e0b0693f, type: 2}
     MaxUsages:
     - Target: 2
-      MaxUsageTimes: 5
-      CurrentUsageTimes: 0
-    - Target: 1
-      MaxUsageTimes: 3
+      MaxUsageTimes: 1
       CurrentUsageTimes: 0
 --- !u!4 &1120854112
 Transform:

@@ -82,19 +82,24 @@ namespace _Scripts.Unit.AI
 
             var first = state.length * .3f;
             var second = state.length * .7f;
-            
-            Observable.Timer(TimeSpan.FromSeconds(first)).Subscribe(x =>
+
+            Observable.NextFrame().Subscribe(c =>
             {
-                DoDamage(_damage);
+                if (!state.IsTag("Attack")) return;
                 
-                Observable.Timer(TimeSpan.FromSeconds(second)).Subscribe(z =>
-                    {
-                        _attackCooldown = Time.time; 
-                        _unit.CurrentState = UnitState.Default;
-                    })
-                    .AddTo(this);
+                Observable.Timer(TimeSpan.FromSeconds(first)).Subscribe(x =>
+                {
+                    if(_unit.CurrentState == UnitState.Attack) DoDamage(_damage);
+                    
+                    Observable.Timer(TimeSpan.FromSeconds(second)).Subscribe(z =>
+                        {
+                            _attackCooldown = Time.time; 
+                            if(_unit.CurrentState == UnitState.Attack)
+                                _unit.CurrentState = UnitState.Default; 
+                        }).AddTo(this);
+                }).AddTo(this);
             }).AddTo(this);
-            
+
             _photonView.RPC(nameof(PlayPreAttack), RpcTarget.AllViaServer, Random.Range(0, 100));
         }
 

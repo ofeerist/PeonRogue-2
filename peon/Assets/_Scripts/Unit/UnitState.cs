@@ -5,6 +5,7 @@ namespace _Scripts.Unit
         Default,
         Dash,
         Attack,
+        InStan,
         Dead
     }
 }
