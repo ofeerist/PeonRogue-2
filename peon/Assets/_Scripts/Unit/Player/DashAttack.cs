@@ -77,7 +77,7 @@ namespace _Scripts.Unit.Player
             for (int i = 0; i < size; i++)
             {
                 var unit = results[i].GetComponent<Unit>();
-                if (unit != null && unit.UnitHealth != null && unit.enabled)
+                if (unit != null && unit.enabled)
                 {
                     var posTo = (unit.transform.position - position).normalized;
                     var dot = Vector3.Dot(posTo, forward);
@@ -88,7 +88,7 @@ namespace _Scripts.Unit.Player
                         _photonView.RPC(nameof(PlayHit), RpcTarget.AllViaServer, new Random().Next(0));
 
                         posTo.y = 0;
-                        unit.UnitMovement.AddImpulse((posTo) * _dashAttackKnockback);
+                        //unit.UnitMovement.AddImpulse((posTo) * _dashAttackKnockback);
                     }
                 }
             }

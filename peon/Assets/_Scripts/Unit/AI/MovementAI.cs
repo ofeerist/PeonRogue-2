@@ -1,11 +1,9 @@
 using System;
-using _Scripts.Unit.Player;
 using KinematicCharacterController;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 using Random = UnityEngine.Random;
 
 namespace _Scripts.Unit.AI
@@ -53,6 +51,10 @@ namespace _Scripts.Unit.AI
         [SerializeField] private bool _retreat;
         [SerializeField] private float _retreatDistance;
 
+        public delegate void MovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint);
+
+        public event MovementHit ByMovementHit;
+        
         private MeleeAIAttack _aiAttack;
         
         private NavMeshPath _path;
@@ -232,6 +234,24 @@ namespace _Scripts.Unit.AI
                     currentVelocity = Vector3.zero;
                     break;
                 }
+                case UnitState.Dash:
+                {
+                    if (_internalVelocityAdd.sqrMagnitude > 0f)
+                    {
+                        currentVelocity = GetReorientedInput(ref currentVelocity, _internalVelocityAdd.normalized) * _internalVelocityAdd.magnitude;
+
+                        _internalVelocityAdd = Vector3.zero;
+                    }
+                    else
+                    {
+                        currentVelocity = Vector3.zero;
+                    }
+                    
+                    currentVelocity += _gravity * deltaTime;
+                    currentVelocity *= (1f / (1f + (_drag * deltaTime)));
+                    
+                    break;
+                }
             }
         }
         
@@ -242,6 +262,11 @@ namespace _Scripts.Unit.AI
                 case UnitState.Default:
                 {
                     _internalVelocityAdd += velocity;
+                    break;
+                }
+                case UnitState.Dash:
+                {
+                    _internalVelocityAdd = velocity;
                     break;
                 }
             }
@@ -285,6 +310,7 @@ namespace _Scripts.Unit.AI
 
         public bool IsColliderValidForCollisions(Collider coll)
         {
+            if (coll.gameObject.layer == 11) return false;
             return true;
         }
 
@@ -296,7 +322,7 @@ namespace _Scripts.Unit.AI
         public void OnMovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint,
             ref HitStabilityReport hitStabilityReport)
         {
-
+            ByMovementHit?.Invoke(hitCollider, hitNormal, hitPoint);
         }
 
         public void ProcessHitStabilityReport(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint, Vector3 atCharacterPosition,

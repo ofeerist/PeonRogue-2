@@ -309,7 +309,10 @@ namespace _Scripts.Unit.Player
 
         public bool IsColliderValidForCollisions(Collider coll)
         {
-            if (_unit.CurrentState == UnitState.Dash && coll.gameObject.layer == 8) return false;
+            if (_unit.CurrentState == UnitState.Dash && coll.gameObject.layer == 8)
+            {
+                return false;
+            }
             
             return true;
         }
@@ -333,7 +336,7 @@ namespace _Scripts.Unit.Player
 
         public void OnDiscreteCollisionDetected(Collider hitCollider)
         {
-
+            
         }
     }
 }
