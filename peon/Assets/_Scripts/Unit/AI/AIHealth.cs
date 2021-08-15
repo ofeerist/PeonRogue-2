@@ -43,7 +43,9 @@ namespace _Scripts.Unit.AI
         [SerializeField] private AudioSource _onDeath;
         
         private static readonly int Dead1 = Animator.StringToHash("Dead");
-
+        
+        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
+        
         public AIHealth(float bounceDamage)
         {
             BounceDamage = bounceDamage;
@@ -54,11 +56,18 @@ namespace _Scripts.Unit.AI
 
         private Unit _unit;
         private KinematicCharacterMotor _motor;
+        private MovementAI _movement;
+
+        private void Awake()
+        {
+            _serialDisposable.AddTo(this);
+        }
 
         private void Start()
         {
             _unit = GetComponent<Unit>();
             _motor = GetComponent<KinematicCharacterMotor>();
+            _movement = GetComponent<MovementAI>();
             
             _currentHealth = _maxHealth;
         }
@@ -68,6 +77,12 @@ namespace _Scripts.Unit.AI
             _maxHealth = maxHealth;
         }
 
+        [PunRPC]
+        public void AddVelocity(Vector3 velocity)
+        {
+            _movement.AddVelocity(velocity);
+        }
+        
         [PunRPC]
         public void TakeDamage(float damage, float bounceDamage, float stanTime)
         {
@@ -97,14 +112,14 @@ namespace _Scripts.Unit.AI
             _stanTime = time;
             var stanTime = _currentStanTime = Time.time + time;
 
-            Observable.Timer(TimeSpan.FromSeconds(time)).Subscribe(x =>
+            _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(time)).Subscribe(x =>
             {
                 if (Math.Abs(_currentStanTime - stanTime) < .01)
                 {
                     _unit.CurrentState = UnitState.Default;
                     _unit.Animator.speed = 1;
                 }
-            }).AddTo(this);
+            });
         }
 
         private void SetTextTag(float damage)
@@ -139,10 +154,10 @@ namespace _Scripts.Unit.AI
 
             OnDeath?.Invoke(_unit);
 
-            Observable.Timer(TimeSpan.FromSeconds(3f)).Subscribe(x =>
+            _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(3f)).Subscribe(x =>
             {
-                Observable.FromMicroCoroutine(Dispose).Subscribe().AddTo(this);
-            }).AddTo(this);
+                _serialDisposable.Disposable = Observable.FromMicroCoroutine(Dispose).Subscribe();
+            });
         }
 
         private IEnumerator Dispose()

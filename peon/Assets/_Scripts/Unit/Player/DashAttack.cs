@@ -29,6 +29,8 @@ namespace _Scripts.Unit.Player
         [SerializeField] private LayerMask _layerMask;
         private PhotonView _photonView;
 
+        private readonly Collider[] _results = new Collider[10];
+        
         private void Start()
         {
             _unit = GetComponent<Unit>();
@@ -72,11 +74,10 @@ namespace _Scripts.Unit.Player
             var position = transform1.position;
             var forward = transform1.forward;
             
-            var results = new Collider[10];
-            var size = Physics.OverlapSphereNonAlloc(position, _dashAttackRange, results, _layerMask);
+            var size = Physics.OverlapSphereNonAlloc(position, _dashAttackRange, _results, _layerMask);
             for (int i = 0; i < size; i++)
             {
-                var unit = results[i].GetComponent<Unit>();
+                var unit = _results[i].GetComponent<Unit>();
                 if (unit != null && unit.enabled)
                 {
                     var posTo = (unit.transform.position - position).normalized;
@@ -88,7 +89,8 @@ namespace _Scripts.Unit.Player
                         _photonView.RPC(nameof(PlayHit), RpcTarget.AllViaServer, new Random().Next(0));
 
                         posTo.y = 0;
-                        //unit.UnitMovement.AddImpulse((posTo) * _dashAttackKnockback);
+                        unit.PhotonView.RPC(nameof(AIHealth.AddVelocity), RpcTarget.AllViaServer,
+                            (posTo) * _dashAttackKnockback);
                     }
                 }
             }

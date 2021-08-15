@@ -57,11 +57,13 @@ namespace _Scripts.Unit.AI
         
         private MeleeAIAttack _aiAttack;
         
-        private NavMeshPath _path;
+        private NavMeshPath _path = new NavMeshPath();
         private Vector3[] _corners;
         private int _currentCorner;
         private static readonly int Speed = Animator.StringToHash("Speed");
 
+        private readonly Collider[] _results = new Collider[1];
+        
         private void Start()
         {
             _motor = GetComponent<KinematicCharacterMotor>();
@@ -81,12 +83,11 @@ namespace _Scripts.Unit.AI
             {
                 if (_chase)
                 {
-                    var results = new Collider[1];
-                    var size = Physics.OverlapSphereNonAlloc(transform.position, _detectionRange, results, _layerMask);
+                    var size = Physics.OverlapSphereNonAlloc(transform.position, _detectionRange, _results, _layerMask);
                     
                     for (int i = 0; i < size; i++)
                     {
-                        var position = results[i].transform.position;
+                        var position = _results[i].transform.position;
                         
                         if(_retreat && Vector3.Distance(transform.position, position) < _retreatDistance) continue;
                         
@@ -134,7 +135,6 @@ namespace _Scripts.Unit.AI
             var destination = new Vector3(x, y, z);
             
             _currentCorner = 1;
-            _path = new NavMeshPath();
             NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, _path);
             _corners = _path.corners;
         }
@@ -235,6 +235,7 @@ namespace _Scripts.Unit.AI
                     break;
                 }
                 case UnitState.Dash:
+                case UnitState.InStan:
                 {
                     if (_internalVelocityAdd.sqrMagnitude > 0f)
                     {

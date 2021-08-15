@@ -56,7 +56,22 @@ namespace _Scripts.Unit.Player
         private static readonly int Attack1 = Animator.StringToHash("Attack");
 
         [HideInInspector] public Vector3 LookPosition;
+
+        private SerialDisposable _attack;
+        private SerialDisposable _effect;
+        private SerialDisposable _damageEffect;
         
+        private readonly Collider[] _results = new Collider[6];
+
+        private static readonly float[] _cooldowns = new[] { 0.12f, 0.09f, 0.3f };
+        
+        private void Awake()
+        {
+            _attack.AddTo(this);
+            _effect.AddTo(this);
+            _damageEffect.AddTo(this);
+        }
+
         private void Start()
         {
             _unit = GetComponent<Unit>();
@@ -69,12 +84,12 @@ namespace _Scripts.Unit.Player
                     if (_attackCooldownTimer + _attackCooldown > Time.time) return;
                     if (_unit.CurrentState != UnitState.Default) return;
 
-                    Observable.NextFrame().Subscribe(z =>
+                    _attack.Disposable = Observable.NextFrame().Subscribe(z =>
                     {
                         if (_unit.CurrentState != UnitState.Default) return;
                         Attack();
 
-                    }).AddTo(this);
+                    });
                 }).AddTo (this); 
         }
 
@@ -88,35 +103,33 @@ namespace _Scripts.Unit.Player
                 LookPosition = hit.point;
                 LookPosition.y = 0;
             }
-
-
+            
             _currentAttackNum = GetAttackNumFromCombo(_attackComboCount);
             var i = _currentAttackNum - 1;
             
             // Attack effect
-            var cooldowns = new[] { 0.12f, 0.09f, 0.3f };
-            Observable.Timer(TimeSpan.FromSeconds(cooldowns[i])).Subscribe(x =>
+            _attack.Disposable = Observable.Timer(TimeSpan.FromSeconds(_cooldowns[i])).Subscribe(z =>
             {
                 _photonView.RPC(nameof(AttackEffect), RpcTarget.AllViaServer, i);
-            }).AddTo(this);
+                
+                // Damage
+                _attack.Disposable = Observable.Timer(TimeSpan.FromSeconds(_attacks[i].DamageOffset)).Subscribe(x =>
+                {
+                    DoDamage(_currentAttackNum);
+                    AddCombo();
+                    
+                    // End Attack
+                    _attack.Disposable = Observable.Timer(TimeSpan.FromSeconds(_attackTime)).Subscribe(c =>
+                    {
+                        _attackCooldownTimer = Time.time;
+                        _unit.CurrentState = UnitState.Default;
+                    });
+                });
+            });
             
             // Animator
             _unit.Animator.SetInteger(AttackNum, _currentAttackNum);
             _unit.Animator.SetTrigger(Attack1);
-            
-            // Damage
-            Observable.Timer(TimeSpan.FromSeconds(_attacks[i].DamageOffset)).Subscribe(x =>
-            {
-                DoDamage(_currentAttackNum);
-                AddCombo();
-            }).AddTo(this);
-            
-            // End Attack
-            Observable.Timer(TimeSpan.FromSeconds(_attackTime)).Subscribe(x =>
-            {
-                _attackCooldownTimer = Time.time;
-                _unit.CurrentState = UnitState.Default;
-            }).AddTo(this);
         }
         
         [PunRPC]
@@ -126,10 +139,10 @@ namespace _Scripts.Unit.Player
             eff.transform.SetPositionAndRotation(_attacks[attackNum].AttackEffect.transform.position, _attacks[attackNum].AttackEffect.transform.rotation);
             var m = eff.main; m.simulationSpeed = _attacks[attackNum].EffectSpeed;
 
-            Observable.Timer(TimeSpan.FromSeconds(.6f)).Subscribe(z =>
+            _effect.Disposable = Observable.Timer(TimeSpan.FromSeconds(.6f)).Subscribe(z =>
             {
                 Destroy(eff.gameObject);
-            }).AddTo(this);
+            });
                 
             eff.Play();
         }
@@ -162,13 +175,12 @@ namespace _Scripts.Unit.Player
             var damage = _attacks[i].Damage;
 
             var _transform = _attackTransform;
-
-            var results = new Collider[10];
-            var size = Physics.OverlapSphereNonAlloc(_transform.position, range, results, _layerMask);
+            
+            var size = Physics.OverlapSphereNonAlloc(_transform.position, range, _results, _layerMask);
 
             for(int j = 0; j < size; j++)
             {
-                var unit = results[j].GetComponent<Unit>();
+                var unit = _results[j].GetComponent<Unit>();
                 if (unit != null && unit.enabled)
                 {
                     var uTransform = unit.transform;
@@ -184,7 +196,8 @@ namespace _Scripts.Unit.Player
                         _photonView.RPC(nameof(DamageEffect), RpcTarget.AllViaServer, Random.Range(0, 100), i, position.x, position.y, position.z);
 
                         posTo.y = 0;
-                        unit.UnitMovement.AddImpulse((posTo) * _attacks[i].Knockback);
+                        unit.PhotonView.RPC(nameof(AIHealth.AddVelocity), RpcTarget.AllViaServer,
+                            (posTo) * _attacks[i].Knockback);
                     }
                 }
             }
@@ -200,10 +213,10 @@ namespace _Scripts.Unit.Player
             var p = Instantiate(_attacks[i].HitEffect);
             p.transform.position = pos + new Vector3(0, .5f, 0);
             
-            Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(_ =>
+            _damageEffect.Disposable = Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(_ =>
             {
                 Destroy(p.gameObject);
-            }).AddTo(this);
+            });
         }
         
     }

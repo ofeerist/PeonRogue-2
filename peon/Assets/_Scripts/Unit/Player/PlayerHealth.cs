@@ -50,6 +50,14 @@ namespace _Scripts.Unit.Player
         [SerializeField] private int _startRevives;
         private int _currentRevives;
         private Unit _unit;
+        private Movement _movement;
+
+        private SerialDisposable _serialDisposable;
+
+        private void Awake()
+        {
+            _serialDisposable.AddTo(this);
+        }
 
         public int CurrentRiveves
         {
@@ -68,9 +76,16 @@ namespace _Scripts.Unit.Player
         private void Start()
         {
             _unit = GetComponent<Unit>();
+            _movement = GetComponent<Movement>();
             
             CurrentHealth = MaxHealth;
             CurrentRiveves = _startRevives;
+        }
+        
+        [PunRPC]
+        public void AddVelocity(Vector3 velocity)
+        {
+            _movement.AddVelocity(velocity);
         }
         
         [PunRPC]
@@ -92,13 +107,13 @@ namespace _Scripts.Unit.Player
             {
                 CurrentRiveves -= 1;
                 
-                Observable.Timer(TimeSpan.FromSeconds(5f)).Subscribe (_ => { 
+                _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(5f)).Subscribe (_ => { 
                     
                     CurrentHealth = MaxHealth;
                     _unit.Animator.SetBool(Dead1, false);
                     _unit.CurrentState = UnitState.Default;
                     
-                }).AddTo (this);
+                });
             }
         }
 

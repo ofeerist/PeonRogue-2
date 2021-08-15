@@ -544,6 +544,7 @@ MonoBehaviour:
   _range: 1
   _angle: 100
   _damage: 30
+  _knockback: 0
   _audioSource: {fileID: 1360062014993246820}
   _preAttack:
   - {fileID: 8300000, guid: ae1bc64b1d38d2145bb6e23ebe737b11, type: 3}
@@ -773,6 +774,7 @@ MonoBehaviour:
   _dashMinDetectRange: 7
   _dashDamageRange: 2
   _dashDamage: 50
+  _knockback: 0
   _dashDamageEffect: {fileID: 8911252369431571203, guid: 6379a82e49f161b4a8af1572ae62b7fa, type: 3}
   _dashSpeed: 9
   _timeToPrepare: 1

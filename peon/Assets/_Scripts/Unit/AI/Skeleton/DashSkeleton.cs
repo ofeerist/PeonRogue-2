@@ -16,6 +16,7 @@ namespace _Scripts.Unit.AI.Skeleton
 
         [SerializeField] private float _dashDamageRange;
         [SerializeField] private float _dashDamage;
+        [SerializeField] private float _knockback;
         [SerializeField] private ParticleSystem _dashDamageEffect;
 
         [SerializeField] private float _dashSpeed;
@@ -38,6 +39,11 @@ namespace _Scripts.Unit.AI.Skeleton
         private PhotonView _photonView;
         private static readonly int Attack1 = Animator.StringToHash("Attack");
 
+        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
+        private readonly SerialDisposable _effectDisposable = new SerialDisposable();
+        
+        private readonly Collider[] _results = new Collider[6];
+        
         public void SetData(float maxDetect, float minDetect, float range, float damage, float speed, float prepareTime, float cooldown)
         {
             _dashMaxDetectRange = maxDetect;
@@ -49,12 +55,20 @@ namespace _Scripts.Unit.AI.Skeleton
             _dashCooldown = cooldown;
         }
 
+        private void Awake()
+        {
+            _serialDisposable.AddTo(this);
+            _effectDisposable.AddTo(this);
+        }
+
         private void Start()
         {
             _dashCooldownTimer = 0;
 
             _unit = GetComponent<Unit>();
             _photonView = GetComponent<PhotonView>();
+
+            if (!PhotonNetwork.IsMasterClient) return;
             
             _movement = _unit.GetComponent<MovementAI>();
             _movement.ByMovementHit += (hitCollider, normal, point) =>
@@ -69,16 +83,15 @@ namespace _Scripts.Unit.AI.Skeleton
             Observable.Interval(TimeSpan.FromSeconds(.5f)).Subscribe(x =>
             {
                 if (_unit.CurrentState != UnitState.Default || _dashCooldownTimer > Time.time) return;
-
-                var results = new Collider[6];
-                var size = Physics.OverlapSphereNonAlloc(transform.position, _dashMaxDetectRange, results, _layerMask);
+                
+                var size = Physics.OverlapSphereNonAlloc(transform.position, _dashMaxDetectRange, _results, _layerMask);
                 for (int i = 0; i < size; i++)
                 {
-                    var targetPosition = results[i].transform.position;
+                    var targetPosition = _results[i].transform.position;
                     
                     if (Vector3.Distance(targetPosition, transform.position) < _dashMinDetectRange) continue;
 
-                    if (results[i].GetComponent<Unit>().enabled) 
+                    if (_results[i].GetComponent<Unit>().enabled) 
                     {
                         Dash(targetPosition);
 
@@ -97,7 +110,7 @@ namespace _Scripts.Unit.AI.Skeleton
         {
             _aimEffect.Stop();
             var eff = _aimEffect;
-            Observable.Timer(TimeSpan.FromSeconds(.4f)).Subscribe(z => { Destroy(eff.gameObject); }).AddTo(this);
+            _effectDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(.4f)).Subscribe(z => { Destroy(eff.gameObject); });
         }
 
         [PunRPC]
@@ -112,11 +125,11 @@ namespace _Scripts.Unit.AI.Skeleton
         private void DestroyDamageEffect()
         {
             var eff = _damageEffect;
-            Observable.Timer(TimeSpan.FromSeconds(1f)).Subscribe(z =>
+            _effectDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(1f)).Subscribe(z =>
             {
                 eff.Stop();
                 Destroy(eff.gameObject);
-            }).AddTo(this);
+            });
         }
         
         private void Dash(Vector3 targetPosition)
@@ -130,21 +143,20 @@ namespace _Scripts.Unit.AI.Skeleton
 
             _unit.Animator.SetTrigger(Attack1);
 
-            Observable.Timer(TimeSpan.FromSeconds(_stopAnimationTime)).Subscribe(c =>
+            _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(_stopAnimationTime)).Subscribe(c =>
             {
                 _unit.Animator.speed = 0;
-                
-                Observable.Timer(TimeSpan.FromSeconds(_timeToPrepare)).Subscribe(x =>
+
+                _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(_timeToPrepare)).Subscribe(x =>
                 {
                     _photonView.RPC(nameof(DestroyEffect), RpcTarget.AllViaServer);
 
-                    Observable.FromMicroCoroutine(ProccessMove).Subscribe(z =>
+                    _serialDisposable.Disposable = Observable.FromMicroCoroutine(ProccessMove).Subscribe(z =>
                     {
                         _unit.Animator.speed = 1;
-                    }).AddTo(this);
-                }).AddTo(this);
-                
-            }).AddTo(this);
+                    });
+                });
+            });
         }
         
         private IEnumerator ProccessMove()
@@ -183,15 +195,17 @@ namespace _Scripts.Unit.AI.Skeleton
             _photonView.RPC(nameof(StartDamageEffect), RpcTarget.AllViaServer, position.x, position.y, position.z);
             _photonView.RPC(nameof(DestroyDamageEffect), RpcTarget.AllViaServer);
             
-            var results = new Collider[6];
-            var size = Physics.OverlapSphereNonAlloc(position, _dashDamageRange, results, _layerMask);
+            var size = Physics.OverlapSphereNonAlloc(position, _dashDamageRange, _results, _layerMask);
             for (int i = 0; i < size; i++)
             {
-                var unit = results[i].GetComponent<Unit>();
+                var unit = _results[i].GetComponent<Unit>();
+                var posTo = (unit.transform.position - transform.position).normalized;
+                
                 if (unit.enabled)
                 {
                     unit.PhotonView.RPC(nameof(PlayerHealth.TakeDamage), RpcTarget.AllViaServer, _dashDamage);
-                    
+                    unit.PhotonView.RPC(nameof(AIHealth.AddVelocity), RpcTarget.AllViaServer,
+                        (posTo) * _knockback);
                 }
             }
         }

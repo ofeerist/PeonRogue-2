@@ -15,7 +15,8 @@ namespace _Scripts.Unit.AI
         [SerializeField] private float _range;
         [SerializeField] private float _angle;
         [SerializeField] private float _damage;
-
+        [SerializeField] private float _knockback;
+        
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioClip[] _preAttack;
         [SerializeField] private AudioClip[] _hit;
@@ -28,15 +29,23 @@ namespace _Scripts.Unit.AI
         
         private PhotonView _photonView;
         private Unit _unit;
+        private readonly Collider[] _results = new Collider[6];
 
         [HideInInspector] public Vector3 ToTarget;
         
+        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
+
         public void SetData(float attackSpeed, float range, float angle, float damage)
         {
             _speed = attackSpeed;
             _range = range;
             _angle = angle;
             _damage = damage;
+        }
+
+        private void Awake()
+        {
+            _serialDisposable.AddTo(this);
         }
 
         private void Start()
@@ -54,17 +63,16 @@ namespace _Scripts.Unit.AI
 
         private void FindTarget()
         {
-            if (!_unit.enabled || _unit.CurrentState != UnitState.Default) return;
+            if (_unit.CurrentState != UnitState.Default) return;
 
             if (_attackCooldown + _speed <= Time.time)
             {
-                var results = new Collider[6];
-                var size = Physics.OverlapSphereNonAlloc(transform.position, _range, results, _layerMask);
+                var size = Physics.OverlapSphereNonAlloc(transform.position, _range, _results, _layerMask);
                 for (int i = 0; i < size; i++)
                 {
-                    if (results[i].GetComponent<Unit>().enabled)
+                    if (_results[i].GetComponent<Unit>().enabled)
                     {
-                        ToTarget = (results[i].transform.position - transform.position).normalized;
+                        ToTarget = (_results[i].transform.position - transform.position).normalized;
                         Attack();
                         
                         return;
@@ -77,25 +85,30 @@ namespace _Scripts.Unit.AI
         {
             _unit.CurrentState = UnitState.Attack;
             _unit.Animator.SetTrigger(Attack1);
-            
-            var state = _unit.Animator.GetCurrentAnimatorStateInfo(0);
 
-            var first = state.length * .3f;
-            var second = state.length * .7f;
-            
-            Observable.Timer(TimeSpan.FromSeconds(first)).Subscribe(x =>
+            _serialDisposable.Disposable = Observable.NextFrame().Subscribe(c =>
             {
-                if(_unit.CurrentState == UnitState.Attack) DoDamage(_damage);
-                
-                Observable.Timer(TimeSpan.FromSeconds(second)).Subscribe(z =>
-                    {
-                        _attackCooldown = Time.time; 
-                        if(_unit.CurrentState == UnitState.Attack)
-                            _unit.CurrentState = UnitState.Default; 
-                    }).AddTo(this);
-            }).AddTo(this);
 
-            _photonView.RPC(nameof(PlayPreAttack), RpcTarget.AllViaServer, Random.Range(0, 100));
+                var state = _unit.Animator.GetCurrentAnimatorStateInfo(0);
+                print(state.length);
+                var first = state.length * .3f;
+                var second = state.length * .7f;
+
+                _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(first)).Subscribe(x =>
+                {
+                    if (_unit.CurrentState == UnitState.Attack) DoDamage(_damage);
+
+                    _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(second)).Subscribe(z =>
+                    {
+                        _attackCooldown = Time.time;
+                        if (_unit.CurrentState == UnitState.Attack)
+                            _unit.CurrentState = UnitState.Default;
+                    });
+                });
+
+                _photonView.RPC(nameof(PlayPreAttack), RpcTarget.AllViaServer, Random.Range(0, 100));
+
+            });
         }
 
         [PunRPC]
@@ -124,13 +137,12 @@ namespace _Scripts.Unit.AI
         {
             var _transform = transform;
             
-            var results = new Collider[6];
-            var size = Physics.OverlapSphereNonAlloc(_transform.position, _range, results, _layerMask);
+            var size = Physics.OverlapSphereNonAlloc(_transform.position, _range, _results, _layerMask);
             int damaged = 0;
             
             for (int i = 0; i < size; i++)
             {
-                var unit = results[i].GetComponent<Unit>();
+                var unit = _results[i].GetComponent<Unit>();
                 
                 var posTo = (unit.transform.position - _transform.position).normalized;
                 var dot = Vector3.Dot(posTo, _transform.forward);
@@ -138,6 +150,9 @@ namespace _Scripts.Unit.AI
                 {
                     unit.PhotonView.RPC(nameof(PlayerHealth.TakeDamage), RpcTarget.AllViaServer, damage);
                     _photonView.RPC(nameof(PlayHit), RpcTarget.AllViaServer, Random.Range(0, 100));
+                    
+                    unit.PhotonView.RPC(nameof(AIHealth.AddVelocity), RpcTarget.AllViaServer,
+                        (posTo) * _knockback);
                     
                     damaged++;
                 } 
