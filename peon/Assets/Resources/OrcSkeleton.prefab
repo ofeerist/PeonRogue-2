@@ -472,6 +472,7 @@ MonoBehaviour:
   CurrentState: 0
   TimeToStan: 0
   BounceDamage: 0
+  CanBeHooked: 0
 --- !u!114 &9059189167889131847
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,6 +558,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 706a49ea71e5fc6488268acc029d5230, type: 3}
   - {fileID: 8300000, guid: 977f1c3c6c9d6674383d3559cdc2c793, type: 3}
   ToTarget: {x: 0, y: 0, z: 0}
+  _clip: {fileID: 6720303635017113406, guid: 97fcdabf93bb9b547bb0f09c9ab4294e, type: 3}
 --- !u!136 &4285803888989673807
 CapsuleCollider:
   m_ObjectHideFlags: 8

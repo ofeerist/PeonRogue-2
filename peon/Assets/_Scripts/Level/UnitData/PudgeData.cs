@@ -46,13 +46,13 @@ namespace _Scripts.Level.UnitData
             var aiMovement = unit.GetComponent<AIMovement>();
             var aiAttack = unit.GetComponent<AIAttack>();
             var stench = unit.GetComponent<PudgeStench>();
-            var hook = unit.GetComponent<PudgeHook>();
+            //var hook = unit.GetComponent<PudgeHook>();
 
             health.SetData(_maxHealth.GetValue(), _stanTime.GetValue());
             aiMovement.SetData(_detectionRange.GetValue(), _rotateSpeed.GetValue(), _speed.GetValue());
             aiAttack.SetData(_attackSpeed.GetValue(), _range.GetValue(), _angle.GetValue(), _damage.GetValue());
             stench.SetData(_stenchUseRange.GetValue(), _stenchRange.GetValue(), _stenchDamage.GetValue(), _stenchUsingTime.GetValue(), _stenchCooldown.GetValue());
-            hook.SetData(_maxHookDistance.GetValue(), _hookSpeed.GetValue(), _hookBackwardSpeed.GetValue(), _rangeToUseHook.GetValue(), _minRangeToUseHook.GetValue(), _hookCooldown.GetValue()); 
+            //hook.SetData(_maxHookDistance.GetValue(), _hookSpeed.GetValue(), _hookBackwardSpeed.GetValue(), _rangeToUseHook.GetValue(), _minRangeToUseHook.GetValue(), _hookCooldown.GetValue()); 
         }
     }
 }

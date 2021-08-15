@@ -57,9 +57,9 @@ namespace _Scripts.Unit.Player
 
         [HideInInspector] public Vector3 LookPosition;
 
-        private SerialDisposable _attack;
-        private SerialDisposable _effect;
-        private SerialDisposable _damageEffect;
+        private readonly SerialDisposable _attack = new SerialDisposable();
+        private readonly SerialDisposable _effect = new SerialDisposable();
+        private readonly SerialDisposable _damageEffect = new SerialDisposable();
         
         private readonly Collider[] _results = new Collider[6];
 

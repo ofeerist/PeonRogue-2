@@ -75,6 +75,13 @@ MonoBehaviour:
   - DamageEffect
   - PlayPreAttack
   - SetTexttag
+  - DestroyEffect
+  - StartEffect
+  - DestroyDamageEffect
+  - StartDamageEffect
+  - AddVelocity
+  - UseStench
+  - Hook
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

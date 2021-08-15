@@ -8,6 +8,7 @@ namespace _Scripts.Unit
         Dash,
         Attack,
         InStan,
-        Dead
+        Dead,
+        Hooked
     }
 }

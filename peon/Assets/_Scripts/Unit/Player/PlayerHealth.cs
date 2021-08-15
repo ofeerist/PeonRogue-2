@@ -52,7 +52,7 @@ namespace _Scripts.Unit.Player
         private Unit _unit;
         private Movement _movement;
 
-        private SerialDisposable _serialDisposable;
+        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
 
         private void Awake()
         {

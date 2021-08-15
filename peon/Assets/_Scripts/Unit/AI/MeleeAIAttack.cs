@@ -35,6 +35,8 @@ namespace _Scripts.Unit.AI
         
         private readonly SerialDisposable _serialDisposable = new SerialDisposable();
 
+        [SerializeField] private AnimationClip _clip;
+        
         public void SetData(float attackSpeed, float range, float angle, float damage)
         {
             _speed = attackSpeed;
@@ -88,11 +90,8 @@ namespace _Scripts.Unit.AI
 
             _serialDisposable.Disposable = Observable.NextFrame().Subscribe(c =>
             {
-
-                var state = _unit.Animator.GetCurrentAnimatorStateInfo(0);
-                print(state.length);
-                var first = state.length * .3f;
-                var second = state.length * .7f;
+                var first = _clip.length * .3f;
+                var second = _clip.length * .7f;
 
                 _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(first)).Subscribe(x =>
                 {

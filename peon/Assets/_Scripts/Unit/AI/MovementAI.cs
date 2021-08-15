@@ -56,9 +56,9 @@ namespace _Scripts.Unit.AI
         public event MovementHit ByMovementHit;
         
         private MeleeAIAttack _aiAttack;
-        
-        private NavMeshPath _path = new NavMeshPath();
-        private Vector3[] _corners;
+
+        private NavMeshPath _path;
+        private readonly Vector3[] _corners = new Vector3[5];
         private int _currentCorner;
         private static readonly int Speed = Animator.StringToHash("Speed");
 
@@ -72,6 +72,7 @@ namespace _Scripts.Unit.AI
             _aiAttack = GetComponent<MeleeAIAttack>();
             
             _motor.CharacterController = this;
+            _path = new NavMeshPath();
 
             if (!PhotonNetwork.IsMasterClient)
             {
@@ -88,11 +89,14 @@ namespace _Scripts.Unit.AI
                     for (int i = 0; i < size; i++)
                     {
                         var position = _results[i].transform.position;
-                        
-                        if(_retreat && Vector3.Distance(transform.position, position) < _retreatDistance) continue;
-                        
-                        _photonView.RPC(nameof(SetDestination), RpcTarget.AllViaServer, position.x, position.y,
-                            position.z);
+
+                        if (_retreat && Vector3.Distance(transform.position, position) < _retreatDistance) continue;
+
+                        if (Vector3.Distance(transform.position, position) < .5f) position = transform.position;
+
+                        _currentCorner = 1;
+                        NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path);
+                        _path.GetCornersNonAlloc(_corners);
                     }
                 }
 
@@ -105,13 +109,13 @@ namespace _Scripts.Unit.AI
                         var selfp = transform.position;
                         var targetp = results[i].transform.position;
                         var position = selfp + (selfp - targetp).normalized * _retreatDistance;
-
-                        _path = new NavMeshPath();
+                        
                         if (!NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path) || _motor.Velocity.magnitude < 0.1f)
                             position = RandomNavmeshLocation(1);
-
-                        _photonView.RPC(nameof(SetDestination), RpcTarget.AllViaServer, position.x, position.y,
-                            position.z);
+                        
+                        _currentCorner = 1;
+                        NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path);
+                        _path.GetCornersNonAlloc(_corners);
                     }
                 }
             }).AddTo(this);
@@ -127,16 +131,6 @@ namespace _Scripts.Unit.AI
                 finalPosition = hit.position;
             }
             return finalPosition;
-        }
-        
-        [PunRPC]
-        private void SetDestination(float x, float y, float z)
-        {
-            var destination = new Vector3(x, y, z);
-            
-            _currentCorner = 1;
-            NavMesh.CalculatePath(transform.position, destination, NavMesh.AllAreas, _path);
-            _corners = _path.corners;
         }
 
         private void Update()

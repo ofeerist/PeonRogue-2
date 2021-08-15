@@ -24,9 +24,9 @@ namespace _Scripts.Unit
         public float BounceDamage;
         
         public Dictionary<uint, Skill> Skills = new Dictionary<uint, Skill>();
+        
+        public bool CanBeHooked;
 
-        private bool _isHooked;
-        public bool IsHooked { get { return _isHooked; } set { _isHooked = value; } }
         private void Start()
         {
             Animator = GetComponentInChildren<Animator>();
@@ -35,6 +35,11 @@ namespace _Scripts.Unit
             PhotonView = GetComponent<PhotonView>();
         }
 
+        public void Move(Vector3 position)
+        {
+            Controller.MoveCharacter(position);
+        }
+        
         [PunRPC]
         public void ChangeColor(int peonViewId, float r, float g, float b, float a)
         {
