@@ -103,6 +103,14 @@ namespace _Scripts.Unit.Player
             
             _motor.CharacterController = this;
             
+            Observable.EveryUpdate()
+                .Subscribe (x =>
+                {
+                    _moveInputVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+            
+                    _unit.Animator.SetBool(Walk, _motor.Velocity.magnitude > 0.01f && _unit.CurrentState == UnitState.Default);
+                }).AddTo (this); 
+            
             Observable.EveryUpdate() 
                 .Where(_ => Input.GetKeyDown(KeyCode.Space))
                 .Subscribe (x =>
@@ -119,15 +127,6 @@ namespace _Scripts.Unit.Player
         {
             DashCurrentStock--;
             _toDash = true;
-        }
-
-        private void Update()
-        {
-            if (!_unit.PhotonView.IsMine) return;
-            
-            _moveInputVector = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
-            
-            _unit.Animator.SetBool(Walk, _motor.Velocity.magnitude > 0.01f && _unit.CurrentState == UnitState.Default);
         }
 
         private Vector3 GetReorientedInput(ref Vector3 currentVelocity, Vector3 input)
@@ -242,12 +241,18 @@ namespace _Scripts.Unit.Player
                 }
                 case UnitState.Attack:
                 {
-                    currentVelocity = Vector3.zero;
+                    currentVelocity += _gravity * deltaTime;
+                    currentVelocity *= (1f / (1f + (_drag * deltaTime)));
                     
                     if (_internalVelocityAdd.sqrMagnitude > 0f)
                     {
-                        currentVelocity += _internalVelocityAdd;
+                        currentVelocity = GetReorientedInput(ref currentVelocity, _internalVelocityAdd.normalized) * _internalVelocityAdd.magnitude;
+                        
                         _internalVelocityAdd = Vector3.zero;
+                    }
+                    else
+                    {
+                        currentVelocity = Vector3.zero;
                     }
                     break;
                 }

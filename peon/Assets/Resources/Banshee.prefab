@@ -567,6 +567,11 @@ MonoBehaviour:
   Controller: {fileID: 0}
   Rigidbody: {fileID: 0}
   PhotonView: {fileID: 0}
+  Camera: {fileID: 0}
+  CurrentState: 0
+  TimeToStan: 0
+  BounceDamage: 0
+  CanBeHooked: 0
 --- !u!114 &7684584219479419266
 MonoBehaviour:
   m_ObjectHideFlags: 0

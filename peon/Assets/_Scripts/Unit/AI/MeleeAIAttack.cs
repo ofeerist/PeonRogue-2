@@ -143,6 +143,8 @@ namespace _Scripts.Unit.AI
             {
                 var unit = _results[i].GetComponent<Unit>();
                 
+                if(unit.CurrentState == UnitState.Dead) continue;
+
                 var posTo = (unit.transform.position - _transform.position).normalized;
                 var dot = Vector3.Dot(posTo, _transform.forward);
                 if (dot >= Mathf.Cos(_angle))
@@ -150,8 +152,9 @@ namespace _Scripts.Unit.AI
                     unit.PhotonView.RPC(nameof(PlayerHealth.TakeDamage), RpcTarget.AllViaServer, damage);
                     _photonView.RPC(nameof(PlayHit), RpcTarget.AllViaServer, Random.Range(0, 100));
                     
+                    posTo *= _knockback;
                     unit.PhotonView.RPC(nameof(AIHealth.AddVelocity), RpcTarget.AllViaServer,
-                        (posTo) * _knockback);
+                        posTo.x, posTo.y, posTo.z);
                     
                     damaged++;
                 } 

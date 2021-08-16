@@ -45,11 +45,6 @@ namespace _Scripts.Unit.AI
         private static readonly int Dead1 = Animator.StringToHash("Dead");
         
         private readonly SerialDisposable _serialDisposable = new SerialDisposable();
-        
-        public AIHealth(float bounceDamage)
-        {
-            BounceDamage = bounceDamage;
-        }
 
         public delegate void Dead(Unit u);
         public virtual event Dead OnDeath;
@@ -57,6 +52,7 @@ namespace _Scripts.Unit.AI
         private Unit _unit;
         private KinematicCharacterMotor _motor;
         private MovementAI _movement;
+        private PhotonView _photonView;
 
         private void Awake()
         {
@@ -68,8 +64,23 @@ namespace _Scripts.Unit.AI
             _unit = GetComponent<Unit>();
             _motor = GetComponent<KinematicCharacterMotor>();
             _movement = GetComponent<MovementAI>();
+            _photonView = GetComponent<PhotonView>();
+            
+            _movement.ByMovementHit += ByMovementHit;
             
             _currentHealth = _maxHealth;
+
+            BounceDamage = 0;
+        }
+
+        private void ByMovementHit(Collider hitcollider, Vector3 hitnormal, Vector3 hitpoint)
+        {
+            if (!PhotonNetwork.IsMasterClient) return;
+            
+            var layer = hitcollider.gameObject.layer;
+            if (layer != 9) return;
+            
+            _photonView.RPC(nameof(TakeDamage), RpcTarget.AllViaServer, BounceDamage, 0f, 0f);
         }
 
         public void SetData(float maxHealth)
@@ -78,9 +89,9 @@ namespace _Scripts.Unit.AI
         }
 
         [PunRPC]
-        public void AddVelocity(Vector3 velocity)
+        public void AddVelocity(float x, float y, float z)
         {
-            _movement.AddVelocity(velocity);
+            _movement.AddVelocity(new Vector3(x, y, z));
         }
         
         [PunRPC]
@@ -88,8 +99,8 @@ namespace _Scripts.Unit.AI
         {
             if (damage == 0) return;
 
-            BounceDamage = bounceDamage;
-            _stanTime = stanTime;
+            if(bounceDamage != 0) BounceDamage = bounceDamage;
+            if(stanTime != 0) _stanTime = stanTime;
             
             _currentHealth -= damage;
             _healthSlider.value = _currentHealth / _maxHealth;
@@ -104,8 +115,6 @@ namespace _Scripts.Unit.AI
 
         public void Stan(float time)
         {
-            if (!_unit.enabled) return;
-
             _unit.CurrentState = UnitState.InStan;
             _unit.Animator.speed = 0;
             
@@ -156,7 +165,10 @@ namespace _Scripts.Unit.AI
 
             _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(3f)).Subscribe(x =>
             {
-                _serialDisposable.Disposable = Observable.FromMicroCoroutine(Dispose).Subscribe();
+                _serialDisposable.Disposable = Observable.FromMicroCoroutine(Dispose).Subscribe(z =>
+                {
+                    Destroy(gameObject);
+                });
             });
         }
 
@@ -169,8 +181,6 @@ namespace _Scripts.Unit.AI
                 yield return null;
                 _transform.position -= new Vector3(0, .3f * Time.deltaTime, 0);
             }
-            
-            Destroy(gameObject); 
         }
     }
 }

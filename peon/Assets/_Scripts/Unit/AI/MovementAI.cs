@@ -1,6 +1,7 @@
 using System;
 using KinematicCharacterController;
 using Photon.Pun;
+using TMPro.EditorUtilities;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
@@ -79,7 +80,21 @@ namespace _Scripts.Unit.AI
                 _motor.enabled = false;
                 return;
             }
-             
+
+            Observable.EveryUpdate().Subscribe(x =>
+            {
+                _unit.Animator.SetFloat(Speed, _motor.Velocity.magnitude);
+
+                if (_corners[_currentCorner] == null)
+                    return;
+
+                _moveInputVector = (_corners[_currentCorner] - transform.position).normalized;
+
+                _moveInputVector.y = 0;
+                if (Vector3.Distance(transform.position, _corners[_currentCorner]) < .1f &&
+                    _corners.Length > _currentCorner) _currentCorner++;
+            }).AddTo(this);
+            
             Observable.Interval(TimeSpan.FromSeconds(.5f)).Subscribe(_ =>
             {
                 if (_chase)
@@ -95,8 +110,8 @@ namespace _Scripts.Unit.AI
                         if (Vector3.Distance(transform.position, position) < .5f) position = transform.position;
 
                         _currentCorner = 1;
-                        NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path);
-                        _path.GetCornersNonAlloc(_corners);
+                        if(NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path))
+                            _path.GetCornersNonAlloc(_corners);
                     }
                 }
 
@@ -114,8 +129,8 @@ namespace _Scripts.Unit.AI
                             position = RandomNavmeshLocation(1);
                         
                         _currentCorner = 1;
-                        NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path);
-                        _path.GetCornersNonAlloc(_corners);
+                        if(NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path))
+                            _path.GetCornersNonAlloc(_corners);
                     }
                 }
             }).AddTo(this);
@@ -131,20 +146,6 @@ namespace _Scripts.Unit.AI
                 finalPosition = hit.position;
             }
             return finalPosition;
-        }
-
-        private void Update()
-        {
-            if (!PhotonNetwork.IsMasterClient) return;
-            
-            _unit.Animator.SetFloat(Speed, _motor.Velocity.magnitude);
-            
-            if (_corners == null || _corners.Length < 2 || _corners.Length <= _currentCorner) return;
-                
-            _moveInputVector = (_corners[_currentCorner] - transform.position).normalized;
-
-            _moveInputVector.y = 0;
-            if (Vector3.Distance(transform.position, _corners[_currentCorner]) < .1f && _corners.Length > _currentCorner) _currentCorner++;
         }
 
         private Vector3 GetReorientedInput(ref Vector3 currentVelocity, Vector3 input)
@@ -226,25 +227,45 @@ namespace _Scripts.Unit.AI
                 case UnitState.Attack:
                 {
                     currentVelocity = Vector3.zero;
+
+                    currentVelocity += _gravity * deltaTime;
+                    currentVelocity *= (1f / (1f + (_drag * deltaTime)));
+                    
+                    if (_internalVelocityAdd.sqrMagnitude > 0f)
+                    {
+                        currentVelocity += _internalVelocityAdd;
+                        _internalVelocityAdd = Vector3.zero;
+                    }
+                    break;
+                }
+                case UnitState.InStan:
+                {
+                    currentVelocity += _gravity * deltaTime;
+                    currentVelocity *= (1f / (1f + (_drag * deltaTime)));
+                    
+                    if (_internalVelocityAdd.sqrMagnitude > 0f)
+                    {
+                        currentVelocity += _internalVelocityAdd;
+                        _internalVelocityAdd = Vector3.zero;
+                    }
                     break;
                 }
                 case UnitState.Dash:
-                case UnitState.InStan:
                 {
+                    currentVelocity += _gravity * deltaTime;
+                    currentVelocity *= (1f / (1f + (_drag * deltaTime)));
+                    
                     if (_internalVelocityAdd.sqrMagnitude > 0f)
                     {
                         currentVelocity = GetReorientedInput(ref currentVelocity, _internalVelocityAdd.normalized) * _internalVelocityAdd.magnitude;
-
+                        
                         _internalVelocityAdd = Vector3.zero;
                     }
                     else
                     {
                         currentVelocity = Vector3.zero;
                     }
-                    
-                    currentVelocity += _gravity * deltaTime;
-                    currentVelocity *= (1f / (1f + (_drag * deltaTime)));
-                    
+
                     break;
                 }
             }
@@ -255,13 +276,11 @@ namespace _Scripts.Unit.AI
             switch (_unit.CurrentState)
             {
                 case UnitState.Default:
+                case UnitState.Dash:
+                case UnitState.InStan:
+                case UnitState.Attack:
                 {
                     _internalVelocityAdd += velocity;
-                    break;
-                }
-                case UnitState.Dash:
-                {
-                    _internalVelocityAdd = velocity;
                     break;
                 }
             }

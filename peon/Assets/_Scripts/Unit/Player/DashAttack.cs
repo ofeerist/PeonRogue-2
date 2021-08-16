@@ -89,8 +89,9 @@ namespace _Scripts.Unit.Player
                         _photonView.RPC(nameof(PlayHit), RpcTarget.AllViaServer, new Random().Next(0));
 
                         posTo.y = 0;
+                        posTo *= _dashAttackKnockback;
                         unit.PhotonView.RPC(nameof(AIHealth.AddVelocity), RpcTarget.AllViaServer,
-                            (posTo) * _dashAttackKnockback);
+                            posTo.x, posTo.y, posTo.z);
                     }
                 }
             }

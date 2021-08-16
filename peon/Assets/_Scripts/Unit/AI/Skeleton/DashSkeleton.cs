@@ -204,8 +204,11 @@ namespace _Scripts.Unit.AI.Skeleton
                 if (unit.enabled)
                 {
                     unit.PhotonView.RPC(nameof(PlayerHealth.TakeDamage), RpcTarget.AllViaServer, _dashDamage);
+
+                    posTo.y = 0;
+                    posTo *= _knockback;
                     unit.PhotonView.RPC(nameof(AIHealth.AddVelocity), RpcTarget.AllViaServer,
-                        (posTo) * _knockback);
+                        posTo.x, posTo.y, posTo.z);
                 }
             }
         }

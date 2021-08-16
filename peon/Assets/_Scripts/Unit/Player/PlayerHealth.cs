@@ -83,9 +83,9 @@ namespace _Scripts.Unit.Player
         }
         
         [PunRPC]
-        public void AddVelocity(Vector3 velocity)
+        public void AddVelocity(float x, float y, float z)
         {
-            _movement.AddVelocity(velocity);
+            _movement.AddVelocity(new Vector3(x, y, z));
         }
         
         [PunRPC]

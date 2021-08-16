@@ -58,7 +58,7 @@ namespace _Scripts.Unit.AI.Pudge
         private Vector3 _currentPosition;
         
         private Unit _victim;
-        private readonly RaycastHit[] _hits = new RaycastHit[1];
+        private readonly RaycastHit[] _hits = new RaycastHit[3];
 
         private void Awake()
         {
@@ -105,14 +105,13 @@ namespace _Scripts.Unit.AI.Pudge
                     if (Vector3.Distance(objPosition, position) > _minRangeToUseHook)
                     {
                         var dir = (objPosition - position).normalized;
-                        var hitsCount = Physics.RaycastNonAlloc(position, dir, _hits, _maxHookDistance, _layerMask);
-                        if (hitsCount > 0)
+                        var hitsCount = Physics.RaycastNonAlloc(position, dir, _hits, _maxHookDistance);
+                        if (hitsCount < 2)
                         {
                             _unit.CurrentState = UnitState.Attack;
                             _hookCooldownTimer = Time.time + _hookCooldown;
                             _photonView.RPC(nameof(Hook), RpcTarget.AllViaServer, position.x, position.y, position.z,
                                 objPosition.x, objPosition.y, objPosition.z);
-                            print("hook");
                         }
                     } 
                 }

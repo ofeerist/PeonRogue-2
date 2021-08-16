@@ -63,7 +63,7 @@ namespace _Scripts.Unit.Player
         
         private readonly Collider[] _results = new Collider[6];
 
-        private static readonly float[] _cooldowns = new[] { 0.12f, 0.09f, 0.3f };
+        private static readonly float[] _cooldowns = { 0.12f, 0.09f, 0.3f };
         
         private void Awake()
         {
@@ -196,8 +196,9 @@ namespace _Scripts.Unit.Player
                         _photonView.RPC(nameof(DamageEffect), RpcTarget.AllViaServer, Random.Range(0, 100), i, position.x, position.y, position.z);
 
                         posTo.y = 0;
+                        posTo *= _attacks[i].Knockback;
                         unit.PhotonView.RPC(nameof(AIHealth.AddVelocity), RpcTarget.AllViaServer,
-                            (posTo) * _attacks[i].Knockback);
+                            posTo.x, posTo.y, posTo.z);
                     }
                 }
             }

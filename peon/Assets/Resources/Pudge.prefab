@@ -1400,7 +1400,7 @@ Transform:
   m_GameObject: {fileID: 1978161040517362870}
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
   m_Children:
   - {fileID: 2205603142784475762}
   - {fileID: 3212430477367914764}
@@ -2778,13 +2778,14 @@ GameObject:
   - component: {fileID: 4077909085836697047}
   - component: {fileID: 4077909085836697046}
   - component: {fileID: 1419827694305124134}
-  - component: {fileID: 4976258781943287866}
   - component: {fileID: 2361387404920707278}
   - component: {fileID: 6563253314902811461}
   - component: {fileID: 5713494904529809239}
   - component: {fileID: 5982093873265761856}
   - component: {fileID: 3249576079339800221}
   - component: {fileID: 2324534906312696275}
+  - component: {fileID: 9056251713758361172}
+  - component: {fileID: -7129621508986000573}
   m_Layer: 8
   m_Name: Pudge
   m_TagString: Untagged
@@ -2970,31 +2971,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &4976258781943287866
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4077909085836697006}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3cd73993f5504f6586173616778dd27d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _maxHealth: 400
-  _stanChannelEffect: {fileID: 9034518488131454675}
-  _stanFinishlEffect: {fileID: 9034518487640744860}
-  _textTagVelocity: {x: 0, y: 0.005, z: 0}
-  _textTagLifetime: 3
-  _textTagColorizingTime: 5
-  _healthSlider: {fileID: 4022305427908829992}
-  _onHit: {fileID: 1419827694305124134}
-  _onHitSounds:
-  - {fileID: 8300000, guid: 03ef396036417a741b827b9530119bb3, type: 3}
-  - {fileID: 8300000, guid: fceab51bee8b11242942cb4e88e5b2b7, type: 3}
-  - {fileID: 8300000, guid: a7fd2d484c8efca47bc7b4d6c79adf25, type: 3}
-  _onDeath: {fileID: 1419827694305124134}
 --- !u!114 &2361387404920707278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3064,11 +3040,11 @@ MonoBehaviour:
   _hookCell: {fileID: 5470641466693785946, guid: 2670751803532964ab9224af617ada69, type: 3}
   _hookHead: {fileID: 2011107532224937123, guid: 04508c2ea65190c478f3e5d4be736bb6, type: 3}
   _distanceToSpawnCell: 0.2
-  _maxHookDistance: 15
-  _hookSpeed: 5
-  _hookBackwardSpeed: 5
+  _maxHookDistance: 25
+  _hookSpeed: 12
+  _hookBackwardSpeed: 15
   _hookHeadRangeToGrab: 1
-  _rangeToUseHook: 10
+  _rangeToUseHook: 20
   _minRangeToUseHook: 5
   _hookCooldown: 10
   _hookSound: {fileID: 1419827694305124134}
@@ -3221,6 +3197,63 @@ MonoBehaviour:
   PreserveAttachedRigidbodyMomentum: 1
   HasPlanarConstraint: 0
   PlanarConstraintAxis: {x: 0, y: 0, z: 1}
+--- !u!114 &9056251713758361172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4077909085836697006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfdf365512e44a6b662c99f511b58cc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 2048
+  _speed: 0.2
+  _range: 2
+  _angle: 100
+  _damage: 50
+  _knockback: 3
+  _audioSource: {fileID: 1419827694305124134}
+  _preAttack:
+  - {fileID: 8300000, guid: 88b4f5929efa49b4f98d527f4659c9ea, type: 3}
+  - {fileID: 8300000, guid: 7918882e7cfa89a498562c7be143d78b, type: 3}
+  - {fileID: 8300000, guid: 81395841453bba148a3993e6770a9ea8, type: 3}
+  - {fileID: 8300000, guid: 60f308c1329ca9c4282ba41e631bb05c, type: 3}
+  _hit:
+  - {fileID: 8300000, guid: 58327e21897e6d148b7e3541371dc602, type: 3}
+  - {fileID: 8300000, guid: a1d427dc93878c64fad6c78c734de41a, type: 3}
+  - {fileID: 8300000, guid: 479f633379d96374ea64c06bd93fc195, type: 3}
+  ToTarget: {x: 0, y: 0, z: 0}
+  _clip: {fileID: 6720303635017113406, guid: 5ab570e05c2712242b005c797ef657c6, type: 3}
+--- !u!114 &-7129621508986000573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4077909085836697006}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd73993f5504f6586173616778dd27d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 400
+  _stanChannelEffect: {fileID: 9034518488131454675}
+  _stanFinishlEffect: {fileID: 9034518487640744860}
+  _textTagVelocity: {x: 0, y: 0.005, z: 0}
+  _textTagLifetime: 3
+  _textTagColorizingTime: 5
+  _healthSlider: {fileID: 4022305427908829992}
+  _onHit: {fileID: 1419827694305124134}
+  _onHitSounds:
+  - {fileID: 8300000, guid: 03ef396036417a741b827b9530119bb3, type: 3}
+  - {fileID: 8300000, guid: fceab51bee8b11242942cb4e88e5b2b7, type: 3}
+  - {fileID: 8300000, guid: a7fd2d484c8efca47bc7b4d6c79adf25, type: 3}
+  _onDeath: {fileID: 1419827694305124134}
 --- !u!1 &4114550207025282056
 GameObject:
   m_ObjectHideFlags: 0
@@ -45212,6 +45245,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 9034518487947676669}
     m_Modifications:
+    - target: {fileID: 5734302777470282244, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime1
+      value: 3084
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734302777470282244, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime2
+      value: 12914
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734302777470282244, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime3
+      value: 29298
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734302777470282244, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime4
+      value: 64186
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734302777470282244, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime1
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734302777470282244, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key1.a
+      value: 0.14047682
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734302777470282244, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key3.a
+      value: 0.15686275
+      objectReference: {fileID: 0}
+    - target: {fileID: 5734302777470282244, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.m_NumAlphaKeys
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 6215831109714528601, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
       propertyPath: m_Name
       value: Stench
@@ -45289,15 +45354,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 479572, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
       propertyPath: m_LocalScale.x
-      value: 2
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 479572, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
       propertyPath: m_LocalScale.y
-      value: 2
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 479572, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2
+      value: 1.2
       objectReference: {fileID: 0}
     - target: {fileID: 479572, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -45305,7 +45370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 479572, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.845
       objectReference: {fileID: 0}
     - target: {fileID: 479572, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
       propertyPath: m_LocalPosition.z
