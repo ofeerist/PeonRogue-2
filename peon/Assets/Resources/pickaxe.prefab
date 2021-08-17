@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 879997891987163720}
   - component: {fileID: 2574762928206328822}
   - component: {fileID: 5695758878940586037}
-  - component: {fileID: 6484192777990307564}
-  - component: {fileID: 5490176570247174423}
   - component: {fileID: 852409225874752339}
   m_Layer: 0
   m_Name: pickaxe
@@ -50,6 +48,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56991397febcb504eaf2e2ed411a0f77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _detectRadius: 0.25
+  _obstacle:
+    serializedVersion: 2
+    m_Bits: 512
+  _enemy:
+    serializedVersion: 2
+    m_Bits: 256
+  _disposeEffect: {fileID: 19831394, guid: 6fed2eb6a9e2f5e4892b57ce34fbee4b, type: 3}
+  _audioSource: {fileID: 852409225874752339}
+  _hit:
+  - {fileID: 8300000, guid: fa27f034420c02e4d988ce1bee1df726, type: 3}
+  - {fileID: 8300000, guid: f7ba36123d7bda84b9a39333bacc65c9, type: 3}
+  - {fileID: 8300000, guid: 72b00d1805e64f849ac6ef19a79c15d7, type: 3}
+  _trailParticle: {fileID: 5270628175064915325}
 --- !u!114 &2574762928206328822
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,36 +102,6 @@ MonoBehaviour:
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
   m_UseLocal: 1
---- !u!136 &6484192777990307564
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762542026207018651}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  m_Radius: 0.3
-  m_Height: 0
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!54 &5490176570247174423
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 762542026207018651}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 0
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!82 &852409225874752339
 AudioSource:
   m_ObjectHideFlags: 0

@@ -76,6 +76,11 @@ namespace _Scripts.Unit.Player
             {
                 if (!InRoll) StartRoll();
                 else Rolling();
+                
+                if (_rollAudioSource.time >= 1f)
+                {
+                    _rollAudioSource.time = .2f;
+                }
             }).AddTo(this);
             
             Observable.Interval(TimeSpan.FromSeconds(_timeBetweenAttack)).Subscribe(x =>
@@ -139,14 +144,13 @@ namespace _Scripts.Unit.Player
         {
             if (_rollTimer >= _rollTimeToStart)
             {
-                StartRolling();
+                if(_unit.CurrentState == UnitState.Default) StartRolling();
+                else _rollTimer = 0;
             }
             else
             {
-                if (Input.GetKey(KeyCode.Mouse0))
-                    _rollTimer += Time.deltaTime;
-                else
-                    _rollTimer = 0;
+                if (Input.GetKey(KeyCode.Mouse0)) _rollTimer += Time.deltaTime;
+                else _rollTimer = 0;
             }
         }
         

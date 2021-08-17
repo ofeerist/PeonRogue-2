@@ -235,8 +235,8 @@ namespace _Scripts.Unit.Player
                 {
                     if (_dashTimer <= Time.time) _unit.CurrentState = UnitState.Default;
                     
-                    var targetMovementVelocity = GetReorientedInput(ref currentVelocity, _dashDirection) * _dashSpeed;
-                    
+                    var targetMovementVelocity = GetReorientedInput(ref currentVelocity, _dashDirection) * (_dashSpeed * (_rollAttack.InRoll ? 2 : 1));
+                     
                     currentVelocity = Vector3.Lerp(currentVelocity, targetMovementVelocity, 1f - Mathf.Exp(-_stableMovementSharpness * deltaTime));
 
                     break;

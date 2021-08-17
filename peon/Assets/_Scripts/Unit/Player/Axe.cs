@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using _Scripts.Unit.AI;
 using Photon.Pun;
 using UniRx;
@@ -14,9 +15,7 @@ namespace _Scripts.Unit.Player
         private float _speed;
         private float _maxDistance;
         private bool _trail;
-
-        private Collider _collider;
-
+        
         private Vector3 _startPosition;
 
         private readonly Collider[] _results = new Collider[1];
@@ -34,7 +33,8 @@ namespace _Scripts.Unit.Player
         [SerializeField] private ParticleSystem _trailParticle;
 
         private Unit _creator;
-
+        private readonly List<Unit> _ignore = new List<Unit>();
+        
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = UnityEngine.Color.green;
@@ -54,8 +54,6 @@ namespace _Scripts.Unit.Player
             axe._maxDistance = maxDistance;
 
             axe._startPosition = position;
-            
-            axe._collider.enabled = true;
             
             axe._audioSource.Play();
 
@@ -98,8 +96,10 @@ namespace _Scripts.Unit.Player
             {
                 var unit = _results[0].gameObject.GetComponent<Unit>();
 
-                if (unit != null && unit.enabled)
+                if (unit != null && unit.enabled && !_ignore.Contains(unit))
                 {
+                    _ignore.Add(unit);
+                
                     _audioSource.Stop();
                     _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
 
