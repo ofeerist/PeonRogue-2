@@ -86,6 +86,7 @@ namespace _Scripts.Unit.Player
         private AxeAttack _axeAttack;
         
         private IDisposable _interval;
+        private RollAttack _rollAttack;
 
         private void Start()
         {
@@ -94,7 +95,8 @@ namespace _Scripts.Unit.Player
             _unit = GetComponent<Unit>();
             _photonView = GetComponent<PhotonView>();
             _axeAttack = GetComponent<AxeAttack>();
-
+            _rollAttack = GetComponent<RollAttack>();
+            
             if (!_photonView.IsMine)
             {
                 _motor.enabled = false;
@@ -273,6 +275,12 @@ namespace _Scripts.Unit.Player
         
         public void UpdateRotation(ref Quaternion currentRotation, float deltaTime)
         {
+            if (_rollAttack.InRoll)
+            {
+                currentRotation.eulerAngles += new Vector3(0, deltaTime * 1000, 0);
+                return;
+            }
+            
             switch (_unit.CurrentState)
             {
                 case UnitState.Default:

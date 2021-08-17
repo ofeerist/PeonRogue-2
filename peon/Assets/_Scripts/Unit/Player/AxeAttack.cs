@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using _Scripts.Unit.AI;
 using Photon.Pun;
 using UniRx;
@@ -84,11 +85,10 @@ namespace _Scripts.Unit.Player
                     if (_attackCooldownTimer + _attackCooldown > Time.time) return;
                     if (_unit.CurrentState != UnitState.Default) return;
 
-                    _attack.Disposable = Observable.NextFrame().Subscribe(z =>
+                    _attack.Disposable = Observable.Timer(TimeSpan.FromSeconds(.15f)).Subscribe(z =>
                     {
-                        if (_unit.CurrentState != UnitState.Default) return;
+                        if (Input.GetKey(KeyCode.Mouse0)) return;
                         Attack();
-
                     });
                 }).AddTo (this); 
         }
@@ -139,7 +139,7 @@ namespace _Scripts.Unit.Player
             eff.transform.SetPositionAndRotation(_attacks[attackNum].AttackEffect.transform.position, _attacks[attackNum].AttackEffect.transform.rotation);
             var m = eff.main; m.simulationSpeed = _attacks[attackNum].EffectSpeed;
 
-            _effect.Disposable = Observable.Timer(TimeSpan.FromSeconds(.6f)).Subscribe(z =>
+            _effect.Disposable = Observable.Timer(TimeSpan.FromSeconds(.3f)).Subscribe(z =>
             {
                 Destroy(eff.gameObject);
             });

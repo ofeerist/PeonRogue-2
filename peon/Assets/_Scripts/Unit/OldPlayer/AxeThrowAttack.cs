@@ -137,10 +137,10 @@ namespace _Scripts.Unit.Player
         private void CreateAxe(float rx, float ry, float rz, float rw, bool roll)
         {
             var rotation = new Quaternion(rx, ry, rz, rw);
-            if (!roll)
-                Axe.Create(_collider, transform.position + new Vector3(0, 1, 0), rotation, _speed, _maxFlightDistance, _damage, _knockback, _disposeEffect, _hit);
-            else
-                Axe.Create(_collider, transform.position + new Vector3(0, 1, 0), rotation, _speedRoll, _maxFlightDistance, _damageRoll, _knockbackRoll, _disposeEffect, _hit, roll);
+            //if (!roll)
+                //Axe.Create(_collider, transform.position + new Vector3(0, 1, 0), rotation, _speed, _maxFlightDistance, _damage, _knockback, _disposeEffect, _hit);
+            //else
+                //Axe.Create(_collider, transform.position + new Vector3(0, 1, 0), rotation, _speedRoll, _maxFlightDistance, _damageRoll, _knockbackRoll, _disposeEffect, _hit, roll);
         }
 
         private IEnumerator AttackCheck()
