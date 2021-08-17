@@ -56,7 +56,7 @@ namespace _Scripts.Unit.Player
         private Animator _animator;
         private PhotonView _photonView;
         private RollAttack _rollAttack;
-        private AxeAttack _axeAttack;
+        private Movement _movement;
         
         private static readonly int AttackNum = Animator.StringToHash("AttackNum");
         private static readonly int Attack1 = Animator.StringToHash("Attack");
@@ -73,7 +73,7 @@ namespace _Scripts.Unit.Player
             _animator = _unit.Animator;
             _photonView = _unit.PhotonView;
             _rollAttack = GetComponent<RollAttack>();
-            _axeAttack = GetComponent<AxeAttack>();
+            _movement = GetComponent<Movement>();
             
             _attackCooldownTimer = 0;
             CurrentThrowCharges = _maxThrowCharges;
@@ -103,7 +103,7 @@ namespace _Scripts.Unit.Player
                         var toPoint = (hit.point - position).normalized;
                         toPoint.y = 0;
 
-                        _axeAttack.LookPosition = hit.point;
+                        _movement.LookPosition = hit.point;
                                 
                         var rotation = Quaternion.LookRotation(toPoint, Vector3.up);
                         

@@ -31,12 +31,11 @@ namespace _Scripts.Unit.AI
         private Unit _unit;
         private readonly Collider[] _results = new Collider[6];
 
-        [HideInInspector] public Vector3 ToTarget;
-        
         private readonly SerialDisposable _serialDisposable = new SerialDisposable();
 
         [SerializeField] private AnimationClip _clip;
-        
+        private MovementAI _movement;
+
         public void SetData(float attackSpeed, float range, float angle, float damage)
         {
             _speed = attackSpeed;
@@ -53,6 +52,7 @@ namespace _Scripts.Unit.AI
         private void Start()
         {
             _unit = GetComponent<Unit>();
+            _movement = GetComponent<MovementAI>();
             _photonView = GetComponent<PhotonView>();
 
             if (!PhotonNetwork.IsMasterClient) return;
@@ -74,7 +74,7 @@ namespace _Scripts.Unit.AI
                 {
                     if (_results[i].GetComponent<Unit>().enabled)
                     {
-                        ToTarget = (_results[i].transform.position - transform.position).normalized;
+                        _movement.ToTarget = (_results[i].transform.position - transform.position).normalized;
                         Attack();
                         
                         return;

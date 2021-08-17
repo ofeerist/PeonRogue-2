@@ -1,7 +1,6 @@
 using System;
 using KinematicCharacterController;
 using Photon.Pun;
-using TMPro.EditorUtilities;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
@@ -11,6 +10,8 @@ namespace _Scripts.Unit.AI
 {
     public class MovementAI : MonoBehaviour, ICharacterController
     {
+        [HideInInspector] public Vector3 ToTarget;
+        
         private KinematicCharacterMotor _motor;
         private Unit _unit;
         
@@ -40,8 +41,6 @@ namespace _Scripts.Unit.AI
         
         private Vector3 _internalVelocityAdd;
         
-        private PhotonView _photonView;
-
         [Space]
         
         [SerializeField] private LayerMask _layerMask;
@@ -56,8 +55,6 @@ namespace _Scripts.Unit.AI
 
         public event MovementHit ByMovementHit;
         
-        private MeleeAIAttack _aiAttack;
-
         private NavMeshPath _path;
         private readonly Vector3[] _corners = new Vector3[5];
         private int _currentCorner;
@@ -69,9 +66,7 @@ namespace _Scripts.Unit.AI
         {
             _motor = GetComponent<KinematicCharacterMotor>();
             _unit = GetComponent<Unit>();
-            _photonView = GetComponent<PhotonView>();
-            _aiAttack = GetComponent<MeleeAIAttack>();
-            
+
             _motor.CharacterController = this;
             _path = new NavMeshPath();
 
@@ -298,8 +293,10 @@ namespace _Scripts.Unit.AI
                 }
                 case UnitState.Attack:
                 {
-                    if (_aiAttack == null) return;
-                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(_aiAttack.ToTarget, Vector3.up), _rotationSpeed * Time.deltaTime);
+                    var dir = (ToTarget - transform.position).normalized;
+                    dir.y = 0;
+                    
+                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(dir, Vector3.up), _rotationSpeed * Time.deltaTime);
                     
                     break;
                 }

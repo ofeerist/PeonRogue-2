@@ -1,5 +1,4 @@
 using System;
-using System.Threading.Tasks;
 using _Scripts.Unit.AI;
 using Photon.Pun;
 using UniRx;
@@ -56,8 +55,6 @@ namespace _Scripts.Unit.Player
         private static readonly int AttackNum = Animator.StringToHash("AttackNum");
         private static readonly int Attack1 = Animator.StringToHash("Attack");
 
-        [HideInInspector] public Vector3 LookPosition;
-
         private readonly SerialDisposable _attack = new SerialDisposable();
         private readonly SerialDisposable _effect = new SerialDisposable();
         private readonly SerialDisposable _damageEffect = new SerialDisposable();
@@ -65,7 +62,8 @@ namespace _Scripts.Unit.Player
         private readonly Collider[] _results = new Collider[6];
 
         private static readonly float[] _cooldowns = { 0.12f, 0.09f, 0.3f };
-        
+        private Movement _movement;
+
         private void Awake()
         {
             _attack.AddTo(this);
@@ -77,19 +75,16 @@ namespace _Scripts.Unit.Player
         {
             _unit = GetComponent<Unit>();
             _photonView = GetComponent<PhotonView>();
+            _movement = GetComponent<Movement>();
             
             Observable.EveryUpdate() 
-                .Where(_ => Input.GetKeyDown(KeyCode.Mouse0))
+                .Where(_ => Input.GetKeyUp(KeyCode.Mouse0))
                 .Subscribe (x =>
                 {
                     if (_attackCooldownTimer + _attackCooldown > Time.time) return;
                     if (_unit.CurrentState != UnitState.Default) return;
 
-                    _attack.Disposable = Observable.Timer(TimeSpan.FromSeconds(.15f)).Subscribe(z =>
-                    {
-                        if (Input.GetKey(KeyCode.Mouse0)) return;
-                        Attack();
-                    });
+                    Attack();
                 }).AddTo (this); 
         }
 
@@ -100,8 +95,8 @@ namespace _Scripts.Unit.Player
             var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hit))
             {
-                LookPosition = hit.point;
-                LookPosition.y = 0;
+                _movement.LookPosition = hit.point;
+                _movement.LookPosition.y = 0;
             }
             
             _currentAttackNum = GetAttackNumFromCombo(_attackComboCount);

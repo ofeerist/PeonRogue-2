@@ -61,7 +61,7 @@ namespace _Scripts.Unit.Player
         private readonly SerialDisposable _serialDisposable = new SerialDisposable();
         private readonly SerialDisposable _effectDisposable = new SerialDisposable();
         [SerializeField] private LayerMask _layerMask;
-        private AxeAttack _axeAttack;
+        private Movement _movement;
 
         private void Awake()
         {
@@ -72,7 +72,7 @@ namespace _Scripts.Unit.Player
         private void Start()
         {
             _unit = GetComponent<Unit>();
-            _axeAttack = GetComponent<AxeAttack>();
+            _movement = GetComponent<Movement>();
             
             _animator = _unit.Animator;
             _photonView = _unit.PhotonView;
@@ -97,8 +97,8 @@ namespace _Scripts.Unit.Player
                     var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out var hit))
                     {
-                        _axeAttack.LookPosition = hit.point;
-                        _axeAttack.LookPosition.y = 0;
+                        _movement.LookPosition = hit.point;
+                        _movement.LookPosition.y = 0;
                     }
 
                     _attackCooldownTimer = _attackCooldown + Time.time;

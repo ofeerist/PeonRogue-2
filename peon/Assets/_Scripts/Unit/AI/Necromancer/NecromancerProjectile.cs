@@ -1,21 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using _Scripts.Unit.AI;
+using System.Collections;
+using _Scripts.Unit.Player;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace _Scripts.Unit.Player
+namespace _Scripts.Unit.AI.Necromancer
 {
-    public class Axe : MonoBehaviour
+    class NecromancerProjectile : MonoCached.MonoCached
     { 
         private float _damage;
         private float _knockback;
         private float _speed;
         private float _maxDistance;
-        private bool _trail;
-        
+
         private Vector3 _startPosition;
 
         private readonly Collider[] _results = new Collider[1];
@@ -30,11 +29,6 @@ namespace _Scripts.Unit.Player
         [SerializeField] private AudioSource _audioSource;
         [SerializeField] private AudioClip[] _hit;
         
-        [SerializeField] private ParticleSystem _trailParticle;
-
-        private Unit _creator;
-        private readonly List<Unit> _ignore = new List<Unit>();
-        
         private void OnDrawGizmosSelected()
         {
             Gizmos.color = UnityEngine.Color.green;
@@ -42,31 +36,23 @@ namespace _Scripts.Unit.Player
         }
 
         // Создавать должен только мастер клиент
-        public static Axe Create(Axe prefab, Unit creator, Vector3 position, Quaternion rotation, float speed, float maxDistance, float damage, float knockback, bool trail = false)
+        public static NecromancerProjectile Create(NecromancerProjectile prefab, Vector3 position, Quaternion rotation, float speed, float maxDistance, float damage, float knockback)
         {
             var pp = PhotonNetwork.Instantiate(prefab.name, position, rotation);
-            var axe = pp.GetComponent<Axe>();
-            axe._creator = creator;
-            
-            axe._damage = damage;
-            axe._knockback = knockback;
-            axe._speed = speed;
-            axe._maxDistance = maxDistance;
+            var prj = pp.GetComponent<NecromancerProjectile>();
 
-            axe._startPosition = position;
-            
-            axe._audioSource.Play();
+            prj._damage = damage;
+            prj._knockback = knockback;
+            prj._speed = speed;
+            prj._maxDistance = maxDistance;
 
-            axe._trail = trail;
-            if (axe._trail)
-            {
-                axe._trailParticle.gameObject.SetActive(true);
-                axe._trailParticle.Play();
-            }
+            prj._startPosition = position;
             
-            axe.Begin();
+            prj._audioSource.Play();
+
+            prj.Begin();
             
-            return axe;
+            return prj;
         }
 
         private void Begin()
@@ -88,8 +74,7 @@ namespace _Scripts.Unit.Player
             var size = Physics.OverlapSphereNonAlloc(_transform.position, _detectRadius, _results, _obstacle);
             if (size > 0)
             {
-                if (!_trail)
-                    DestroyAxe();
+                DestroyAxe();
             }
             
             // Check for enemies
@@ -98,25 +83,22 @@ namespace _Scripts.Unit.Player
             {
                 var unit = _results[0].gameObject.GetComponent<Unit>();
 
-                if (unit != null && unit.enabled && !_ignore.Contains(unit))
+                if (unit != null && unit.enabled)
                 {
-                    _ignore.Add(unit);
-                
                     _audioSource.Stop();
                     _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
 
-                    unit.PhotonView.RPC(nameof(AIHealth.TakeDamage), RpcTarget.AllViaServer,
-                        _damage, _creator.BounceDamage, _creator.TimeToStan);
+                    unit.PhotonView.RPC(nameof(PlayerHealth.TakeDamage), RpcTarget.AllViaServer,
+                        _damage);
 
                     var posTo = (unit.transform.position - transform.position).normalized;
                     posTo.y = 0;
                     posTo *= _knockback;
-                    unit.PhotonView.RPC(nameof(AIHealth.AddVelocity), RpcTarget.AllViaServer,
+                    unit.PhotonView.RPC(nameof(PlayerHealth.AddVelocity), RpcTarget.AllViaServer,
                         posTo.x, posTo.y, posTo.z);
                 }
-
-                if (!_trail)
-                    DestroyAxe();
+                
+                DestroyAxe();
             }
         }
 
