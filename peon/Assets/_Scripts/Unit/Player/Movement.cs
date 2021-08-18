@@ -65,28 +65,16 @@ namespace _Scripts.Unit.Player
         public event ValueChanged ChargeChanged;
         
         [SerializeField] private float _dashRefreshTime;
-        public float DashRefreshTime
-        {
-            get => _dashRefreshTime;
-            private set
-            {
-                _dashRefreshTime = value; 
-                
-                _interval?.Dispose();
-                _interval = Observable.Interval(TimeSpan.FromSeconds(value)).Subscribe(_ =>
-                {
-                    DashCurrentStock++;
-                }).AddTo(this);
-            }
-        }
-        
+        private float _refreshTime;
+        public delegate void TimeChange(float time);
+        public event TimeChange TimeChanged;
+
         private Vector3 _internalVelocityAdd;
         
         private static readonly int Walk = Animator.StringToHash("Walk");
         private static readonly int Dash = Animator.StringToHash("Dash");
         private PhotonView _photonView;
-        private AxeAttack _axeAttack;
-        
+
         private IDisposable _interval;
         private RollAttack _rollAttack;
 
@@ -96,7 +84,6 @@ namespace _Scripts.Unit.Player
             _motor = GetComponent<KinematicCharacterMotor>();
             _unit = GetComponent<Unit>();
             _photonView = GetComponent<PhotonView>();
-            _axeAttack = GetComponent<AxeAttack>();
             _rollAttack = GetComponent<RollAttack>();
             
             if (!_photonView.IsMine)
@@ -122,8 +109,25 @@ namespace _Scripts.Unit.Player
                     if(_dashCooldownTimer <= Time.time && DashCurrentStock > 0) _photonView.RPC(nameof(DashProccess), RpcTarget.AllViaServer);
                 }).AddTo (this); 
             
+            Observable.EveryUpdate().Subscribe(_ =>
+            {
+                if (DashCurrentStock < _dashMaxStock)
+                {
+                    _refreshTime += (1 / _dashRefreshTime) * Time.deltaTime;
+
+                    var normalized = _refreshTime;
+                    TimeChanged?.Invoke(normalized);
+                    
+                    if (normalized >= 1f)
+                    {
+                        _refreshTime = 0;
+
+                        DashCurrentStock++;
+                    }
+                }
+            }).AddTo(this);
+            
             DashCurrentStock = _dashMaxStock;
-            DashRefreshTime = _dashRefreshTime;
         }
 
         [PunRPC]

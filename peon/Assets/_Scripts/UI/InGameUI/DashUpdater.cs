@@ -1,7 +1,7 @@
-﻿using System.Collections;
-using _Scripts.Unit.Player;
+﻿using _Scripts.Unit.Player;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace _Scripts.UI.InGameUI
 {
@@ -10,14 +10,27 @@ namespace _Scripts.UI.InGameUI
         private UnitObserver _unitObserver;
 
         [SerializeField] private TextMeshProUGUI _textMesh;
-        private IEnumerator Start()
+        [SerializeField] private Image _regenerateImage;
+        private void Start()
         {
             _unitObserver = GetComponentInParent<UnitObserver>();
 
-            yield return new WaitUntil(() => _unitObserver.Unit != null);
-            var obj = _unitObserver.Unit.GetComponent<Movement>();
+            _unitObserver.UnitChanged += UnitObserverOnUnitChanged;
+        }
+
+        private void UnitObserverOnUnitChanged(Unit.Unit u)
+        {
+            var obj = u.GetComponent<Movement>();
+            
             obj.ChargeChanged += UpdateCharge;
             UpdateCharge(obj.DashCurrentStock);
+            
+            obj.TimeChanged += OnTimeChanged;
+        }
+
+        private void OnTimeChanged(float time)
+        {
+            _regenerateImage.fillAmount = 1 - time;
         }
 
         private void UpdateCharge(int charges)

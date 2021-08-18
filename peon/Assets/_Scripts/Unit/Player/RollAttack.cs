@@ -13,7 +13,12 @@ namespace _Scripts.Unit.Player
         [SerializeField] private ParticleSystem _rollEffect;
 
         [SerializeField] private int _rollMaxTime;
-
+        
+        [SerializeField] private float _rollRegenerateTime;
+        private float _regenerateTime;
+        public delegate void TimeChange(float time);
+        public event TimeChange TimeChanged;
+        
         private int _rollingTime;
         public int RollingTime
         {
@@ -71,6 +76,24 @@ namespace _Scripts.Unit.Player
             var _transform = transform;
             
             if (!_photonView.IsMine) return;
+            
+            Observable.EveryUpdate().Subscribe(_ =>
+            {
+                if (RollingTime < _rollMaxTime)
+                {
+                    _regenerateTime += (1 / _rollRegenerateTime) * Time.deltaTime;
+
+                    var normalized = _regenerateTime;
+                    TimeChanged?.Invoke(normalized);
+                    
+                    if (normalized >= 1f)
+                    {
+                        _regenerateTime = 0;
+
+                        RollingTime++;
+                    }
+                }
+            }).AddTo(this);
             
             Observable.EveryUpdate().Subscribe(x =>
             {

@@ -66,7 +66,7 @@ namespace _Scripts.Unit.Player
             protected set
             {
                 _currentRevives = value < _maxRevives ? value : _maxRevives;
-                RevivesChanged?.Invoke(value);
+                RevivesChanged?.Invoke(_currentRevives);
             }
         }
 

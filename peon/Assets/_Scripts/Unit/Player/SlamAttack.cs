@@ -21,7 +21,12 @@ namespace _Scripts.Unit.Player
         [Space]
 
         [SerializeField] private int _maxCharges;
-        [SerializeField] private int _chargeRegenerateTime;
+        
+        [SerializeField] private float _chargeRegenerateTime;
+        private float _regenerateTime;
+        
+        public delegate void TimeChange(float time);
+        public event TimeChange TimeChanged;
         
         private int _currentCharges;
         public int CurrentCharges
@@ -82,9 +87,23 @@ namespace _Scripts.Unit.Player
             if (!_photonView.IsMine) return;
             
             CurrentCharges = _maxCharges;
-            Observable.Interval(TimeSpan.FromSeconds(_chargeRegenerateTime)).Subscribe(_ =>
+
+            Observable.EveryUpdate().Subscribe(_ =>
             {
-                if (CurrentCharges < _maxCharges) CurrentCharges++;
+                if (CurrentCharges < _maxCharges)
+                {
+                    _regenerateTime += (1 / _chargeRegenerateTime) * Time.deltaTime;
+
+                    var normalized = _regenerateTime;
+                    TimeChanged?.Invoke(normalized);
+                    
+                    if (normalized >= 1f)
+                    {
+                        _regenerateTime = 0;
+
+                        CurrentCharges++;
+                    }
+                }
             }).AddTo(this);
 
             Observable.EveryUpdate()
@@ -106,14 +125,16 @@ namespace _Scripts.Unit.Player
 
                     _animator.SetInteger(AttackNum, 2);
                     _animator.SetTrigger(Attack1);
-
-                    var position = _attackPosition.position;
-                    _unit.PhotonView.RPC(nameof(PlayEffect), RpcTarget.All, position.x,
-                        position.y, position.z);
-
+                    
                     _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(_slamDelay)).Subscribe(z =>
                     {
-                        var size = Physics.OverlapSphereNonAlloc(_attackPosition.position, _attackRadius, _results, _layerMask);
+                        var position1 = _attackPosition.position;
+                        var position = position1;
+                        _unit.PhotonView.RPC(nameof(PlayEffect), RpcTarget.All, position.x,
+                            position.y, position.z);
+
+                        
+                        var size = Physics.OverlapSphereNonAlloc(position1, _attackRadius, _results, _layerMask);
                         for (int i = 0; i < size; i++)
                         {
                             var unit = _results[i].GetComponent<Unit>();
@@ -145,16 +166,14 @@ namespace _Scripts.Unit.Player
         private void PlayEffect(float x, float y, float z)
         {
             var slam = Instantiate(_slam);
-            _effectDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(_slamDelay)).Subscribe(c =>
+
+            slam.transform.position = new Vector3(x, y, z);
+            slam.Play();
+            
+            _audioSource.PlayOneShot(_clap);
+            _effectDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(slam.main.duration)).Subscribe(v =>
             {
-                slam.transform.position = new Vector3(x, y, z);
-                slam.Play();
-                
-                _audioSource.PlayOneShot(_clap);
-                _effectDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(slam.main.duration)).Subscribe(v =>
-                {
-                    Destroy(slam.gameObject);
-                });
+                Destroy(slam.gameObject);
             });
         }
     }

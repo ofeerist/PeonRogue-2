@@ -2,12 +2,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using _Scripts.Unit;
+using _Scripts.Unit.Player;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace _Scripts.UI.InGameUI
 {
-    public class ReviveCounter : MonoCached.MonoCached
+    public class ReviveCounter : MonoBehaviour
     {
         [SerializeField] private GameObject _prefab;
         [SerializeField] private Transform _parent;
@@ -21,34 +23,33 @@ namespace _Scripts.UI.InGameUI
         private void Start()
         {
             _unitObserver.UnitChanged += OnUnitChanged;
-        }
 
-        protected override void OnTick()
-        {
-            foreach (var image in _toDispose.Where(image => image != null))
+            Observable.EveryUpdate().Subscribe(x =>
             {
-                image.color = UnityEngine.Color.Lerp(image.color, UnityEngine.Color.clear, _disposeSpeed * Time.deltaTime);
+                foreach (var image in _toDispose.Where(image => image != null))
+                {
+                    image.color = UnityEngine.Color.Lerp(image.color, UnityEngine.Color.clear, _disposeSpeed * Time.deltaTime);
 
-                if (image.color.a <= .02f)
-                    Destroy(image.transform.parent.gameObject);
-            }
+                    if (image.color.a <= .02f)
+                        Destroy(image.transform.parent.gameObject);
+                }
+            }).AddTo(this);
         }
 
         private void OnUnitChanged(Unit.Unit u)
         {
-            var h = u.GetComponent<UniversalHealth>();
+            var h = u.GetComponent<PlayerHealth>();
             if (h == null) throw new Exception("An unhandled exception occured: che delaesh shakal ebaniy");
             
             h.RevivesChanged += OnRevivesChanged;
+            OnRevivesChanged(h.CurrentRiveves);
         }
 
         private void OnRevivesChanged(int i)
         {
             while (_parent.childCount < i)
-            {
                 Instantiate(_prefab, _parent);
-            }
-
+            
             while (_parent.childCount > i)
             {
                 var o = _parent.GetChild(0);

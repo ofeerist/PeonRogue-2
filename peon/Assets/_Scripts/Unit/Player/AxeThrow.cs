@@ -43,6 +43,9 @@ namespace _Scripts.Unit.Player
         }
 
         [SerializeField] private float _chargeTimeToRegen;
+        private float _refreshTime;
+        public delegate void TimeChange(float time);
+        public event TimeChange TimeChanged;
 
         [SerializeField] private float _maxFlightDistance;
 
@@ -78,9 +81,22 @@ namespace _Scripts.Unit.Player
             _attackCooldownTimer = 0;
             CurrentThrowCharges = _maxThrowCharges;
             
-            Observable.Interval(TimeSpan.FromSeconds(_chargeTimeToRegen)).Subscribe(x =>
+            Observable.EveryUpdate().Subscribe(_ =>
             {
-                if (CurrentThrowCharges < _maxThrowCharges) CurrentThrowCharges += 1; 
+                if (CurrentThrowCharges < _maxThrowCharges)
+                {
+                    _refreshTime += (1 / _chargeTimeToRegen) * Time.deltaTime;
+
+                    var normalized = _refreshTime;
+                    TimeChanged?.Invoke(normalized);
+                    
+                    if (normalized >= 1f)
+                    {
+                        _refreshTime = 0;
+
+                        CurrentThrowCharges++;
+                    }
+                }
             }).AddTo(this);
 
             Observable.EveryUpdate()
