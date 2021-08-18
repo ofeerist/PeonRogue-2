@@ -34,7 +34,7 @@ namespace _Scripts.Level.UnitData
         public override void SetData(Unit.Unit unit)
         {
             var health = unit.GetComponent<EnemyHealth>();
-            var aiMovement = unit.GetComponent<BansheeMovement>();
+            var aiMovement = unit.GetComponent<BansheeTeleport>();
             var aiAttack = unit.GetComponent<BansheeShoutAttack>();
 
             health.SetData(_maxHealth.GetValue(), _stanTime.GetValue());

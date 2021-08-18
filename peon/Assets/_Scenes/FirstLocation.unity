@@ -5450,9 +5450,9 @@ MonoBehaviour:
   - FirstLocation3
   WaveInfos:
   - UnitData:
-    - {fileID: 11400000, guid: acdfe86eba0c405eda6a4d45e0b0693f, type: 2}
+    - {fileID: 11400000, guid: 35bb103b9b392184b9dcbb18369414e2, type: 2}
     MaxUsages:
-    - Target: 1
+    - Target: 0
       MaxUsageTimes: 1
       CurrentUsageTimes: 0
 --- !u!4 &1120854112

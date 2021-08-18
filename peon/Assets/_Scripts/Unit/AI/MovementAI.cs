@@ -1,10 +1,13 @@
 using System;
+using System.Numerics;
 using KinematicCharacterController;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
+using Quaternion = UnityEngine.Quaternion;
 using Random = UnityEngine.Random;
+using Vector3 = UnityEngine.Vector3;
 
 namespace _Scripts.Unit.AI
 {
@@ -15,7 +18,7 @@ namespace _Scripts.Unit.AI
         private KinematicCharacterMotor _motor;
         private Unit _unit;
         
-        private Vector3 _moveInputVector;
+        private Vector3 _moveInputVector = Vector3.zero;
         private bool _toDash;
         private Vector3 _dashDirection;
         

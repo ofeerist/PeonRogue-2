@@ -39,7 +39,7 @@ namespace _Scripts.Unit.Player
             if (!_photonView.IsMine) return;
             
             Observable.EveryUpdate() 
-                .Where(_ => Input.GetKeyDown(KeyCode.Mouse0))
+                .Where(_ => Input.GetKeyUp(KeyCode.Mouse0))
                 .Subscribe (x =>
                 {
                     if (_unit.CurrentState != UnitState.Dash && !_attack) return;
