@@ -1,25 +1,27 @@
 using System;
 using System.Collections;
-using _Scripts.Unit.Player;
 using KinematicCharacterController;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
-using UnityEngine.AI;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 namespace _Scripts.Unit.AI
 {
-    public class AIHealth : MonoBehaviour
+    public sealed class AIHealth : MonoBehaviour
     {
         private float _stanTime;
-        
-        public float BounceDamage { get; private set; }
+
+        private float _bounceDamage;
 
         [SerializeField] private float _maxHealth;
         private float _currentHealth;
         
+        [Space] [SerializeField] private float _knockbackDamageCooldown;
+        private float _knockbackTimer;
+        
+        [Space]
         
         [SerializeField] private ParticleSystem _stanChannelEffect;
         [SerializeField] private ParticleSystem _stanFinishlEffect;
@@ -47,7 +49,7 @@ namespace _Scripts.Unit.AI
         private readonly SerialDisposable _serialDisposable = new SerialDisposable();
 
         public delegate void Dead(Unit u);
-        public virtual event Dead OnDeath;
+        public event Dead OnDeath;
 
         private Unit _unit;
         private KinematicCharacterMotor _motor;
@@ -70,17 +72,20 @@ namespace _Scripts.Unit.AI
             
             _currentHealth = _maxHealth;
 
-            BounceDamage = 0;
+            _bounceDamage = 0;
         }
 
         private void ByMovementHit(Collider hitcollider, Vector3 hitnormal, Vector3 hitpoint)
         {
             if (!PhotonNetwork.IsMasterClient) return;
+
+            if (_knockbackTimer > Time.time) return;
             
             var layer = hitcollider.gameObject.layer;
             if (layer != 9) return;
-            
-            _photonView.RPC(nameof(TakeDamage), RpcTarget.AllViaServer, BounceDamage, 0f, 0f);
+
+            _knockbackTimer = _knockbackDamageCooldown + Time.time;
+            _photonView.RPC(nameof(TakeDamage), RpcTarget.AllViaServer, _bounceDamage, 0f, 0f);
         }
 
         public void SetData(float maxHealth)
@@ -99,7 +104,7 @@ namespace _Scripts.Unit.AI
         {
             if (damage == 0) return;
 
-            if(bounceDamage != 0) BounceDamage = bounceDamage;
+            if(bounceDamage != 0) _bounceDamage = bounceDamage;
             if(stanTime != 0) _stanTime = stanTime;
             
             _currentHealth -= damage;
@@ -113,10 +118,11 @@ namespace _Scripts.Unit.AI
             else Stan(_stanTime);
         }
 
-        public void Stan(float time)
+        private void Stan(float time)
         {
             _unit.CurrentState = UnitState.InStan;
             _unit.Animator.speed = 0;
+            _stanChannelEffect.Play();
             
             _stanTime = time;
             var stanTime = _currentStanTime = Time.time + time;
@@ -127,6 +133,9 @@ namespace _Scripts.Unit.AI
                 {
                     _unit.CurrentState = UnitState.Default;
                     _unit.Animator.speed = 1;
+
+                    _stanChannelEffect.Stop();
+                    _stanFinishlEffect.Play();
                 }
             });
         }
@@ -141,7 +150,7 @@ namespace _Scripts.Unit.AI
             else
             {
                 _textTag.transform.position = transform.position + randomOffset;
-                _textTag.Text = _textTag.Color.a >= .2f ? (System.Convert.ToInt32(_textTag.Text) + Mathf.RoundToInt(damage)).ToString() : Mathf.RoundToInt(damage).ToString();
+                _textTag.Text = _textTag.Color.a >= .2f ? (Convert.ToInt32(_textTag.Text) + Mathf.RoundToInt(damage)).ToString() : Mathf.RoundToInt(damage).ToString();
 
                 _textTag.Color = UnityEngine.Color.Lerp(_textTag.Color, UnityEngine.Color.red, _textTagColorizingTime * Time.deltaTime) + new UnityEngine.Color(0, 0, 0, 1);
                 _textTag.LifeTime = _textTagLifetime;

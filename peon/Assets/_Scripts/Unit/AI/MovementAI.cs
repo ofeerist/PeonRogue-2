@@ -1,5 +1,4 @@
 using System;
-using System.Numerics;
 using KinematicCharacterController;
 using Photon.Pun;
 using UniRx;
@@ -43,19 +42,19 @@ namespace _Scripts.Unit.AI
         [SerializeField] private float _rotationSpeed;
         
         private Vector3 _internalVelocityAdd;
-        
+
         [Space]
         
         [SerializeField] private LayerMask _layerMask;
 
         [SerializeField] private bool _chase;
         [SerializeField] private float _detectionRange;
+        [SerializeField] private float _minDetectionRange;
         
         [SerializeField] private bool _retreat;
         [SerializeField] private float _retreatDistance;
 
         public delegate void MovementHit(Collider hitCollider, Vector3 hitNormal, Vector3 hitPoint);
-
         public event MovementHit ByMovementHit;
         
         private NavMeshPath _path;
@@ -102,25 +101,26 @@ namespace _Scripts.Unit.AI
                     for (int i = 0; i < size; i++)
                     {
                         var position = _results[i].transform.position;
+                        var distance = Vector3.Distance(transform.position, position);
 
-                        if (_retreat && Vector3.Distance(transform.position, position) < _retreatDistance) continue;
-
-                        if (Vector3.Distance(transform.position, position) < .5f) position = transform.position;
+                        if (distance < _retreatDistance && _retreat) continue;
+                        if (distance < _minDetectionRange) continue;
+                        
+                        if (distance < .5f) position = transform.position;
 
                         _currentCorner = 1;
-                        if(NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path))
+                        if (NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path))
                             _path.GetCornersNonAlloc(_corners);
                     }
                 }
 
                 if (_retreat)
                 {
-                    var results = new Collider[1];
-                    var size = Physics.OverlapSphereNonAlloc(transform.position, _retreatDistance, results, _layerMask);
+                    var size = Physics.OverlapSphereNonAlloc(transform.position, _retreatDistance, _results, _layerMask);
                     for (int i = 0; i < size; i++)
                     {
                         var selfp = transform.position;
-                        var targetp = results[i].transform.position;
+                        var targetp = _results[i].transform.position;
                         var position = selfp + (selfp - targetp).normalized * _retreatDistance;
                         
                         if (!NavMesh.CalculatePath(transform.position, position, NavMesh.AllAreas, _path) || _motor.Velocity.magnitude < 0.1f)

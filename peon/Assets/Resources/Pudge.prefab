@@ -3274,6 +3274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 400
+  _knockbackDamageCooldown: 0.5
   _stanChannelEffect: {fileID: 8153405169149890365}
   _stanFinishlEffect: {fileID: 6961060765267594498}
   _textTagVelocity: {x: 0, y: 0.005, z: 0}
