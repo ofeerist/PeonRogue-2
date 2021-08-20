@@ -209,7 +209,7 @@ namespace _Scripts.Unit.AI.Pudge
 
                 if (_victim != null)
                 {
-                    _victim.Move(_head.transform.position);
+                    _victim.SetPosition(_head.transform.position);
                 }
 
                 if (Vector3.Distance(pos, _currentPosition) <= 1.5f)

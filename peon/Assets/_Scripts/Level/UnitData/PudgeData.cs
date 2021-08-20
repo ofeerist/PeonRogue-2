@@ -8,12 +8,15 @@ namespace _Scripts.Level.UnitData
     class PudgeData : UnitData
     {
         [SerializeField] private RandomFloat _maxHealth;
-        [SerializeField] private RandomFloat _stanTime;
 
         [Space]
 
-        [SerializeField] private RandomFloat _detectionRange;
-        [SerializeField] private RandomFloat _rotateSpeed;
+        [SerializeField] private bool _chase;
+        [SerializeField] private RandomFloat _minDistanceToChase;
+        [SerializeField] private RandomFloat _maxDistanceToChase;
+        [SerializeField] private bool _retreat;
+        [SerializeField] private RandomFloat _retreatDistance;
+        
         [SerializeField] private RandomFloat _speed;
 
         [Space]
@@ -42,17 +45,17 @@ namespace _Scripts.Level.UnitData
 
         public override void SetData(Unit.Unit unit)
         {
-            var health = unit.GetComponent<EnemyHealth>();
-            var aiMovement = unit.GetComponent<AIMovement>();
-            var aiAttack = unit.GetComponent<AIAttack>();
-            var stench = unit.GetComponent<PudgeStench>();
-            //var hook = unit.GetComponent<PudgeHook>();
+            var health = unit.GetComponent<AIHealth>();
+            var aiMovement = unit.GetComponent<MovementAI>();
+            var aiAttack = unit.GetComponent<MeleeAIAttack>();
+            var stench = unit.GetComponent<StenchPudge>();
+            var hook = unit.GetComponent<HookPudge>();
 
-            health.SetData(_maxHealth.GetValue(), _stanTime.GetValue());
-            aiMovement.SetData(_detectionRange.GetValue(), _rotateSpeed.GetValue(), _speed.GetValue());
+            health.SetData(_maxHealth.GetValue());
+            aiMovement.SetData(_speed.GetValue(), _chase, _maxDistanceToChase.GetValue(), _minDistanceToChase.GetValue(), _retreat, _retreatDistance.GetValue());
             aiAttack.SetData(_attackSpeed.GetValue(), _range.GetValue(), _angle.GetValue(), _damage.GetValue());
             stench.SetData(_stenchUseRange.GetValue(), _stenchRange.GetValue(), _stenchDamage.GetValue(), _stenchUsingTime.GetValue(), _stenchCooldown.GetValue());
-            //hook.SetData(_maxHookDistance.GetValue(), _hookSpeed.GetValue(), _hookBackwardSpeed.GetValue(), _rangeToUseHook.GetValue(), _minRangeToUseHook.GetValue(), _hookCooldown.GetValue()); 
+            hook.SetData(_maxHookDistance.GetValue(), _hookSpeed.GetValue(), _hookBackwardSpeed.GetValue(), _rangeToUseHook.GetValue(), _minRangeToUseHook.GetValue(), _hookCooldown.GetValue()); 
         }
     }
 }

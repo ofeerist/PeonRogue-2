@@ -124,7 +124,7 @@ namespace _Scripts.Unit.AI.Banshee
             _effect2Disposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(.1f)).Subscribe(x =>
             {
                 var end = RandomNavmeshLocation(range, position);
-                _motor.MoveCharacter(end);
+                _motor.SetPosition(end);
 
                 var eff2 = PhotonNetwork.Instantiate(_teleportEffect.name, end,
                     Quaternion.Euler(0, Random.Range(0, 360), 0));

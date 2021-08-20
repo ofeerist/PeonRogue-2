@@ -865,6 +865,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 150
+  _knockbackDamageCooldown: 0.5
   _stanChannelEffect: {fileID: 4690370911140541407}
   _stanFinishlEffect: {fileID: 602615581656085547}
   _textTagVelocity: {x: 0, y: 0.005, z: 0}
@@ -954,6 +955,7 @@ MonoBehaviour:
     m_Bits: 0
   _chase: 0
   _detectionRange: 0
+  _minDetectionRange: 0
   _retreat: 0
   _retreatDistance: 0
 --- !u!1 &919809399125815545

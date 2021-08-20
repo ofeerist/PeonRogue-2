@@ -18,13 +18,6 @@ MonoBehaviour:
   _maxHealth:
     _min: 80
     _max: 100
-  _stanTime:
-    _min: 1
-    _max: 1
-  _retreatDistance:
-    _min: 5
-    _max: 5
-  _attackOnClamp: 0
   _chase: 1
   _minDistanceToChase:
     _min: 10
@@ -32,9 +25,10 @@ MonoBehaviour:
   _maxDistanceToChase:
     _min: 15
     _max: 15
-  _rotateSpeed:
-    _min: 1000
-    _max: 1000
+  _retreat: 1
+  _retreatDistance:
+    _min: 5
+    _max: 5
   _speed:
     _min: 1.6
     _max: 1.6

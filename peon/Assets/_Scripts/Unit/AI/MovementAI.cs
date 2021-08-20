@@ -63,6 +63,17 @@ namespace _Scripts.Unit.AI
         private static readonly int Speed = Animator.StringToHash("Speed");
 
         private readonly Collider[] _results = new Collider[1];
+
+        public void SetData(float speed, bool chase, float detectionRange, float minDetectionRange, bool retreat,
+            float retreatDistance)
+        {
+            _maxStableMoveSpeed = speed;
+            _chase = chase;
+            _detectionRange = detectionRange;
+            _minDetectionRange = minDetectionRange;
+            _retreat = retreat;
+            _retreatDistance = retreatDistance;
+        }
         
         private void Start()
         {

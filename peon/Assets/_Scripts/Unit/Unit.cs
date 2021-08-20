@@ -8,10 +8,6 @@ namespace _Scripts.Unit
 {
     public class Unit : MonoCached.MonoCached
     {
-        [HideInInspector] public UnitHealth UnitHealth;
-        [HideInInspector] public UnitMovement UnitMovement;
-        [HideInInspector] public UnitAttack UnitAttack;
-
         [HideInInspector] public Animator Animator;
         [HideInInspector] public KinematicCharacterMotor Controller;
         [HideInInspector] public Rigidbody Rigidbody;
@@ -26,6 +22,7 @@ namespace _Scripts.Unit
         public Dictionary<uint, Skill> Skills = new Dictionary<uint, Skill>();
         
         public bool CanBeHooked;
+        private static readonly int TeamColor = Shader.PropertyToID("TeamColor");
 
         private void Start()
         {
@@ -35,9 +32,9 @@ namespace _Scripts.Unit
             PhotonView = GetComponent<PhotonView>();
         }
 
-        public void Move(Vector3 position)
+        public void SetPosition(Vector3 position)
         {
-            Controller.MoveCharacter(position);
+            Controller.SetPosition(position);
         }
         
         [PunRPC]
@@ -45,7 +42,7 @@ namespace _Scripts.Unit
         {
             var peon = PhotonNetwork.GetPhotonView(peonViewId).gameObject;
             var skinnedMesh = peon.GetComponentInChildren<SkinnedMeshRenderer>();
-            skinnedMesh.material.SetColor("TeamColor", new UnityEngine.Color(r, g, b, a));
+            skinnedMesh.material.SetColor(TeamColor, new UnityEngine.Color(r, g, b, a));
 
             if (peon.GetPhotonView().Owner != PhotonNetwork.LocalPlayer) peon.GetComponentInChildren<Light>().gameObject.SetActive(false);
         }

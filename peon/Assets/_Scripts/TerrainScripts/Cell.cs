@@ -50,12 +50,13 @@ namespace _Scripts.TerrainScripts
                     var tux = _ux * i;
                     var tuy = _uy * j;
                     var tbf = _bf + new Vector2(tux, tuy);
-
+                    ;
+                    var halfPixel = 1 / (planeWidth * 2);
                     var tempVectors = new Vector2[4];
-                    tempVectors[0] = tbf + new Vector2(0, 0);
-                    tempVectors[1] = tbf + new Vector2(_ux, 0);
-                    tempVectors[2] = tbf + new Vector2(0, _uy);
-                    tempVectors[3] = tbf + new Vector2(_ux, _uy);
+                    tempVectors[0] = tbf + new Vector2(0 + halfPixel, 0 + halfPixel);
+                    tempVectors[1] = tbf + new Vector2(_ux - halfPixel, 0 + halfPixel);
+                    tempVectors[2] = tbf + new Vector2(0 + halfPixel, _uy - halfPixel);
+                    tempVectors[3] = tbf + new Vector2(_ux - halfPixel, _uy - halfPixel);
 
                     int offset = tx * 4 + (ty * 4 * planeWidth * highPolyMod);
                     _uv[0 + offset] = tempVectors[0]; // bl

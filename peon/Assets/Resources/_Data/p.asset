@@ -18,15 +18,17 @@ MonoBehaviour:
   _maxHealth:
     _min: 400
     _max: 600
-  _stanTime:
-    _min: 1
-    _max: 1
-  _detectionRange:
-    _min: 13
-    _max: 8
-  _rotateSpeed:
-    _min: 1000
-    _max: 1000
+  _chase: 1
+  _minDistanceToChase:
+    _min: 0.5
+    _max: 0.5
+  _maxDistanceToChase:
+    _min: 15
+    _max: 5
+  _retreat: 0
+  _retreatDistance:
+    _min: 0
+    _max: 0
   _speed:
     _min: 1.5
     _max: 1.9

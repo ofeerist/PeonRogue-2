@@ -4,6 +4,7 @@ using _Scripts.Level.Interactable;
 using _Scripts.Level.Interactable.Talents;
 using _Scripts.UI.InGameUI;
 using _Scripts.Unit;
+using _Scripts.Unit.AI;
 using Photon.Pun;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -37,7 +38,7 @@ namespace _Scripts.Level
         public delegate void WaveEnd();
         public event WaveEnd WaveEnded;
 
-        private int _currentWave = 0;
+        private int _currentWave;
         private int _waveCount;
 
         private int _currentEnemyCount;
@@ -50,8 +51,6 @@ namespace _Scripts.Level
 
         private PhotonView _photonView;
 
-        private Wave _wave;
-        
         private void Start()
         {
             _photonView = GetComponent<PhotonView>();
@@ -74,6 +73,7 @@ namespace _Scripts.Level
             ApplyLevelData(FindObjectOfType<LevelInformation>());
             
             var pos = _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition();
+            print(pos);
             GameInitilizer.CreatePlayerUnit(pos, _unitObserver, _unitHandler);
 
             StartCoroutine(DelayedStart());
@@ -106,9 +106,7 @@ namespace _Scripts.Level
             
             WaveStarted?.Invoke(wave.WaveEnemies.Count);
             CurrentEnemyCount = wave.WaveEnemies.Count;
-            
-            _wave = wave;
-            
+
             StartCoroutine(SpawnEffect(wave, seed));
         }
 
@@ -154,7 +152,7 @@ namespace _Scripts.Level
                         Quaternion.identity)
                     .GetComponent<Unit.Unit>();
                 t.SetData(u);
-                u.GetComponent<UnitHealth>().OnDeath += EnemyDeath;
+                u.GetComponent<AIHealth>().OnDeath += EnemyDeath;
             }
         }
 

@@ -2856,9 +2856,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22e0fba7bfccc4c47927915d3c1988b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitHealth: {fileID: 0}
-  UnitMovement: {fileID: 0}
-  UnitAttack: {fileID: 0}
   Animator: {fileID: 0}
   Controller: {fileID: 0}
   Rigidbody: {fileID: 0}
@@ -3028,6 +3025,7 @@ MonoBehaviour:
     m_Bits: 2048
   _chase: 1
   _detectionRange: 15
+  _minDetectionRange: 0
   _retreat: 0
   _retreatDistance: 0
 --- !u!114 &6563253314902811461
@@ -3050,8 +3048,8 @@ MonoBehaviour:
   _stenchDamage: 1
   _stenchUsingTime: 3
   _stenchUpdateDelay: 0.1
-  _stenchEffect: {fileID: 0}
-  _stenchMarker: {fileID: 0}
+  _stenchEffect: {fileID: 5734302777470282244, guid: fe9d10c6278ab0044be8cb3be958fa9d, type: 3}
+  _stenchMarker: {fileID: 19887752, guid: 02d51b870121c764ca0be67be79a8ed4, type: 3}
   _stenchPrepareTime: 2
   _stenchCooldown: 10
   _sound: {fileID: 5982093873265761856}

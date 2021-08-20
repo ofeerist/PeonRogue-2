@@ -8,7 +8,6 @@ namespace _Scripts.Level.UnitData
     class BansheeData : UnitData
     {
         [SerializeField] private RandomFloat _maxHealth;
-        [SerializeField] private RandomFloat _stanTime;
 
         [Space]
 
@@ -33,11 +32,11 @@ namespace _Scripts.Level.UnitData
 
         public override void SetData(Unit.Unit unit)
         {
-            var health = unit.GetComponent<EnemyHealth>();
+            var health = unit.GetComponent<AIHealth>();
             var aiMovement = unit.GetComponent<BansheeTeleport>();
             var aiAttack = unit.GetComponent<BansheeShoutAttack>();
 
-            health.SetData(_maxHealth.GetValue(), _stanTime.GetValue());
+            health.SetData(_maxHealth.GetValue());
             aiMovement.SetData(_distanceToRetreat.GetValue(), _retreatRange.GetValue(), _chase, _minDistanceToChase.GetValue(), _maxDistanceToChase.GetValue(), _chaseRange.GetValue(), _teleportCooldown.GetValue());
             aiAttack.SetData(_attackDistance.GetValue(), _prepareTime.GetValue(), _attackTime.GetValue(), _attackCooldown.GetValue(), _damage.GetValue(), _knockback.GetValue());
         }

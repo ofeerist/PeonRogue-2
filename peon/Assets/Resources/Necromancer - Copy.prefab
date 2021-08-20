@@ -6464,6 +6464,7 @@ MonoBehaviour:
     m_Bits: 2048
   _chase: 1
   _detectionRange: 15
+  _minDetectionRange: 10
   _retreat: 1
   _retreatDistance: 5
 --- !u!114 &8162784131651806738
@@ -6509,6 +6510,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 100
+  _knockbackDamageCooldown: 0.5
   _stanChannelEffect: {fileID: 6850948187689764255}
   _stanFinishlEffect: {fileID: 8245160246560937210}
   _textTagVelocity: {x: 0, y: 0.005, z: 0}

@@ -1,15 +1,16 @@
-using System.Collections;
 using _Scripts.Color;
 using _Scripts.UI.InGameUI;
-using _Scripts.Unit.Player;
 using Cinemachine;
+using KinematicCharacterController;
 using Photon.Pun;
+using UniRx;
 using UnityEngine;
 
 namespace _Scripts.Level
 {
     public static class GameInitilizer
     {
+        private static readonly SerialDisposable _serialDisposable = new SerialDisposable();
         public static void CreatePlayerUnit(Vector3 position, UnitObserver unitObserver, UnitHandler unitHandler)
         {
             var rotation =
@@ -33,28 +34,17 @@ namespace _Scripts.Level
                 unit.Camera = camera.GetComponentInChildren<Camera>();
 
                 unitObserver.Unit = unit;
+                _serialDisposable.AddTo(unitObserver);
 
-                unitObserver.StartCoroutine(Suka(peonPhotonView));
+                _serialDisposable.Disposable = Observable.NextFrame().Subscribe(x =>
+                {
+                    peonPhotonView.RPC("DontDestroy", RpcTarget.All);
+                });
             }
             else
             {
-                unitObserver.StartCoroutine(Blyat(position, unitObserver));
+                unitObserver.Unit.GetComponent<KinematicCharacterMotor>().SetPosition(position);
             }
-        }
-
-        private static IEnumerator Suka(PhotonView pv)
-        {
-            yield return null;
-            pv.RPC("DontDestroy", RpcTarget.All);
-        }
-        
-        private static IEnumerator Blyat(Vector3 vpizdu, UnitObserver pizda)
-        {
-            yield return null;
-
-            pizda.Unit.gameObject.SetActive(false);
-            pizda.Unit.transform.SetPositionAndRotation(vpizdu, Quaternion.identity);
-            pizda.Unit.gameObject.SetActive(true);
         }
     }
 }
