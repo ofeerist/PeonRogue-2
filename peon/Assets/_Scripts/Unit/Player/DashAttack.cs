@@ -42,8 +42,12 @@ namespace _Scripts.Unit.Player
                 .Where(_ => Input.GetKeyUp(KeyCode.Mouse0))
                 .Subscribe (x =>
                 {
-                    if (_unit.CurrentState != UnitState.Dash && !_attack) return;
+                    if (_unit.CurrentState != UnitState.Dash || _attack) return;
+                    
                     _photonView.RPC(nameof(Proccess), RpcTarget.AllViaServer);
+                    _attack = true;
+                    _unit.Animator.SetBool(Attack, _attack);
+                    
                 }).AddTo (this); 
             
             Observable.Interval(TimeSpan.FromSeconds(_damageInterval)).Subscribe(_ =>
@@ -64,8 +68,6 @@ namespace _Scripts.Unit.Player
         private void Proccess()
         {
             _dashAttackEffect.Play();
-            _attack = true;
-            _unit.Animator.SetBool(Attack, _attack);
         }
         
         private void AttackDamage()
@@ -85,7 +87,7 @@ namespace _Scripts.Unit.Player
                     if (dot >= Mathf.Cos(_dashAttackAngle))
                     {
                         unit.PhotonView.RPC(nameof(AIHealth.TakeDamage), RpcTarget.AllViaServer,
-                            _dashAttackDamage, _unit.BounceDamage, _unit.TimeToStan);
+                            _dashAttackDamage, _unit.BounceDamage, _unit.TimeToStan, _photonView.ViewID);
                         _photonView.RPC(nameof(PlayHit), RpcTarget.AllViaServer, new Random().Next(0));
 
                         posTo.y = 0;

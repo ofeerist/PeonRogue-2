@@ -123,7 +123,7 @@ namespace _Scripts.Unit.Player
                             position.x, position.y, position.z, Random.Range(0, 100));
                         
                         unit.PhotonView.RPC(nameof(AIHealth.TakeDamage), RpcTarget.AllViaServer,
-                            _rollDamage, _unit.BounceDamage, _unit.TimeToStan);
+                            _rollDamage, _unit.BounceDamage, _unit.TimeToStan, _photonView.ViewID);
                         
                         posTo.y = 0;
                         posTo *= _knockback;

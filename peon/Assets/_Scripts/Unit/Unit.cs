@@ -6,11 +6,10 @@ using UnityEngine;
 
 namespace _Scripts.Unit
 {
-    public class Unit : MonoCached.MonoCached
+    public class Unit : MonoBehaviour
     {
         [HideInInspector] public Animator Animator;
         [HideInInspector] public KinematicCharacterMotor Controller;
-        [HideInInspector] public Rigidbody Rigidbody;
         [HideInInspector] public PhotonView PhotonView;
 
         public Camera Camera;
@@ -19,19 +18,38 @@ namespace _Scripts.Unit
         public float TimeToStan;
         public float BounceDamage;
         
-        public Dictionary<uint, Skill> Skills = new Dictionary<uint, Skill>();
+        public Dictionary<uint, Skill> Skills;
         
         public bool CanBeHooked;
         private static readonly int TeamColor = Shader.PropertyToID("TeamColor");
 
+        private int _gold;
+        private int Gold
+        {
+            get => _gold;
+
+            set
+            {
+                _gold = value;
+                OnGoldChanged?.Invoke(value);
+            }
+        }
+
+        public delegate void GoldChanged(int gold);
+        public event GoldChanged OnGoldChanged;
+        
         private void Start()
         {
             Animator = GetComponentInChildren<Animator>();
             Controller = GetComponent<KinematicCharacterMotor>();
-            Rigidbody = GetComponent<Rigidbody>();
             PhotonView = GetComponent<PhotonView>();
         }
 
+        public void ReceiveGold(int count)
+        {
+            Gold += count;
+        }
+        
         public void SetPosition(Vector3 position)
         {
             Controller.SetPosition(position);

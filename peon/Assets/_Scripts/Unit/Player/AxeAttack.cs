@@ -187,7 +187,7 @@ namespace _Scripts.Unit.Player
                     if (dot >= Mathf.Cos(angle))
                     {
                         unit.PhotonView.RPC(nameof(AIHealth.TakeDamage), RpcTarget.AllViaServer,
-                            damage, _unit.BounceDamage, _unit.TimeToStan);
+                            damage, _unit.BounceDamage, _unit.TimeToStan, _photonView.ViewID);
                         _photonView.RPC(nameof(DamageEffect), RpcTarget.AllViaServer, Random.Range(0, 100), i, position.x, position.y, position.z);
 
                         posTo.y = 0;

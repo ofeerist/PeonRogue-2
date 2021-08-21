@@ -558,9 +558,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 22e0fba7bfccc4c47927915d3c1988b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UnitHealth: {fileID: 0}
-  UnitMovement: {fileID: 0}
-  UnitAttack: {fileID: 0}
   Animator: {fileID: 0}
   Controller: {fileID: 0}
   Rigidbody: {fileID: 0}
@@ -865,6 +862,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 150
+  _goldReward: 10
+  _goldPrefab: {fileID: -563832473195531223, guid: 302ef02619e35d87bbb824aa9dfc1fca, type: 3}
   _knockbackDamageCooldown: 0.5
   _stanChannelEffect: {fileID: 4690370911140541407}
   _stanFinishlEffect: {fileID: 602615581656085547}

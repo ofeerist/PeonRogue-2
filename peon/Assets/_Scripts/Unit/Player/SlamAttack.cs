@@ -142,7 +142,7 @@ namespace _Scripts.Unit.Player
                             if (unit != null && unit.CurrentState != UnitState.Dead)
                             {
                                 unit.PhotonView.RPC(nameof(AIHealth.TakeDamage), RpcTarget.AllViaServer,
-                                    _damage, _unit.BounceDamage, _unit.TimeToStan);
+                                    _damage, _unit.BounceDamage, _unit.TimeToStan, _photonView.ViewID);
 
                                 posTo.y = 0;
                                 posTo *= _knockback;

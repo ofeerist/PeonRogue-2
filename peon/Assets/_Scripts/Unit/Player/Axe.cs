@@ -34,6 +34,7 @@ namespace _Scripts.Unit.Player
 
         private Unit _creator;
         private readonly List<Unit> _ignore = new List<Unit>();
+        private PhotonView _photonView;
         
         private void OnDrawGizmosSelected()
         {
@@ -47,6 +48,7 @@ namespace _Scripts.Unit.Player
             var pp = PhotonNetwork.Instantiate(prefab.name, position, rotation);
             var axe = pp.GetComponent<Axe>();
             axe._creator = creator;
+            axe._photonView = creator.GetComponent<PhotonView>();
             
             axe._damage = damage;
             axe._knockback = knockback;
@@ -106,7 +108,7 @@ namespace _Scripts.Unit.Player
                     _audioSource.PlayOneShot(_hit[Random.Range(0, _hit.Length)]);
 
                     unit.PhotonView.RPC(nameof(AIHealth.TakeDamage), RpcTarget.AllViaServer,
-                        _damage, _creator.BounceDamage, _creator.TimeToStan);
+                        _damage, _creator.BounceDamage, _creator.TimeToStan, _photonView.ViewID);
 
                     var posTo = (unit.transform.position - transform.position).normalized;
                     posTo.y = 0;

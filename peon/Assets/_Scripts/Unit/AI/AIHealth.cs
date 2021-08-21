@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using _Scripts.Unit.Doodads;
 using KinematicCharacterController;
 using Photon.Pun;
 using UniRx;
@@ -17,6 +18,8 @@ namespace _Scripts.Unit.AI
 
         [SerializeField] private float _maxHealth;
         private float _currentHealth;
+        [SerializeField] private int _goldReward;
+        [SerializeField] private GoldProjectile _goldPrefab;
         
         [Space] [SerializeField] private float _knockbackDamageCooldown;
         private float _knockbackTimer;
@@ -56,6 +59,8 @@ namespace _Scripts.Unit.AI
         private MovementAI _movement;
         private PhotonView _photonView;
 
+        private int _lastID;
+        
         private void Awake()
         {
             _serialDisposable.AddTo(this);
@@ -85,7 +90,7 @@ namespace _Scripts.Unit.AI
             if (layer != 9) return;
 
             _knockbackTimer = _knockbackDamageCooldown + Time.time;
-            _photonView.RPC(nameof(TakeDamage), RpcTarget.AllViaServer, _bounceDamage, 0f, 0f);
+            _photonView.RPC(nameof(TakeDamage), RpcTarget.AllViaServer, _bounceDamage);
         }
 
         public void SetData(float maxHealth)
@@ -100,7 +105,23 @@ namespace _Scripts.Unit.AI
         }
         
         [PunRPC]
-        public void TakeDamage(float damage, float bounceDamage, float stanTime)
+        public void TakeDamage(float damage)
+        {
+            if (damage == 0) return;
+
+            _currentHealth -= damage;
+            _healthSlider.value = _currentHealth / _maxHealth;
+            SetTextTag(damage);
+
+            _onHit.clip = _onHitSounds[new System.Random((int)damage).Next(0, _onHitSounds.Length)];
+            _onHit.Play();
+
+            if (_currentHealth <= 0) Death(_lastID);
+            else Stan(_stanTime);
+        }
+        
+        [PunRPC]
+        public void TakeDamage(float damage, float bounceDamage, float stanTime, int killerID)
         {
             if (damage == 0) return;
 
@@ -114,7 +135,8 @@ namespace _Scripts.Unit.AI
             _onHit.clip = _onHitSounds[new System.Random((int)damage).Next(0, _onHitSounds.Length)];
             _onHit.Play();
 
-            if (_currentHealth <= 0) Death();
+            _lastID = killerID;
+            if (_currentHealth <= 0) Death(killerID);
             else Stan(_stanTime);
         }
 
@@ -157,7 +179,7 @@ namespace _Scripts.Unit.AI
             }
         }
 
-        private void Death()
+        private void Death(int killerID)
         {
             _unit.Animator.SetBool(Dead1, true);
             _onDeath.Play();
@@ -170,6 +192,8 @@ namespace _Scripts.Unit.AI
             
             _stanChannelEffect.Stop();
 
+            CreateGoldReward(PhotonView.Find(killerID).GetComponent<Unit>());
+            
             OnDeath?.Invoke(_unit);
 
             _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(3f)).Subscribe(x =>
@@ -181,6 +205,11 @@ namespace _Scripts.Unit.AI
             });
         }
 
+        private void CreateGoldReward(Unit unit)
+        {
+            GoldProjectile.Create(_goldPrefab, transform.position + new Vector3(0, .5f, 0), unit, _goldReward);
+        }
+        
         private IEnumerator Dispose()
         {
             var _transform = transform;
