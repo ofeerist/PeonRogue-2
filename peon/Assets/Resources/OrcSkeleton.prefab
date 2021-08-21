@@ -463,7 +463,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Animator: {fileID: 0}
   Controller: {fileID: 0}
-  Rigidbody: {fileID: 0}
   PhotonView: {fileID: 0}
   Camera: {fileID: 0}
   CurrentState: 0

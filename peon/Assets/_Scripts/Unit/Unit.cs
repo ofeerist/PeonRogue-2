@@ -24,7 +24,7 @@ namespace _Scripts.Unit
         private static readonly int TeamColor = Shader.PropertyToID("TeamColor");
 
         private int _gold;
-        private int Gold
+        public int Gold
         {
             get => _gold;
 

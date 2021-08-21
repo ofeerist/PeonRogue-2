@@ -63,7 +63,8 @@ namespace _Scripts.Unit.AI
         private static readonly int Speed = Animator.StringToHash("Speed");
 
         private readonly Collider[] _results = new Collider[1];
-
+        private bool _stanResetVelocity;
+        
         public void SetData(float speed, bool chase, float detectionRange, float minDetectionRange, bool retreat,
             float retreatDistance)
         {
@@ -277,6 +278,22 @@ namespace _Scripts.Unit.AI
 
                     break;
                 }
+            }
+
+            switch (_unit.CurrentState)
+            {
+                case UnitState.InStan:
+                {
+                    if (_stanResetVelocity)
+                    {
+                        _stanResetVelocity = false;
+                        currentVelocity = Vector3.zero;
+                    }
+                    break;
+                }
+                default:
+                    _stanResetVelocity = true;
+                    break;
             }
         }
         
