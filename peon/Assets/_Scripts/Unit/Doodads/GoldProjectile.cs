@@ -27,7 +27,7 @@ namespace _Scripts.Unit.Doodads
                 position += (target.transform.position - position) * _speed * Time.deltaTime;
                 _transform.position = position;
 
-                var size  = Physics.OverlapSphereNonAlloc(position, .5f, _results, _player);
+                var size  = Physics.OverlapSphereNonAlloc(position, .1f, _results, _player);
 
                 if (size > 0 && _results[0].gameObject.Equals(target.gameObject))
                 {
