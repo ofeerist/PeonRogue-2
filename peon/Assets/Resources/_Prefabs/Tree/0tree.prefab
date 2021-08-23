@@ -10,12 +10,12 @@ GameObject:
   m_Component:
   - component: {fileID: 4819987924639118308}
   - component: {fileID: 7488960481857896342}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 4_icecrownTree_rig:rt0_death_stump_geo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4819987924639118308
 Transform:
@@ -94,12 +94,18 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 925808665985659312}
-  m_Layer: 0
+  - component: {fileID: 2044769368}
+  - component: {fileID: 2044769371}
+  - component: {fileID: 2044769372}
+  - component: {fileID: 2044769367}
+  - component: {fileID: 2044769369}
+  - component: {fileID: 2044769370}
+  m_Layer: 8
   m_Name: 0tree
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &925808665985659312
 Transform:
@@ -108,7 +114,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 545765407030373130}
-  m_LocalRotation: {x: -0, y: -0.8873198, z: -0, w: 0.4611547}
+  m_LocalRotation: {x: 0, y: -0.8873209, z: 0, w: 0.46115252}
   m_LocalPosition: {x: -6.99, y: 1.082, z: 10.95}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_Children:
@@ -120,6 +126,205 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -125.077, z: 0}
+--- !u!136 &2044769368
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545765407030373130}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.7
+  m_Height: 10
+  m_Direction: 1
+  m_Center: {x: 0, y: 5, z: 0}
+--- !u!82 &2044769371
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545765407030373130}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: -1823754836589956214, guid: d3858b92a4097d04faa601aee35ea402, type: 2}
+  m_audioClip: {fileID: 8300000, guid: 2d4df2975767dac639074b9b9c7a856e, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 0.7
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 0
+  MaxDistance: 10
+  Pan2D: 0
+  rolloffMode: 1
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!95 &2044769372
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545765407030373130}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 90f5a26fd11007c2e869cde9deac372f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &2044769367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545765407030373130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 22e0fba7bfccc4c47927915d3c1988b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Animator: {fileID: 0}
+  Controller: {fileID: 0}
+  PhotonView: {fileID: 0}
+  Camera: {fileID: 0}
+  CurrentState: 0
+  TimeToStan: 0
+  BounceDamage: 0
+  CanBeHooked: 0
+--- !u!114 &2044769369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545765407030373130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd73993f5504f6586173616778dd27d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _maxHealth: 50
+  _doodad: 1
+  _doodadGeoset: {fileID: 0}
+  _goldReward: 5
+  _goldPrefab: {fileID: -563832473195531223, guid: 302ef02619e35d87bbb824aa9dfc1fca, type: 3}
+  _knockbackDamageCooldown: 0
+  _stanChannelEffect: {fileID: 0}
+  _stanFinishlEffect: {fileID: 0}
+  _textTagVelocity: {x: 0, y: 0, z: 0}
+  _textTagLifetime: 0
+  _textTagColorizingTime: 0
+  _healthSlider: {fileID: 0}
+  _onHit: {fileID: 0}
+  _onHitSounds:
+  - {fileID: 8300000, guid: 49676d1e50aafc6e7ae65ecfd18f0afd, type: 3}
+  _onDeath: {fileID: 0}
+--- !u!114 &2044769370
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 545765407030373130}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  observableSearch: 2
+  ObservedComponents: []
+  sceneViewId: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &623234620539358522
 GameObject:
   m_ObjectHideFlags: 0
@@ -129,12 +334,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3371128353108108064}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rt0_root_bind_jnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &3371128353108108064
 Transform:
@@ -161,12 +366,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6169677670526602379}
   - component: {fileID: 7838433710921035530}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 3_icecrownTree_rig:rt0_death_main_geo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &6169677670526602379
 Transform:
@@ -245,12 +450,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4546027559459816760}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rt0_leaves_06_bind_jnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4546027559459816760
 Transform:
@@ -265,7 +470,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1698703751249820292}
   m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 9.106758, y: -7.0525484, z: 9.378944}
 --- !u!1 &3745693124291022755
 GameObject:
   m_ObjectHideFlags: 0
@@ -275,12 +480,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4907657900437256248}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rt0_leaves_07_bind_jnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &4907657900437256248
 Transform:
@@ -295,7 +500,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1698703751249820292}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 1.9513437, y: 3.0056748, z: 14.816668}
 --- !u!1 &4007813843128066618
 GameObject:
   m_ObjectHideFlags: 0
@@ -305,12 +510,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1698703751249820292}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rt0_cog_bind_jnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1698703751249820292
 Transform:
@@ -332,7 +537,7 @@ Transform:
   - {fileID: 4907657900437256248}
   m_Father: {fileID: 3371128353108108064}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0.38743684, y: 1.3266919, z: 0.47676322}
 --- !u!1 &4669360488518339944
 GameObject:
   m_ObjectHideFlags: 0
@@ -343,12 +548,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1235989065787306394}
   - component: {fileID: 8605292454953985917}
-  m_Layer: 0
+  - component: {fileID: 2044769373}
+  m_Layer: 8
   m_Name: 1_icecrownTree_rig:rt0_main_geo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1235989065787306394
 Transform:
@@ -418,6 +624,20 @@ SkinnedMeshRenderer:
     m_Center: {x: 0.15935075, y: -0.2696985, z: 3.250547}
     m_Extent: {x: 1.4274889, y: 1.4080607, z: 5.0874352}
   m_DirtyAABB: 0
+--- !u!64 &2044769373
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4669360488518339944}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}
 --- !u!1 &5317737934027328353
 GameObject:
   m_ObjectHideFlags: 0
@@ -427,12 +647,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9052672538611896662}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rt0_leaves_02_bind_jnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &9052672538611896662
 Transform:
@@ -447,7 +667,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1698703751249820292}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 12.534724, y: 0.62839067, z: 4.2723536}
 --- !u!1 &6480409769569706258
 GameObject:
   m_ObjectHideFlags: 0
@@ -458,12 +678,12 @@ GameObject:
   m_Component:
   - component: {fileID: 170384692903653531}
   - component: {fileID: 2160940599333709797}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: 2_icecrownTree_rig:rt0_leaves_geo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &170384692903653531
 Transform:
@@ -549,12 +769,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 350260560600618539}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rt0_leaves_04_bind_jnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &350260560600618539
 Transform:
@@ -569,7 +789,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1698703751249820292}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -10.134504, y: 7.458944, z: 3.5360491}
 --- !u!1 &8289558430107492514
 GameObject:
   m_ObjectHideFlags: 0
@@ -579,12 +799,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1620446430571862587}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rt0_leaves_05_bind_jnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &1620446430571862587
 Transform:
@@ -599,7 +819,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1698703751249820292}
   m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -3.9343274, y: -11.081431, z: 4.5776353}
 --- !u!1 &8388372322747866862
 GameObject:
   m_ObjectHideFlags: 0
@@ -609,12 +829,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 840355584216561754}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rt0_leaves_01_bind_jnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &840355584216561754
 Transform:
@@ -629,7 +849,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1698703751249820292}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 2.7921493, y: 4.6433654, z: 7.691702}
 --- !u!1 &8990515465921794179
 GameObject:
   m_ObjectHideFlags: 0
@@ -639,12 +859,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8889547841615406402}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: rt0_leaves_03_bind_jnt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!4 &8889547841615406402
 Transform:
@@ -659,4 +879,4 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1698703751249820292}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -8.943729, y: 4.0660043, z: 7.3870764}

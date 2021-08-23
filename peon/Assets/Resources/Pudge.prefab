@@ -3271,6 +3271,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHealth: 400
+  _doodad: 0
   _goldReward: 10
   _goldPrefab: {fileID: -563832473195531223, guid: 302ef02619e35d87bbb824aa9dfc1fca, type: 3}
   _knockbackDamageCooldown: 0.5

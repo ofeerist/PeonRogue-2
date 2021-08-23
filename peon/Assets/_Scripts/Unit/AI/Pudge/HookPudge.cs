@@ -106,7 +106,11 @@ namespace _Scripts.Unit.AI.Pudge
                     {
                         var dir = (objPosition - position).normalized;
                         var hitsCount = Physics.RaycastNonAlloc(position, dir, _hits, _maxHookDistance);
-                        if (hitsCount < 2)
+                        for (int j = 0; j < hitsCount; j++)
+                        {
+                            print(_hits[i]);
+                        }
+                        if (hitsCount < 1)
                         {
                             _unit.CurrentState = UnitState.Attack;
                             _hookCooldownTimer = Time.time + _hookCooldown;

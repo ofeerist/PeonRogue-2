@@ -73,7 +73,7 @@ namespace _Scripts.Level
             ApplyLevelData(FindObjectOfType<LevelInformation>());
             
             var pos = _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition();
-            print(pos);
+
             GameInitilizer.CreatePlayerUnit(pos, _unitObserver, _unitHandler);
 
             StartCoroutine(DelayedStart());

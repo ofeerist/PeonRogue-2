@@ -18,6 +18,9 @@ namespace _Scripts.Unit.AI
 
         [SerializeField] private float _maxHealth;
         private float _currentHealth;
+        
+        [SerializeField] private bool _doodad;
+
         [SerializeField] private int _goldReward;
         [SerializeField] private GoldProjectile _goldPrefab;
         
@@ -60,7 +63,8 @@ namespace _Scripts.Unit.AI
         private PhotonView _photonView;
 
         private int _lastID;
-        
+        private static readonly int Hit = Animator.StringToHash("Hit");
+
         private void Awake()
         {
             _serialDisposable.AddTo(this);
@@ -73,7 +77,7 @@ namespace _Scripts.Unit.AI
             _movement = GetComponent<MovementAI>();
             _photonView = GetComponent<PhotonView>();
             
-            _movement.ByMovementHit += ByMovementHit;
+            if(_movement != null) _movement.ByMovementHit += ByMovementHit;
             
             _currentHealth = _maxHealth;
 
@@ -101,7 +105,7 @@ namespace _Scripts.Unit.AI
         [PunRPC]
         public void AddVelocity(float x, float y, float z)
         {
-            _movement.AddVelocity(new Vector3(x, y, z));
+            if(!_doodad) _movement.AddVelocity(new Vector3(x, y, z));
         }
         
         [PunRPC]
@@ -124,20 +128,30 @@ namespace _Scripts.Unit.AI
         public void TakeDamage(float damage, float bounceDamage, float stanTime, int killerID)
         {
             if (damage == 0) return;
-
+            if (_currentHealth <= 0) return;
+            
             if(bounceDamage != 0) _bounceDamage = bounceDamage;
             if(stanTime != 0) _stanTime = stanTime;
             
             _currentHealth -= damage;
-            _healthSlider.value = _currentHealth / _maxHealth;
-            SetTextTag(damage);
-
-            _onHit.clip = _onHitSounds[new System.Random((int)damage).Next(0, _onHitSounds.Length)];
-            _onHit.Play();
+            
+            switch (_doodad)
+            {
+                case true:
+                    _unit.Animator.SetTrigger(Hit);
+                    break;
+                case false:
+                    _healthSlider.value = _currentHealth / _maxHealth;
+                    SetTextTag(damage);
+                
+                    _onHit.clip = _onHitSounds[new System.Random((int)damage).Next(0, _onHitSounds.Length)];
+                    _onHit.Play();
+                    break;
+            }
 
             _lastID = killerID;
             if (_currentHealth <= 0) Death(killerID);
-            else Stan(_stanTime);
+            else if(!_doodad) Stan(_stanTime);
         }
 
         private void Stan(float time)
@@ -184,17 +198,23 @@ namespace _Scripts.Unit.AI
             _unit.Animator.SetBool(Dead1, true);
             _onDeath.Play();
             _unit.CurrentState = UnitState.Dead;
-            
-            _healthSlider.gameObject.SetActive(false);
 
-            _unit.enabled = false;
-            _motor.enabled = false;
-            
-            _stanChannelEffect.Stop();
+            if (!_doodad)
+            {
+                _healthSlider.gameObject.SetActive(false);
+
+                _unit.enabled = false;
+                _motor.Capsule.enabled = false;
+                _motor.enabled = false;
+
+                _stanChannelEffect.Stop();
+            }
 
             CreateGoldReward(PhotonView.Find(killerID).GetComponent<Unit>());
             
             OnDeath?.Invoke(_unit);
+
+            if(_doodad) return;
 
             _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(3f)).Subscribe(x =>
             {
