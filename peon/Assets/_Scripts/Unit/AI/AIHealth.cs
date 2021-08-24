@@ -209,7 +209,11 @@ namespace _Scripts.Unit.AI
 
                 _stanChannelEffect.Stop();
             }
-
+            else
+            {
+                GetComponent<CapsuleCollider>().enabled = false;
+            }
+            
             CreateGoldReward(PhotonView.Find(killerID).GetComponent<Unit>());
             
             OnDeath?.Invoke(_unit);

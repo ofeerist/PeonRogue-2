@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 
 namespace _Scripts.Level
 {
-    public class LevelFaсtory : MonoBehaviour
+    public class LevelFaсtory : MonoBehaviour, IPunInstantiateMagicCallback
     {
         [SerializeField] private UnitHandler _unitHandler;
         [SerializeField] private UnitObserver _unitObserver;
@@ -31,6 +31,7 @@ namespace _Scripts.Level
         private SpawnPosition[] _enemySpawnPositions;
         private SpawnPosition[] _transferPositions;
         private string[] _possibleScenes;
+        private Wave _wave;
         
         public delegate void WaveStart(int enemys);
         public event WaveStart WaveStarted;
@@ -96,8 +97,8 @@ namespace _Scripts.Level
         [PunRPC]
         private void RPCStartRandomWave(int seed)
         {
-            var wave = Wave.Generate(_waveInfos[_currentWave].UnitData, 5 + _currentWave, _waveInfos[_currentWave].MaxUsages, seed);
-            StartWave(wave, seed);
+            _wave = Wave.Generate(_waveInfos[_currentWave].UnitData, 5 + _currentWave, _waveInfos[_currentWave].MaxUsages, seed);
+            StartWave(_wave, seed);
         }
         
         private void StartWave(Wave wave, int seed)
@@ -144,14 +145,12 @@ namespace _Scripts.Level
             if (!PhotonNetwork.IsMasterClient) return;
             
             var r = new System.Random(seed);
-            foreach (var t in wave.WaveEnemies)
+            for (int i = 0; i < wave.WaveEnemies.Count; i++)
             {
                 var pos = _enemySpawnPositions[r.Next(0, _enemySpawnPositions.Length)].GetPosition(r);
-                var u = PhotonNetwork.Instantiate(t.Prefab.name,
+                var u = PhotonNetwork.Instantiate(wave.WaveEnemies[i].Prefab.name,
                         pos,
-                        Quaternion.identity)
-                    .GetComponent<Unit.Unit>();
-                t.SetData(u);
+                        Quaternion.identity, 0, new object[]{i});
                 u.GetComponent<AIHealth>().OnDeath += EnemyDeath;
             }
         }
@@ -212,6 +211,14 @@ namespace _Scripts.Level
         private void Reset()
         {
             _currentWave = 0;
+        }
+
+        public void OnPhotonInstantiate(PhotonMessageInfo info)
+        {
+            var u = info.photonView.gameObject.GetComponent<Unit.Unit>();
+            int i = (int)info.photonView.InstantiationData[0];
+
+            _wave.WaveEnemies[i].SetData(u);
         }
     }
 }
