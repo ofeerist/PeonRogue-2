@@ -43,7 +43,14 @@ namespace _Scripts.Level
             }
             else
             {
-                unitObserver.Unit.GetComponent<KinematicCharacterMotor>().SetPosition(position);
+                var motor = unitObserver.Unit.GetComponent<KinematicCharacterMotor>();
+                motor.SetPosition(position);
+
+                motor.enabled = false;
+                _serialDisposable.Disposable = Observable.NextFrame().Subscribe(x =>
+                {
+                    motor.enabled = true;
+                });
             }
         }
     }
