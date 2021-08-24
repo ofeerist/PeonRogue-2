@@ -1,3 +1,5 @@
+using System;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UniRx;
 using UnityEngine;
 
@@ -20,21 +22,38 @@ namespace _Scripts.Unit.Doodads
         private void Proccess(Unit target, int goldReward)
         {
             var _transform = transform;
-            
+
+            var toUnit = false;
+            var dir = _transform.position + new Vector3(0, 2, 0);
+
+            var ended = false;
             Observable.EveryUpdate().Subscribe(x =>
             {
+                if (ended) return;
+                
                 var position = _transform.position;
-                position += (target.transform.position - position) * _speed * Time.deltaTime;
+                position += ((toUnit ? target.transform.position : dir) - position) * _speed * Time.deltaTime;
                 _transform.position = position;
 
                 var size  = Physics.OverlapSphereNonAlloc(position, .1f, _results, _player);
 
                 if (size > 0 && _results[0].gameObject.Equals(target.gameObject))
                 {
+                    ended = true;
+                    
                     target.ReceiveGold(goldReward);
-                    Destroy(gameObject);
+                    GetComponent<AudioSource>().Play();
+                    Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(z =>
+                    {
+                        Destroy(gameObject);
+                    }).AddTo(this);
                 }
 
+            }).AddTo(this);
+
+            Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(x =>
+            {
+                toUnit = true;
             }).AddTo(this);
         }
     }
