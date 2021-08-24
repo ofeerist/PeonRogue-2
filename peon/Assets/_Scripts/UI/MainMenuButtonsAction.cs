@@ -61,7 +61,9 @@ namespace _Scripts.UI
 
         private void SinglePlayer()
         {
-            StartCoroutine(Disconnect());
+            PhotonNetwork.OfflineMode = true;
+
+            _gameStarter.StartSingleGame();
         }
 
         IEnumerator Disconnect()
@@ -116,7 +118,7 @@ namespace _Scripts.UI
             panel.SetActive(true);
         }
 
-        private void Quit()
+        private static void Quit()
         {
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;

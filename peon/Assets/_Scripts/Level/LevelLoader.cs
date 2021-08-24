@@ -12,7 +12,7 @@ using Event = _Scripts.Unit.Event;
 
 namespace _Scripts.Level
 {
-    internal class LevelLoader : MonoBehaviour, IOnEventCallback
+    internal class LevelLoader : MonoBehaviour
     {
         private int _loaded;
         private int Loaded { get => _loaded;
@@ -56,9 +56,16 @@ namespace _Scripts.Level
             if(PhotonNetwork.IsMasterClient) SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
             SceneManager.sceneLoaded += ActivateReady;
         }
-        
+
         private void Changed()
         {
+            if (PhotonNetwork.CurrentRoom == null)
+            {
+                _started = true;
+                _photonView.RPC(nameof(GameStart), RpcTarget.AllViaServer);
+                return;
+            }
+            
             _textMesh.text = "Waiting for other players ..." + "(" + Loaded + "/" + PhotonNetwork.CurrentRoom.PlayerCount + ")";
 
             if (!PhotonNetwork.IsMasterClient) return;
@@ -66,15 +73,20 @@ namespace _Scripts.Level
             if (Loaded >= PhotonNetwork.CurrentRoom.PlayerCount && !_started)
             {
                 _started = true;
-                GameStart();
+                _photonView.RPC(nameof(GameStart), RpcTarget.AllViaServer);
             }
         }
 
-        private static void GameStart()
+        [PunRPC]
+        private void GameStart()
         {
-            var options = new RaiseEventOptions { Receivers = ReceiverGroup.All };
-            var sendOptions = new SendOptions { Reliability = true };
-            PhotonNetwork.RaiseEvent((byte)Event.GameStart, null, options, sendOptions);
+            _textMesh.enabled = false;
+
+            _loadingCamera.gameObject.SetActive(false);
+            _darkness.Speed = 2;
+            _darkness.DeactivateDark();
+
+            _levelFactory.Process();
         }
 
         private void Start()
@@ -92,31 +104,6 @@ namespace _Scripts.Level
         private void Ready()
         {
             Loaded++;
-        }
-
-        public void OnEvent(EventData photonEvent)
-        {
-            switch (photonEvent.Code)
-            {
-                case (byte)Event.GameStart:
-                    _textMesh.enabled = false;
-
-                    _loadingCamera.gameObject.SetActive(false);
-                    _darkness.Speed = 2;
-                    _darkness.DeactivateDark();
-
-                    _levelFactory.Process();
-                    break;
-            }
-        }
-
-        public void OnEnable()
-        {
-            PhotonNetwork.AddCallbackTarget(this);
-        }
-        public void OnDisable()
-        {
-            PhotonNetwork.RemoveCallbackTarget(this);
         }
     }
 }
