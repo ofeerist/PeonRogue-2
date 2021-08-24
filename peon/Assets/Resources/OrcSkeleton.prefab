@@ -468,7 +468,7 @@ MonoBehaviour:
   CurrentState: 0
   TimeToStan: 0
   BounceDamage: 0
-  CanBeHooked: 0
+  CanBeHooked: 1
 --- !u!114 &9059189167889131847
 MonoBehaviour:
   m_ObjectHideFlags: 0

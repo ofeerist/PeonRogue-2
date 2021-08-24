@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using _Scripts.Unit.AI.Banshee;
 using Photon.Pun;
 using UniRx;
 using UnityEngine;
@@ -11,7 +10,8 @@ namespace _Scripts.Unit.AI.Pudge
     public class HookPudge : MonoBehaviour
     {
         [SerializeField] private LayerMask _layerMask;
-
+        [SerializeField] private LayerMask _obstacleMask;
+        
         [SerializeField] private GameObject _hookCell;
         [SerializeField] private GameObject _hookHead;
         [SerializeField] private float _distanceToSpawnCell;
@@ -105,12 +105,9 @@ namespace _Scripts.Unit.AI.Pudge
                     if (Vector3.Distance(objPosition, position) > _minRangeToUseHook)
                     {
                         var dir = (objPosition - position).normalized;
-                        var hitsCount = Physics.RaycastNonAlloc(position, dir, _hits, _maxHookDistance);
-                        for (int j = 0; j < hitsCount; j++)
-                        {
-                            print(_hits[i]);
-                        }
-                        if (hitsCount < 1)
+                        var hitsCount = Physics.RaycastNonAlloc(position, dir, _hits, _maxHookDistance, _obstacleMask);
+
+                        if (hitsCount == 0)
                         {
                             _unit.CurrentState = UnitState.Attack;
                             _hookCooldownTimer = Time.time + _hookCooldown;
