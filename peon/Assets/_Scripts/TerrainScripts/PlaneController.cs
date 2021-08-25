@@ -153,8 +153,8 @@ namespace _Scripts.TerrainScripts
         private void SetTilePart(int x, int y, int uvIndex, Cell cell)
         {
             int offset = x * 4 + (y * 4 * PlaneWidth * HighPolyModificator);
-            float ux = (1.0f / (FatherWidth / Resolution));
-            float uy = (1.0f / (FatherHeight / Resolution));
+            float ux = 1.0f / FatherWidth * Resolution;
+            float uy = 1.0f / FatherHeight * Resolution;
 
             var uvArray = GetUVArrayByIndex(uvIndex);
 
