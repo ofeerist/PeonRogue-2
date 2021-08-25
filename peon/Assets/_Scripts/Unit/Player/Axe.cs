@@ -82,6 +82,13 @@ namespace _Scripts.Unit.Player
 
                 Move(_transform);
             }).AddTo(this);
+            
+            Observable.Timer(TimeSpan.FromSeconds(10f)).Subscribe(x =>
+            {
+                if (!transform.GetChild(0).gameObject.activeSelf) return;
+                
+                Destroy(gameObject);
+            }).AddTo(this);
         }
 
         private void DetectCollision(Transform _transform)

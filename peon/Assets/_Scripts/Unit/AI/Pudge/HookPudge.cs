@@ -74,12 +74,6 @@ namespace _Scripts.Unit.AI.Pudge
             _minRangeToUseHook = minRangeToUse;
             _hookCooldown = cooldown;
         }
-        public void StopHook()
-        {
-            StopCoroutine(_hook);
-            foreach (var cell in _cells) Destroy(cell);
-            Destroy(_head);
-        }
 
         private void Start()
         {
@@ -123,6 +117,10 @@ namespace _Scripts.Unit.AI.Pudge
         [PunRPC]
         private void Hook(float cx, float cy, float cz, float ex, float ey, float ez)
         {
+            if(_head) Destroy(_head);
+            foreach (var item in _cells)
+                Destroy(item);
+            
             _currentPosition = new Vector3(cx, cy, cz);
             _targetPosition = new Vector3(ex, ey, ez);
             
