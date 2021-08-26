@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using _Scripts.Unit.Player;
 using Photon.Pun;
 using UniRx;
@@ -8,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace _Scripts.Unit.AI.Necromancer
 {
-    class NecromancerProjectile : MonoCached.MonoCached
+    public class NecromancerProjectile : MonoBehaviour
     { 
         private float _damage;
         private float _knockback;

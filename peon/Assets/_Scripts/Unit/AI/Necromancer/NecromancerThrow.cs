@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 namespace _Scripts.Unit.AI.Necromancer
 {
-    class NecromancerThrow : MonoCached.MonoCached
+    public class NecromancerThrow : MonoBehaviour
     {
         [SerializeField] private NecromancerProjectile _prefab;
         [SerializeField] private LayerMask _layerMask;

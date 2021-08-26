@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace _Scripts.Unit.AI.Banshee
 {
-    public class BansheeShoutAttack : MonoCached.MonoCached
+    public class BansheeShoutAttack : MonoBehaviour
     {
         [SerializeField] private LayerMask _layerMask;
         private readonly Collider[] _results = new Collider[6];

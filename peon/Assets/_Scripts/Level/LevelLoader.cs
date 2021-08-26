@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using _Scripts.UI;
 using _Scripts.UI.InGameUI;
@@ -6,6 +7,7 @@ using ExitGames.Client.Photon;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Event = _Scripts.Unit.Event;
@@ -32,6 +34,13 @@ namespace _Scripts.Level
         [SerializeField] private GameObject _UI;
         [SerializeField] private Camera _loadingCamera;
 
+        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
+
+        private void Awake()
+        {
+            _serialDisposable.AddTo(this);
+        }
+
         public void LoadScene(string sceneName)
         {
             Loaded = 0;
@@ -45,16 +54,12 @@ namespace _Scripts.Level
             _darkness.Speed = 2f;
             _darkness.ActivateDark();
             
-            StartCoroutine(Load(sceneName));
-        }
-
-        private IEnumerator Load(string sceneName)
-        {
-            yield return new WaitForSeconds(3f);
-            
-            _loadingCamera.gameObject.SetActive(true);
-            if(PhotonNetwork.IsMasterClient) SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
-            SceneManager.sceneLoaded += ActivateReady;
+            _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(3f)).Subscribe(x =>
+            {
+                _loadingCamera.gameObject.SetActive(true);
+                if (PhotonNetwork.IsMasterClient) SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+                SceneManager.sceneLoaded += ActivateReady;
+            });
         }
 
         private void Changed()

@@ -1,10 +1,11 @@
+using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace _Scripts.UI
 {
-    public class ButtonAnimation : MonoCached.MonoCached, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
+    public class ButtonAnimation : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, ISelectHandler, IDeselectHandler
     {
         [Tooltip("optional")]
         [SerializeField] private RectTransform _target;
@@ -47,6 +48,30 @@ namespace _Scripts.UI
             }
 
             _targetGameObject = _targetTransform.gameObject;
+            
+            Observable.EveryUpdate().Subscribe(x =>
+            {
+                if (_button != null && !_button.interactable  && !_button.gameObject.activeInHierarchy) return;
+
+                if (state == 0 || _stayOnSelect)
+                {
+                    var _transform = _targetTransform;
+                    if (_transform == null) return;
+
+                    var pos = _transform.anchoredPosition;
+
+                    if (_highlighted || _selected || (_stayOnSelect && EventSystem.current.currentSelectedGameObject == _targetGameObject))
+                    {
+                        if (Vector2.Distance(pos, _endPosition) > .01f) _transform.anchoredPosition = Vector2.Lerp(pos, _endPosition, _speed * Time.deltaTime);
+                        else state = 1;
+                    }
+                    else
+                    {
+                        if (Vector2.Distance(pos, _startPosition) > .01f) _transform.anchoredPosition = Vector2.Lerp(pos, _startPosition, _speed * Time.deltaTime);
+                        else state = -1;
+                    }
+                }
+            }).AddTo(this);
         }
 
         private void SoundClick()
@@ -55,30 +80,6 @@ namespace _Scripts.UI
             {
                 _audio.clip = _click;
                 _audio.Play();
-            }
-        }
-
-        protected override void OnTick()
-        {
-            if (_button != null && !_button.interactable  && !_button.gameObject.activeInHierarchy) return;
-
-            if (state == 0 || _stayOnSelect)
-            {
-                var transform = _targetTransform;
-                if (transform == null) return;
-
-                var pos = transform.anchoredPosition;
-
-                if (_highlighted || _selected || (_stayOnSelect && EventSystem.current.currentSelectedGameObject == _targetGameObject))
-                {
-                    if (Vector2.Distance(pos, _endPosition) > .01f) transform.anchoredPosition = Vector2.Lerp(pos, _endPosition, _speed * Time.deltaTime);
-                    else state = 1;
-                }
-                else
-                {
-                    if (Vector2.Distance(pos, _startPosition) > .01f) transform.anchoredPosition = Vector2.Lerp(pos, _startPosition, _speed * Time.deltaTime);
-                    else state = -1;
-                }
             }
         }
 

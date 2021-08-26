@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.Collections;
 using _Scripts.Level.Interactable;
 using _Scripts.Level.Interactable.Talents;
@@ -6,6 +7,7 @@ using _Scripts.UI.InGameUI;
 using _Scripts.Unit;
 using _Scripts.Unit.AI;
 using Photon.Pun;
+using UniRx;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -52,6 +54,13 @@ namespace _Scripts.Level
 
         private PhotonView _photonView;
 
+        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
+
+        private void Awake()
+        {
+            _serialDisposable.AddTo(this);
+        }
+
         private void Start()
         {
             _photonView = GetComponent<PhotonView>();
@@ -76,14 +85,11 @@ namespace _Scripts.Level
             var pos = _playerSpawnPositions[Random.Range(0, _playerSpawnPositions.Length)].GetPosition();
 
             GameInitilizer.CreatePlayerUnit(pos, _unitObserver, _unitHandler);
-
-            StartCoroutine(DelayedStart());
-        }
-
-        private IEnumerator DelayedStart()
-        {
-            yield return new WaitForSeconds(3);
-            StartRandomWave();
+            
+            _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(3f)).Subscribe(x =>
+            {
+                StartRandomWave();
+            });
         }
 
         private void StartRandomWave()
@@ -108,10 +114,10 @@ namespace _Scripts.Level
             WaveStarted?.Invoke(wave.WaveEnemies.Count);
             CurrentEnemyCount = wave.WaveEnemies.Count;
 
-            StartCoroutine(SpawnEffect(wave, seed));
+            SpawnEffect(wave, seed);
         }
 
-        private IEnumerator SpawnEffect(Wave wave, int seed)
+        private void SpawnEffect(Wave wave, int seed)
         {
             var effs = new ParticleSystem[wave.WaveEnemies.Count];
             
@@ -127,17 +133,21 @@ namespace _Scripts.Level
                 effs[i].Play();
             }
 
-            yield return new WaitForSeconds(3f);
-            
-            SpawnEnemies(wave, seed);
+            _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(3f)).Subscribe(x =>
+            {
+                SpawnEnemies(wave, seed);
 
-            foreach (var e in effs)
-                e.Stop();
-            
-            yield return new WaitForSeconds(1f);
+                foreach (var e in effs)
+                    e.Stop();
 
-            foreach (var e in effs)
-                Destroy(e.gameObject);
+                _serialDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(1f)).Subscribe(x =>
+                {
+                    foreach (var e in effs)
+                        Destroy(e.gameObject);
+                });
+            });
+
+
         }
         
         private void SpawnEnemies(Wave wave, int seed)

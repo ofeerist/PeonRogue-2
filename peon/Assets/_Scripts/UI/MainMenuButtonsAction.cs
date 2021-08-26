@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using _Scripts.Unit.Doodads;
 using Cinemachine;
 using Photon.Pun;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -42,6 +44,15 @@ namespace _Scripts.UI
         [SerializeField] private Transform _defaultPeonTransform;
         [SerializeField] private Transform _optionsPeonTransform;
 
+        private readonly SerialDisposable _changeDisposable = new SerialDisposable();
+        private readonly SerialDisposable _transferDisposable = new SerialDisposable();
+        
+        private void Awake()
+        {
+            _changeDisposable.AddTo(this);
+            _transferDisposable.AddTo(this);
+        }
+
         private void Start()
         {
             DisableAllCameras();
@@ -55,8 +66,8 @@ namespace _Scripts.UI
 
         public void MainMenu()
         {
-            StartCoroutine(ChangePeonPos(true));
-            StartCoroutine(TransferTo(_mainCamera, _buttonsPanel, false));
+            ChangePeonPos(true);
+            TransferTo(_mainCamera, _buttonsPanel, false);
         }
 
         private void SinglePlayer()
@@ -66,38 +77,32 @@ namespace _Scripts.UI
             _gameStarter.StartSingleGame();
         }
 
-        IEnumerator Disconnect()
-        {
-            PhotonNetwork.Disconnect();
-            while (PhotonNetwork.IsConnected)
-            {
-                yield return null;
-            }
-            PhotonNetwork.OfflineMode = true;
-
-            _gameStarter.StartSingleGame();
-        }
-
         private void MultiPlayer()
         {
-            StartCoroutine(ChangePeonPos(true));
-            StartCoroutine(TransferTo(_multiplayerCamera, _multiPlayerPanel, true));
+            ChangePeonPos(true);
+            TransferTo(_multiplayerCamera, _multiPlayerPanel, true);
         }
 
         private void Options()
         {
-            StartCoroutine(ChangePeonPos(false));
-            StartCoroutine(TransferTo(_optionsCamera, _optionsPanel, false));
+            ChangePeonPos(false);
+            TransferTo(_optionsCamera, _optionsPanel, false);
         }
 
-        private IEnumerator ChangePeonPos(bool def)
+        private void ChangePeonPos(bool def)
         {
-            yield return new WaitForSeconds(0.9f);
-            if(def) _peonTransform.SetPositionAndRotation(_defaultPeonTransform.position, _defaultPeonTransform.rotation);
-            else _peonTransform.SetPositionAndRotation(_optionsPeonTransform.position, _optionsPeonTransform.rotation);
+            _changeDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(0.9f)).Subscribe(x =>
+            {
+                if (def)
+                    _peonTransform.SetPositionAndRotation(_defaultPeonTransform.position,
+                        _defaultPeonTransform.rotation);
+                else
+                    _peonTransform.SetPositionAndRotation(_optionsPeonTransform.position,
+                        _optionsPeonTransform.rotation);
+            });
         }
 
-        private IEnumerator TransferTo(CinemachineVirtualCamera camera, GameObject panel, bool door)
+        private void TransferTo(Component cm, GameObject panel, bool door)
         {
             DisableAllPanels();
 
@@ -108,14 +113,15 @@ namespace _Scripts.UI
             _darkness.ActivateDark();
 
             DisableAllCameras();
-            camera.gameObject.SetActive(true);
+            cm.gameObject.SetActive(true);
 
-            yield return new WaitForSeconds(1f);
+            _transferDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(1f)).Subscribe(x =>
+            {
+                _darkness.Speed = 1;
+                _darkness.DeactivateDark();
 
-            _darkness.Speed = 1;
-            _darkness.DeactivateDark();
-
-            panel.SetActive(true);
+                panel.SetActive(true);
+            });
         }
 
         private static void Quit()

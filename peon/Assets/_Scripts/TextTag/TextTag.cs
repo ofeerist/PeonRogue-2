@@ -1,9 +1,10 @@
 using TMPro;
+using UniRx;
 using UnityEngine;
 
 namespace _Scripts.TextTag
 {
-    class TextTag : MonoCached.MonoCached
+    public class TextTag : MonoBehaviour
     {
         private float _destroyTime = 0;
 
@@ -39,19 +40,6 @@ namespace _Scripts.TextTag
             set => textMesh.color = value;
         }
 
-        protected override void OnTick()
-        {
-            var a = Color.a > .01f;
-            if (_destroyTime < Time.time && a) Color = UnityEngine.Color.Lerp(Color, new UnityEngine.Color(0, 0, 0, 0), Time.deltaTime * 5);
-
-            if (!a)
-            {
-                if (_destroy) Destroy(gameObject);
-
-                transform.position += Velocity;
-            }
-        }
-
         public static TextTag Create(Vector3 position, string text, UnityEngine.Color color, float lifeTime, Vector3 velocity, bool destroy, float fontSize = .35f)
         {
             if (_textTag == null) Init();
@@ -70,7 +58,25 @@ namespace _Scripts.TextTag
 
             textTag.textMesh.fontSize = fontSize;
 
+            textTag.Proccess();
+
             return textTag;
+        }
+
+        private void Proccess()
+        {
+            Observable.EveryUpdate().Subscribe(x =>
+            {
+                var a = Color.a > .01f;
+                if (_destroyTime < Time.time && a) Color = UnityEngine.Color.Lerp(Color, new UnityEngine.Color(0, 0, 0, 0), Time.deltaTime * 5);
+
+                if (!a)
+                {
+                    if (_destroy) Destroy(gameObject);
+
+                    transform.position += Velocity;
+                }
+            }).AddTo(this);
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace _Scripts.Unit.Player
 {
-    class RandomIdle : MonoCached.MonoCached
+    public class RandomIdle : MonoBehaviour
     {
         private Animator _animator;
 

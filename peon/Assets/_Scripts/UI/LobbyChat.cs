@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using _Scripts.Color;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -21,24 +23,31 @@ namespace _Scripts.UI
         [Space]
         [SerializeField] private PhotonView _photonView;
 
+        private readonly SerialDisposable _serialDisposable = new SerialDisposable();
+
+        private void Awake()
+        {
+            _serialDisposable.AddTo(this);
+        }
+
         private void Start()
         {
             _sendMessageButton.onClick.AddListener(() => 
             { 
                 SendMsg(СoncatenationPlayerMessage(_messageInputField.text));
             });
-        }
 
-        private void Update()
-        {
-            if (EventSystem.current.currentSelectedGameObject == _messageInputField.gameObject &&
-                (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)))
+            Observable.EveryUpdate().Subscribe(x =>
             {
-                _sendMessageButton.onClick.Invoke();
-            }
+                if (EventSystem.current.currentSelectedGameObject == _messageInputField.gameObject &&
+                    (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return)))
+                {
+                    _sendMessageButton.onClick.Invoke();
+                }
+            }).AddTo(this);
         }
 
-        private string СoncatenationPlayerMessage(string message)
+        private static string СoncatenationPlayerMessage(string message)
         {
             var color = TextTeamColor.ConvertColorNum(PlayerPrefs.GetInt(PrefsConstants.Color));
             return "<color=" + color + ">" + PhotonNetwork.LocalPlayer.NickName + "</color>" + ": " + message;
@@ -59,22 +68,20 @@ namespace _Scripts.UI
             }
             else
             {
-                _photonView.RPC(nameof(SendMessage), RpcTarget.All, PhotonNetwork.LocalPlayer, message);
+                _photonView.RPC(nameof(SndMessage), RpcTarget.All, message);
             }
         }
 
         [PunRPC]
-        private void SendMessage(Player sender, string message)
+        private void SndMessage(string message)
         {
             var msg = Instantiate(_message, _messageGrid);
             msg.text = message;
-            StartCoroutine(SetScrollO());
-        }
 
-        private IEnumerator SetScrollO()
-        {
-            yield return 0;
-            _scrollRect.verticalNormalizedPosition= 0;
+            _serialDisposable.Disposable = Observable.NextFrame().Subscribe(x =>
+            {
+                _scrollRect.verticalNormalizedPosition= 0;
+            });
         }
 
         public void ClearMessages()

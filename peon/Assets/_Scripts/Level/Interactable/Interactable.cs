@@ -1,8 +1,9 @@
 ﻿using Photon.Pun;
+using UnityEngine;
 
 namespace _Scripts.Level.Interactable
 {
-    public class Interactable : MonoCached.MonoCached, IInteractable
+    public class Interactable : MonoBehaviour, IInteractable
     {
         public delegate void Interacted(Interactable interactable);
         public event Interacted OnInteract;

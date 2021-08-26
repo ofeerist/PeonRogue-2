@@ -2,6 +2,7 @@ using System.Globalization;
 using _Scripts.Unit;
 using _Scripts.Unit.Player;
 using TMPro;
+using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -28,6 +29,15 @@ namespace _Scripts.UI.InGameUI
         private void Start()
         {
             _unitObserver.UnitChanged += OnUnitChanged;
+
+            Observable.EveryUpdate().Subscribe(x =>
+            {
+                _image.fillAmount = Mathf.Lerp(_image.fillAmount, _currentValue, _speed * Time.deltaTime);
+                foreach (var image in _toColorize)
+                {
+                    image.color = _gradient.Evaluate(_image.fillAmount);
+                }
+            }).AddTo(this);
         }
 
         private void OnUnitChanged(Unit.Unit u)
@@ -41,15 +51,6 @@ namespace _Scripts.UI.InGameUI
             _maxHP.text = _playerHealth.MaxHealth.ToString(CultureInfo.InvariantCulture);
             _currentHP.text = _playerHealth.CurrentHealth.ToString(CultureInfo.InvariantCulture);
             _regen.text = _playerHealth.Regen.ToString(CultureInfo.InvariantCulture);
-        }
-
-        private void Update()
-        {
-            _image.fillAmount = Mathf.Lerp(_image.fillAmount, _currentValue, _speed * Time.deltaTime);
-            foreach (var image in _toColorize)
-            {
-                image.color = _gradient.Evaluate(_image.fillAmount);
-            }
         }
 
         private void MaxHealthChanged(float value)
