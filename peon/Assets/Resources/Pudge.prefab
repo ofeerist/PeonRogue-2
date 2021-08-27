@@ -3069,7 +3069,7 @@ MonoBehaviour:
     m_Bits: 2048
   _obstacleMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   _hookCell: {fileID: 5470641466693785946, guid: 2670751803532964ab9224af617ada69, type: 3}
   _hookHead: {fileID: 2011107532224937123, guid: 04508c2ea65190c478f3e5d4be736bb6, type: 3}
   _distanceToSpawnCell: 0.2

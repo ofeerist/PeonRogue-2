@@ -28,6 +28,7 @@ namespace _Scripts.Level.Interactable
         private PhotonView _photonView;
 
         private readonly SerialDisposable _serialDisposable = new SerialDisposable();
+        private readonly Collider[] _results = new Collider[2];
 
         private void Awake()
         {
@@ -41,22 +42,23 @@ namespace _Scripts.Level.Interactable
             _arrow = Instantiate(_arrow, transform);
             _arrow.gameObject.SetActive(false);
 
+            bool inSerial = false;
+            
             Observable.EveryUpdate().Subscribe(x =>
             {
                 if (_observer.Unit == null) return;
 
                 var position = _observer.Unit.transform.position;
 
-                var results = new Collider[10];
-                var count = Physics.OverlapSphereNonAlloc(position, _radius, results, _layerMask);
+                var count = Physics.OverlapSphereNonAlloc(position, _radius, _results, _layerMask);
 
                 _image.enabled = count > 0;
 
                 Collider closest = null;
                 var min = Mathf.Infinity;
                 for (int i = 0; i < count; i++)
-                    if (Vector3.Distance(position, results[i].transform.position) < min)
-                        closest = results[i];
+                    if (Vector3.Distance(position, _results[i].transform.position) < min)
+                        closest = _results[i];
             
                 var arrowActive = _arrow.gameObject.activeSelf;
                 if (closest != null)
@@ -77,13 +79,17 @@ namespace _Scripts.Level.Interactable
                 }
                 else
                 {
-                    if (arrowActive)
+                    if (arrowActive && !inSerial)
                     {
                         _arrow.SetTrigger(Death);
 
+                        inSerial = true;
                         _serialDisposable.Disposable =
                             Observable.Timer(TimeSpan.FromSeconds(.33f)).Subscribe(h =>
-                                _arrow.gameObject.SetActive(false));
+                            {
+                                _arrow.gameObject.SetActive(false);
+                                inSerial = false;
+                            });
                     }
                 }
             }).AddTo(this);
