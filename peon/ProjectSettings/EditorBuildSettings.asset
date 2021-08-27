@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scenes/Waiting.unity
     guid: 98a265020434e534d92809bdf81e141f
-  - enabled: 1
-    path: Assets/_Scenes/FirstLocation5.unity
-    guid: 7d2d426c8a39a299ba418cdd8c981317
+  - enabled: 0
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}
