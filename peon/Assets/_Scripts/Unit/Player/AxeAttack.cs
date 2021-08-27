@@ -129,7 +129,7 @@ namespace _Scripts.Unit.Player
             eff.transform.SetPositionAndRotation(_attacks[attackNum].AttackEffect.transform.position, _attacks[attackNum].AttackEffect.transform.rotation);
             var m = eff.main; m.simulationSpeed = _attacks[attackNum].EffectSpeed;
 
-            _effect.Disposable = Observable.Timer(TimeSpan.FromSeconds(.3f)).Subscribe(z =>
+            _effect.Disposable = Observable.Timer(TimeSpan.FromSeconds(.8f)).Subscribe(z =>
             {
                 Destroy(eff.gameObject);
             });

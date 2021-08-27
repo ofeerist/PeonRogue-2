@@ -1,4 +1,5 @@
 using System;
+using Cinemachine;
 using KinematicCharacterController;
 using Photon.Pun;
 using UniRx;
@@ -104,7 +105,7 @@ namespace _Scripts.Unit.Player
                 }).AddTo (this); 
             
             Observable.EveryUpdate() 
-                .Where(_ => Input.GetKeyDown(KeyCode.Space))
+                .Where(_ => Input.GetKeyDown(KeyCode.Space) && _unit.CurrentState == UnitState.Default)
                 .Subscribe (x =>
                 {
                     if(_dashCooldownTimer <= Time.time && DashCurrentStock > 0) _photonView.RPC(nameof(DashProccess), RpcTarget.AllViaServer);
@@ -218,12 +219,13 @@ namespace _Scripts.Unit.Player
                         _dashDirection = _moveInputVector;
                         if (_moveInputVector == Vector3.zero)
                         {
-                            var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
-                            if (Physics.Raycast(ray, out var hit))
+                            if (UpdateLookPosition())
                             {
-                                var toPoint = (hit.point - transform.position).normalized;
-                                toPoint.y = 0;
-                                _dashDirection = toPoint;
+                                _dashDirection = (LookPosition - transform.position).normalized;
+                            }
+                            else
+                            {
+                                _dashDirection = transform.rotation * Vector3.forward;
                             }
                         }
 
@@ -265,6 +267,9 @@ namespace _Scripts.Unit.Player
                     }
                     break;
                 }
+                case UnitState.Dead:
+                    currentVelocity = Vector3.zero;
+                    break;
             }
         }
         
@@ -306,7 +311,7 @@ namespace _Scripts.Unit.Player
                     var position = transform.position;
                     var dir = (LookPosition - position).normalized;
                     dir.y = 0;
-                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(dir, Vector3.up), 10 * _rotationSpeed * Time.deltaTime);
+                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(dir, Vector3.up), _rotationSpeed * Time.deltaTime);
                     break;
                 }
             }
@@ -360,13 +365,16 @@ namespace _Scripts.Unit.Player
             
         }
 
-        public void UpdateLookPosition()
+        public bool UpdateLookPosition()
         {
             var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out var hit, Mathf.Infinity, GroundLayer))
             {
                 LookPosition = hit.point;
+                return true;
             }
+
+            return false;
         }
     }
 }
