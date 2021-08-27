@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using _Scripts.Level.Interactable.Talents.Data;
+using _Scripts.Unit.Player;
 using KinematicCharacterController;
 using Photon.Pun;
 using UnityEngine;
@@ -71,6 +72,21 @@ namespace _Scripts.Unit
         {
             DontDestroyOnLoad(this);
             DontDestroyOnLoad(Camera.transform.parent.gameObject);
+        }
+
+        private AxeAttack _axeAttack;
+        private RollAttack _rollAttack;
+        [PunRPC]
+        public void ClearDisposables()
+        {
+            if (_axeAttack == null)
+            {
+                _axeAttack = GetComponent<AxeAttack>();
+                _rollAttack = GetComponent<RollAttack>();
+            }
+            
+            _axeAttack.DisposeObservables();
+            _rollAttack.DisposeObservables();
         }
     }
 }

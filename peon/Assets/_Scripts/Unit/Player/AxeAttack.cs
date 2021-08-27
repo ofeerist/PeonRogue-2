@@ -56,8 +56,8 @@ namespace _Scripts.Unit.Player
         private static readonly int Attack1 = Animator.StringToHash("Attack");
 
         private readonly SerialDisposable _attack = new SerialDisposable();
-        private readonly SerialDisposable _effect = new SerialDisposable();
-        private readonly SerialDisposable _damageEffect = new SerialDisposable();
+        private readonly CompositeDisposable _effect = new CompositeDisposable();
+        private readonly CompositeDisposable _damageEffect = new CompositeDisposable();
         
         private readonly Collider[] _results = new Collider[6];
 
@@ -129,10 +129,10 @@ namespace _Scripts.Unit.Player
             eff.transform.SetPositionAndRotation(_attacks[attackNum].AttackEffect.transform.position, _attacks[attackNum].AttackEffect.transform.rotation);
             var m = eff.main; m.simulationSpeed = _attacks[attackNum].EffectSpeed;
 
-            _effect.Disposable = Observable.Timer(TimeSpan.FromSeconds(.8f)).Subscribe(z =>
+            _effect.Add(Observable.Timer(TimeSpan.FromSeconds(.8f)).Subscribe(z =>
             {
                 Destroy(eff.gameObject);
-            });
+            }));
                 
             eff.Play();
         }
@@ -203,12 +203,18 @@ namespace _Scripts.Unit.Player
 
             var p = Instantiate(_attacks[i].HitEffect);
             p.transform.position = pos + new Vector3(0, .5f, 0);
+            p.Play();
             
-            _damageEffect.Disposable = Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(_ =>
+            _damageEffect.Add(Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(_ =>
             {
                 Destroy(p.gameObject);
-            });
+            }));
         }
-        
+
+        public void DisposeObservables()
+        {
+            _damageEffect.Clear();
+            _effect.Clear();
+        }
     }
 }

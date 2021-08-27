@@ -584,10 +584,10 @@ MonoBehaviour:
   _shoutEffect: {fileID: 2996192676981474168, guid: 934c1eeeced99f245bc378941e476f2f, type: 3}
   _prepareEffect: {fileID: 19828672, guid: fd16356be77dc144f806afb0a102d109, type: 3}
   _shoutPos: {fileID: 310138676249348623}
-  _attackDistance: 5
+  _attackDistance: 100
   _prepareTime: 1
   _attackTime: 0.65
-  _attackCooldown: 5
+  _attackCooldown: 0
   _damage: 5
   _knockback: 1
   _shoutClip: {fileID: 8300000, guid: 3a9a4868ce9516f4cb7bdf4b16cfdf2a, type: 3}

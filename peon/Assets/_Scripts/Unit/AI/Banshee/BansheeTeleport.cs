@@ -40,7 +40,7 @@ namespace _Scripts.Unit.AI.Banshee
 
         private readonly SerialDisposable _effect1Disposable = new SerialDisposable();
         private readonly SerialDisposable _effect2Disposable = new SerialDisposable();
-        
+
         private void Awake()
         {
             _effect1Disposable.AddTo(this);
@@ -116,26 +116,28 @@ namespace _Scripts.Unit.AI.Banshee
 
             _audioSource.PlayOneShot(_startTeleport);
 
-            var eff1 = PhotonNetwork.Instantiate(_teleportEffect.name, transform.position,
-                Quaternion.Euler(0, Random.Range(0, 360), 0));
-            _effect1Disposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(1f))
-                .Subscribe(x => { Destroy(eff1); });
+            var position1 = transform.position;
+            _unit.PhotonView.RPC(nameof(TeleporEffect), RpcTarget.AllViaServer, position1.x, position1.y, position1.z, Random.Range(0, 360), true);
 
             _effect2Disposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(.1f)).Subscribe(x =>
             {
                 var end = RandomNavmeshLocation(range, position);
                 _motor.SetPosition(end);
 
-                var eff2 = PhotonNetwork.Instantiate(_teleportEffect.name, end,
-                    Quaternion.Euler(0, Random.Range(0, 360), 0));
-
-                _effect2Disposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(.1f)).Subscribe(z =>
-                {
-                    Destroy(eff2);
-                });
+                _unit.PhotonView.RPC(nameof(TeleporEffect), RpcTarget.AllViaServer, end.x, end.y, end.z, Random.Range(0, 360), false);
             });
         }
 
+        [PunRPC]
+        private void TeleporEffect(float x, float y, float z, int angle, bool first)
+        {
+            var position = new Vector3(x, y, z);
+            var eff= Instantiate(_teleportEffect, position, Quaternion.Euler(0, angle, 0));
+            
+            (first ? _effect1Disposable : _effect2Disposable).Disposable = Observable.Timer(TimeSpan.FromSeconds(1f))
+                .Subscribe(c => { Destroy(eff); });
+        }
+        
         private static Vector3 RandomNavmeshLocation(float radius, Vector3 offset)
         {
             var randomDirection = (Random.insideUnitSphere * radius) + offset;

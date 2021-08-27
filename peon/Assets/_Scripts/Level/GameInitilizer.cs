@@ -51,6 +51,8 @@ namespace _Scripts.Level
                 {
                     motor.enabled = true;
                 });
+                
+                unitObserver.Unit.PhotonView.RPC(nameof(Unit.Unit.ClearDisposables), RpcTarget.OthersBuffered);
             }
         }
     }

@@ -149,8 +149,10 @@ namespace _Scripts.Unit.Player
         private void HitEffect(float x, float y, float z, int seed)
         {
             _audioSource.PlayOneShot(_hit[new System.Random(seed).Next(0, _hit.Length)]);
+            
             var p = Instantiate(_hitEffect);
             p.transform.position = new Vector3(x, y + .5f, z);
+            p.Play();
             
             _effectHit.Add(Observable.Timer(TimeSpan.FromSeconds(.5f)).Subscribe(c =>
             {
@@ -206,6 +208,11 @@ namespace _Scripts.Unit.Player
                 _rollAudioSource.Stop();
                 _rollEffect.Stop();
             }
+        }
+        
+        public void DisposeObservables()
+        {
+            _effectHit.Clear();
         }
     }
 }
