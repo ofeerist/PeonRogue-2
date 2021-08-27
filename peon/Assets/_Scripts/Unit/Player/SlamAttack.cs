@@ -113,12 +113,7 @@ namespace _Scripts.Unit.Player
                 {
                     _unit.CurrentState = UnitState.Attack;
                     
-                    var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out var hit))
-                    {
-                        _movement.LookPosition = hit.point;
-                        _movement.LookPosition.y = 0;
-                    }
+                    _movement.UpdateLookPosition();
 
                     _attackCooldownTimer = _attackCooldown + Time.time;
                     CurrentCharges -= 1;

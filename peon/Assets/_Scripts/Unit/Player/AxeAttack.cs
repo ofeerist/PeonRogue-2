@@ -25,7 +25,7 @@ namespace _Scripts.Unit.Player
     public class AxeAttack : MonoBehaviour
     {
         [SerializeField] private LayerMask _layerMask;
-        
+
         [SerializeField] private float _attackCooldown;
         private float _attackCooldownTimer;
 
@@ -92,14 +92,8 @@ namespace _Scripts.Unit.Player
         {
             _unit.CurrentState = UnitState.Attack;
             
-            var finalmask = 1 << 0 | 1 << 9;
-            var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out var hit, finalmask))
-            {
-                _movement.LookPosition = hit.point;
-                _movement.LookPosition.y = 0;
-            }
-            
+            _movement.UpdateLookPosition();
+
             _currentAttackNum = GetAttackNumFromCombo(_attackComboCount);
             var i = _currentAttackNum - 1;
             

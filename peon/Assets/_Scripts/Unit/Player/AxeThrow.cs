@@ -111,16 +111,16 @@ namespace _Scripts.Unit.Player
 
                     _animator.SetInteger(AttackNum, 2);
                     _animator.SetTrigger(Attack1);
-
+                    
                     var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out var hit))
+                    if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _movement.GroundLayer))
                     {
                         var position = transform.position;
                         var toPoint = (hit.point - position).normalized;
                         toPoint.y = 0;
 
                         _movement.LookPosition = hit.point;
-                                
+
                         var rotation = Quaternion.LookRotation(toPoint, Vector3.up);
                         
                         _attackDisposable.Disposable = Observable.Timer(TimeSpan.FromSeconds(_axeCreateOffset)).Subscribe(

@@ -12,7 +12,7 @@ namespace _Scripts.Unit.AI
 {
     public class MovementAI : MonoBehaviour, ICharacterController
     {
-        [HideInInspector] public Vector3 ToTarget;
+        public Vector3 ToTarget;
         
         private KinematicCharacterMotor _motor;
         private Unit _unit;
@@ -327,7 +327,7 @@ namespace _Scripts.Unit.AI
                     var dir = (ToTarget - transform.position).normalized;
                     dir.y = 0;
                     
-                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(dir, Vector3.up), _rotationSpeed * Time.deltaTime);
+                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(dir, Vector3.up), _rotationSpeed * Time.deltaTime * 10);
                     
                     break;
                 }

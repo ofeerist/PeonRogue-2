@@ -10,8 +10,9 @@ namespace _Scripts.Unit.Player
 {
     public class Movement : MonoBehaviour, ICharacterController
     {
-        [HideInInspector] public Vector3 LookPosition;
-        
+        public LayerMask GroundLayer;
+        public Vector3 LookPosition;
+
         private KinematicCharacterMotor _motor;
         private Unit _unit;
         
@@ -302,7 +303,8 @@ namespace _Scripts.Unit.Player
                 }
                 case UnitState.Attack:
                 {
-                    var dir = (LookPosition - transform.position).normalized;
+                    var position = transform.position;
+                    var dir = (LookPosition - position).normalized;
                     dir.y = 0;
                     currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(dir, Vector3.up), 10 * _rotationSpeed * Time.deltaTime);
                     break;
@@ -356,6 +358,15 @@ namespace _Scripts.Unit.Player
         public void OnDiscreteCollisionDetected(Collider hitCollider)
         {
             
+        }
+
+        public void UpdateLookPosition()
+        {
+            var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
+            if (Physics.Raycast(ray, out var hit, Mathf.Infinity, GroundLayer))
+            {
+                LookPosition = hit.point;
+            }
         }
     }
 }

@@ -74,7 +74,7 @@ namespace _Scripts.Unit.AI
                 {
                     if (_results[i].GetComponent<Unit>().enabled)
                     {
-                        _movement.ToTarget = (_results[i].transform.position - transform.position).normalized;
+                        _movement.ToTarget = _results[i].transform.position;
                         Attack();
                         
                         return;
