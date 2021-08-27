@@ -12,11 +12,13 @@ namespace _Scripts.UI
         [SerializeField] private PreviewPeons _previewPeons;
         [SerializeField] private PhotonView _photonView;
         [SerializeField] private Button _startButton;
+        private static readonly int TeamColor = Shader.PropertyToID("TeamColor");
 
         [PunRPC]
         private void UpdatePreviewPeonsColor(int i, float r, float g, float b, float a)
         {
-            _previewPeons.Peons[i].MeshRenderer.material.SetColor("TeamColor", new UnityEngine.Color(r, g, b, a));
+            _previewPeons.Peons[i].MeshRendereres[0].material.SetColor(TeamColor, new UnityEngine.Color(r, g, b, a));
+            _previewPeons.Peons[i].MeshRendereres[1].material.SetColor(TeamColor, new UnityEngine.Color(r, g, b, a));
         }
 
         [PunRPC]

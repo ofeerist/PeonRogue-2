@@ -59,9 +59,10 @@ namespace _Scripts.Unit
         public void ChangeColor(int peonViewId, float r, float g, float b, float a)
         {
             var peon = PhotonNetwork.GetPhotonView(peonViewId).gameObject;
-            var skinnedMesh = peon.GetComponentInChildren<SkinnedMeshRenderer>();
-            skinnedMesh.material.SetColor(TeamColor, new UnityEngine.Color(r, g, b, a));
-
+            var skinnedMeshes = peon.GetComponentsInChildren<SkinnedMeshRenderer>();
+            skinnedMeshes[0].material.SetColor(TeamColor, new UnityEngine.Color(r, g, b, a));
+            skinnedMeshes[1].material.SetColor(TeamColor, new UnityEngine.Color(r, g, b, a));
+            
             if (peon.GetPhotonView().Owner != PhotonNetwork.LocalPlayer) peon.GetComponentInChildren<Light>().gameObject.SetActive(false);
         }
 

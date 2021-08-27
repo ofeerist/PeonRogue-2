@@ -12,20 +12,23 @@ namespace _Scripts.UI
         [SerializeField] private PreviewPeons _previewPeons;
         [SerializeField] private PhotonView _photonView;
         [SerializeField] private Button _startButton;
+        private static readonly int TeamColor = Shader.PropertyToID("TeamColor");
 
         [PunRPC]
         private void UpdatePreviewPeonsColor(int i, float r, float g, float b, float a)
         {
-            _previewPeons.Peons[i].MeshRenderer.material.SetColor("TeamColor", new UnityEngine.Color(r, g, b, a));
+            _previewPeons.Peons[i].MeshRendereres[0].material.SetColor(TeamColor, new UnityEngine.Color(r, g, b, a));
+            _previewPeons.Peons[i].MeshRendereres[1].material.SetColor(TeamColor, new UnityEngine.Color(r, g, b, a));
         }
 
         [PunRPC]
         private void UpdatePreviewPeons()
         {
-            for (int i = 0; i < _previewPeons.Peons.Length; i++)
+            foreach (var t in _previewPeons.Peons)
             {
-                _previewPeons.Peons[i].GameObject.SetActive(false);
+                t.GameObject.SetActive(false);
             }
+
             for (int i = 0; i < PhotonNetwork.PlayerList.Length; i++)
             {
                 if (PhotonNetwork.PlayerList[i] == null) continue;
@@ -65,14 +68,15 @@ namespace _Scripts.UI
 
         private void UpdatePeonOnSelfLeave()
         {
-            for (int i = 0; i < _previewPeons.Peons.Length; i++)
+            foreach (var t in _previewPeons.Peons)
             {
-                _previewPeons.Peons[i].GameObject.SetActive(false);
+                t.GameObject.SetActive(false);
             }
 
             _previewPeons.Peons[0].GameObject.SetActive(true);
             _previewPeons.Peons[0].TextName.text = PhotonNetwork.NickName;
-            _previewPeons.Peons[0].MeshRenderer.material.SetColor("TeamColor", ShaderTeamColor.ConvertColorNum(PlayerPrefs.GetInt(PrefsConstants.Color)));
+            _previewPeons.Peons[0].MeshRendereres[0].material.SetColor(TeamColor, ShaderTeamColor.ConvertColorNum(PlayerPrefs.GetInt(PrefsConstants.Color)));
+            _previewPeons.Peons[0].MeshRendereres[1].material.SetColor(TeamColor, ShaderTeamColor.ConvertColorNum(PlayerPrefs.GetInt(PrefsConstants.Color)));
         }
 
         public override void OnJoinedRoom()

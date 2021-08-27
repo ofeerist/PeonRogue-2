@@ -13,6 +13,8 @@ namespace _Scripts.UI.Options
         [SerializeField] private TMP_Dropdown ColorInput;
 
         [SerializeField] private PreviewPeons _previewPeons;
+        private static readonly int TeamColor = Shader.PropertyToID("TeamColor");
+
         private void Start()
         {
             NicknameText.text = PlayerPrefs.GetString(PrefsConstants.Nickname) ?? SystemInfo.deviceName;
@@ -31,7 +33,8 @@ namespace _Scripts.UI.Options
 
             ColorInput.onValueChanged.AddListener((i) => {
                 PlayerPrefs.SetInt(PrefsConstants.Color, i);
-                _previewPeons.Peons[0].MeshRenderer.material.SetColor("TeamColor", ShaderTeamColor.ConvertColorNum(PlayerPrefs.GetInt(PrefsConstants.Color)));
+                _previewPeons.Peons[0].MeshRendereres[0].material.SetColor(TeamColor, ShaderTeamColor.ConvertColorNum(PlayerPrefs.GetInt(PrefsConstants.Color)));
+                _previewPeons.Peons[0].MeshRendereres[1].material.SetColor(TeamColor, ShaderTeamColor.ConvertColorNum(PlayerPrefs.GetInt(PrefsConstants.Color)));
             });
         }
     }

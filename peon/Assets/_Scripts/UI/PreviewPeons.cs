@@ -7,7 +7,7 @@ namespace _Scripts.UI
     class PreviewPeon
     {
         public GameObject GameObject;
-        public SkinnedMeshRenderer MeshRenderer;
+        public SkinnedMeshRenderer[] MeshRendereres;
         public TextMeshProUGUI TextName;
     }
     class PreviewPeons : MonoBehaviour
@@ -23,7 +23,7 @@ namespace _Scripts.UI
                 Peons[i] = new PreviewPeon
                 {
                     GameObject = GameObjects[i],
-                    MeshRenderer = GameObjects[i].GetComponentInChildren<SkinnedMeshRenderer>(),
+                    MeshRendereres = GameObjects[i].GetComponentsInChildren<SkinnedMeshRenderer>(),
                     TextName = GameObjects[i].GetComponentInChildren<TextMeshProUGUI>()
                 };
             }
