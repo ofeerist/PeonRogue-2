@@ -311,7 +311,7 @@ namespace _Scripts.Unit.Player
                     var position = transform.position;
                     var dir = (LookPosition - position).normalized;
                     dir.y = 0;
-                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(dir, Vector3.up), _rotationSpeed * Time.deltaTime);
+                    currentRotation = Quaternion.Slerp(currentRotation, Quaternion.LookRotation(dir, Vector3.up), _rotationSpeed * Time.deltaTime * 3);
                     break;
                 }
             }
