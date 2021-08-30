@@ -2092,9 +2092,9 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1101.0,
-            "y": 386.9999694824219,
-            "width": 126.0,
+            "x": 1122.0,
+            "y": 409.0,
+            "width": 130.0,
             "height": 142.0
         }
     },
@@ -3520,10 +3520,10 @@
         "m_Expanded": false,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1330.0,
-            "y": 457.0,
-            "width": 117.99999237060547,
-            "height": 149.0
+            "x": 1309.0,
+            "y": 474.0000305175781,
+            "width": 119.00000762939453,
+            "height": 77.0
         }
     },
     "m_Slots": [
@@ -3774,6 +3774,8 @@
         "m_GuidSerialized": "5d3dc15c-b6d6-4244-bb33-8ff3efb43584"
     },
     "m_Name": "BumpMap",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Texture2D_9091476E",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -4251,6 +4253,8 @@
         "m_GuidSerialized": "5b2e3100-3ab9-4fed-8442-6678cae970d2"
     },
     "m_Name": "MainTex",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Texture2D_973617E6",
     "m_OverrideReferenceName": "_MainTex",
     "m_GeneratePropertyBlock": true,
@@ -4740,6 +4744,8 @@
         "m_GuidSerialized": "7b19d94b-406f-4531-9102-c4d8054da7b5"
     },
     "m_Name": "OrmMap",
+    "m_DefaultRefNameVersion": 0,
+    "m_RefNameGeneratedByDisplayName": "",
     "m_DefaultReferenceName": "Texture2D_6D9424C2",
     "m_OverrideReferenceName": "",
     "m_GeneratePropertyBlock": true,
@@ -5753,10 +5759,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": 1534.0001220703125,
-            "y": 543.0,
-            "width": 232.00001525878907,
-            "height": 146.00001525878907
+            "x": 1368.0,
+            "y": 649.0,
+            "width": 231.99998474121095,
+            "height": 146.0
         }
     },
     "m_Slots": [

@@ -237,10 +237,12 @@ namespace _Scripts.Unit.AI
         private IEnumerator Dispose()
         {
             var _transform = transform;
-            int k = 0;
-            while(++k < 500)
+            var time = Time.time + 5f;
+            
+            while(time > Time.time)
             {
                 yield return null;
+                
                 _transform.position -= new Vector3(0, .3f * Time.deltaTime, 0);
             }
         }

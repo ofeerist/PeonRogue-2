@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace _Scripts.Unit.AI.Banshee
 {
-    class BansheeTeleport : MonoBehaviour
+    public class BansheeTeleport : MonoBehaviour
     {
         [SerializeField] private LayerMask _layerMask;
         private readonly Collider[] _results = new Collider[6];
@@ -113,9 +113,7 @@ namespace _Scripts.Unit.AI.Banshee
         private void Teleport(float range, Vector3 position)
         {
             _teleportCooldownTimer = Time.time + _teleportCooldown;
-
-            _audioSource.PlayOneShot(_startTeleport);
-
+            
             var position1 = transform.position;
             _unit.PhotonView.RPC(nameof(TeleporEffect), RpcTarget.AllViaServer, position1.x, position1.y, position1.z, Random.Range(0, 360), true);
 
@@ -136,6 +134,8 @@ namespace _Scripts.Unit.AI.Banshee
             
             (first ? _effect1Disposable : _effect2Disposable).Disposable = Observable.Timer(TimeSpan.FromSeconds(1f))
                 .Subscribe(c => { Destroy(eff); });
+            
+            _audioSource.PlayOneShot(first ? _startTeleport : _endTeleport);
         }
         
         private static Vector3 RandomNavmeshLocation(float radius, Vector3 offset)

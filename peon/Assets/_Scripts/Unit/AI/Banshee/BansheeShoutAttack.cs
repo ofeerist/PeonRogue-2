@@ -35,9 +35,7 @@ namespace _Scripts.Unit.AI.Banshee
         private Unit _target;
 
         private ParticleSystem _shout;
-
-        private Coroutine _shoutCoroutine;
-
+        
         private AudioSource _audioSource;
         [SerializeField] private AudioClip _shoutClip;
         private static readonly int Shout1 = Animator.StringToHash("Shout");
