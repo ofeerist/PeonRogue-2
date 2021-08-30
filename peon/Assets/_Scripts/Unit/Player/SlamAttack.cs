@@ -39,6 +39,9 @@ namespace _Scripts.Unit.Player
             }
         }
 
+        public delegate void Tapping();
+        public event Tapping Overtapping;
+        
         public delegate void ValueChanged(int charges);
         public event ValueChanged ChargeChanged;
 
@@ -107,10 +110,20 @@ namespace _Scripts.Unit.Player
             }).AddTo(this);
 
             Observable.EveryUpdate()
-                .Where(_ => Input.GetKeyDown(KeyCode.Q) && _unit.CurrentState == UnitState.Default &&
-                            CurrentCharges > 0 && _attackCooldownTimer < Time.time)
+                .Where(_ => Input.GetKeyDown(KeyCode.Q))
                 .Subscribe(x =>
                 {
+                    if (_unit.CurrentState == UnitState.Default &&
+                        CurrentCharges > 0 && _attackCooldownTimer < Time.time)
+                    {
+                        
+                    }
+                    else
+                    {
+                        Overtapping?.Invoke();
+                        return;
+                    }
+                    
                     _unit.CurrentState = UnitState.Attack;
                     
                     _movement.UpdateLookPosition();

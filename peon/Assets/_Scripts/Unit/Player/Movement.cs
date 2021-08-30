@@ -71,6 +71,9 @@ namespace _Scripts.Unit.Player
         public delegate void TimeChange(float time);
         public event TimeChange TimeChanged;
 
+        public delegate void Tapping();
+        public event Tapping Overtapping;
+        
         private Vector3 _internalVelocityAdd;
         
         private static readonly int Walk = Animator.StringToHash("Walk");
@@ -104,11 +107,15 @@ namespace _Scripts.Unit.Player
                     _unit.Animator.SetBool(Walk, _motor.Velocity.magnitude > 0.01f && _unit.CurrentState == UnitState.Default);
                 }).AddTo (this); 
             
-            Observable.EveryUpdate() 
-                .Where(_ => Input.GetKeyDown(KeyCode.Space) && _unit.CurrentState == UnitState.Default)
+            Observable.EveryUpdate().Where(_ => Input.GetKeyDown(KeyCode.Space))
                 .Subscribe (x =>
                 {
-                    if(_dashCooldownTimer <= Time.time && DashCurrentStock > 0) _photonView.RPC(nameof(DashProccess), RpcTarget.AllViaServer);
+                    if (_dashCooldownTimer <= Time.time && DashCurrentStock > 0 && _unit.CurrentState == UnitState.Default)
+                        _photonView.RPC(nameof(DashProccess), RpcTarget.AllViaServer);
+                    else
+                    {
+                        Overtapping?.Invoke();
+                    }
                 }).AddTo (this); 
             
             Observable.EveryUpdate().Subscribe(_ =>

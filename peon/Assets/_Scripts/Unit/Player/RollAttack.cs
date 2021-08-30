@@ -62,6 +62,9 @@ namespace _Scripts.Unit.Player
         
         private readonly CompositeDisposable _effectHit = new CompositeDisposable();
 
+        public delegate void Tapping();
+        public event Tapping Overtapping;
+        
         private void Awake()
         {
             _effectHit.AddTo(this);
@@ -170,7 +173,12 @@ namespace _Scripts.Unit.Player
             if (_rollTimer >= _rollTimeToStart)
             {
                 if(_unit.CurrentState == UnitState.Default) StartRolling();
-                else _rollTimer = 0;
+                else
+                {
+                    Overtapping?.Invoke();
+                    
+                    _rollTimer = 0;
+                }
             }
             else
             {

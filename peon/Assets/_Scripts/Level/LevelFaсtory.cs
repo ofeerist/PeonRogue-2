@@ -22,6 +22,8 @@ namespace _Scripts.Level
         [SerializeField] private Transfer _transfer;
         [SerializeField] private Talent _talent;
 
+        public UnitObserver UnitObserver => _unitObserver;
+
         [Space] 
         
         [SerializeField] private ParticleSystem _spawnEffect;

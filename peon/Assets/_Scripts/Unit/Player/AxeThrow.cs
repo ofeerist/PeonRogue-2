@@ -47,6 +47,9 @@ namespace _Scripts.Unit.Player
         public delegate void TimeChange(float time);
         public event TimeChange TimeChanged;
 
+        public delegate void Tapping();
+        public event Tapping Overtapping;
+
         [SerializeField] private float _maxFlightDistance;
 
         [SerializeField] private float _attackCooldown;
@@ -100,11 +103,21 @@ namespace _Scripts.Unit.Player
             }).AddTo(this);
 
             Observable.EveryUpdate()
-                .Where(_ => Input.GetKeyDown(KeyCode.Mouse1) && _unit.CurrentState == UnitState.Default &&
-                            CurrentThrowCharges > 0 &&
-                            _attackCooldownTimer < Time.time)
+                .Where(_ => Input.GetKeyDown(KeyCode.Mouse1))
                 .Subscribe(x =>
                 {
+                    if (_unit.CurrentState == UnitState.Default &&
+                        CurrentThrowCharges > 0 &&
+                        _attackCooldownTimer < Time.time)
+                    {
+                        
+                    }
+                    else
+                    {
+                        Overtapping?.Invoke();
+                        
+                        return;
+                    }
                     _unit.CurrentState = UnitState.Attack;
                     _attackCooldownTimer = _attackCooldown + Time.time;
                     CurrentThrowCharges -= 1;

@@ -20,7 +20,8 @@ namespace _Scripts.Unit.AI
         private float _currentHealth;
         
         [SerializeField] private bool _doodad;
-
+        public bool IsDoodad => _doodad;
+        
         [SerializeField] private int _goldReward;
         [SerializeField] private GoldProjectile _goldPrefab;
         
