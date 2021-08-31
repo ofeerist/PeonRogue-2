@@ -122,7 +122,7 @@ namespace _Scripts.Unit.Player
                     _attackCooldownTimer = _attackCooldown + Time.time;
                     CurrentThrowCharges -= 1;
 
-                    _photonView.RPC(nameof(AnimatorTrigger), RpcTarget.AllViaServer);
+                    _photonView.RPC(nameof(AnimatorTrigger1), RpcTarget.AllViaServer);
                     
                     var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _movement.GroundLayer))
@@ -152,7 +152,7 @@ namespace _Scripts.Unit.Player
         }
 
         [PunRPC]
-        private void AnimatorTrigger()
+        private void AnimatorTrigger1()
         {
             _animator.SetInteger(AttackNum, 2);
             _animator.SetTrigger(Attack1);
