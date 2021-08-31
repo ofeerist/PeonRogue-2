@@ -144,6 +144,7 @@ namespace _Scripts.Unit.Player
         {
             DashCurrentStock--;
             _toDash = true;
+            _unit.Animator.SetTrigger(Dash);
         }
 
         private Vector3 GetReorientedInput(ref Vector3 currentVelocity, Vector3 input)
@@ -221,7 +222,6 @@ namespace _Scripts.Unit.Player
                         _toDash = false;
                         
                         _unit.CurrentState = UnitState.Dash;
-                        _unit.Animator.SetTrigger(Dash);
 
                         _dashDirection = _moveInputVector;
                         if (_moveInputVector == Vector3.zero)

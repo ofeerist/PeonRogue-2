@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using _Scripts.Unit.AI;
 using Photon.Pun;
 using UniRx;
@@ -143,6 +144,11 @@ namespace _Scripts.Unit.Player
 
             transform.GetChild(0).gameObject.SetActive(false);
 
+            _photonView.RPC(nameof(Destroy), RpcTarget.AllViaServer);
+        }
+
+        private void Destroy()
+        {
             var ps = Instantiate(_disposeEffect);
             ps.transform.position = transform.position;
             ps.Play();

@@ -23,6 +23,8 @@ namespace _Scripts.Unit.AI
         
         [SerializeField] private Vector3 _gravity;
 
+        public bool Unmovenable;
+        
         [Space]
         
         [SerializeField] private float _maxStableMoveSpeed;
@@ -178,6 +180,13 @@ namespace _Scripts.Unit.AI
         
         public void UpdateVelocity(ref Vector3 currentVelocity, float deltaTime)
         {
+            if (Unmovenable)
+            {
+                currentVelocity = Vector3.zero;
+                
+                return;
+            }
+            
             // code from example
             switch (_unit.CurrentState)
             {

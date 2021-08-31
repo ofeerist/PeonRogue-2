@@ -117,8 +117,13 @@ namespace _Scripts.Unit.Player
                 });
             });
             
-            // Animator
-            _unit.Animator.SetInteger(AttackNum, _currentAttackNum);
+            _photonView.RPC(nameof(AnimatorTrigger), RpcTarget.AllViaServer);
+        }
+        
+        [PunRPC]
+        private void AnimatorTrigger()
+        {
+            _unit.Animator.SetInteger(AttackNum, 2);
             _unit.Animator.SetTrigger(Attack1);
         }
         

@@ -668,7 +668,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -1823754836589956214, guid: d3858b92a4097d04faa601aee35ea402, type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 0.25
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -943,6 +943,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToTarget: {x: 0, y: 0, z: 0}
   _gravity: {x: 0, y: -30, z: 0}
+  Unmovenable: 1
   _maxStableMoveSpeed: 0
   _stableMovementSharpness: 0
   _airAccelerationSpeed: 0

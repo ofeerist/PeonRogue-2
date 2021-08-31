@@ -122,8 +122,7 @@ namespace _Scripts.Unit.Player
                     _attackCooldownTimer = _attackCooldown + Time.time;
                     CurrentThrowCharges -= 1;
 
-                    _animator.SetInteger(AttackNum, 2);
-                    _animator.SetTrigger(Attack1);
+                    _photonView.RPC(nameof(AnimatorTrigger), RpcTarget.AllViaServer);
                     
                     var ray = _unit.Camera.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out var hit, Mathf.Infinity, _movement.GroundLayer))
@@ -151,8 +150,14 @@ namespace _Scripts.Unit.Player
                     }
                 }).AddTo(this);
         }
-        
 
+        [PunRPC]
+        private void AnimatorTrigger()
+        {
+            _animator.SetInteger(AttackNum, 2);
+            _animator.SetTrigger(Attack1);
+        }
+        
         [PunRPC]
         private void CreateAxe(float x, float y, float z, float rx, float ry, float rz, float rw, bool roll)
         {

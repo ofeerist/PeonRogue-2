@@ -44,10 +44,9 @@ namespace _Scripts.Unit.Player
                 {
                     if (_unit.CurrentState != UnitState.Dash || _attack) return;
                     
-                    _photonView.RPC(nameof(Proccess), RpcTarget.AllViaServer);
+                    _photonView.RPC(nameof(Proccess), RpcTarget.AllViaServer, true);
                     _attack = true;
-                    _unit.Animator.SetBool(Attack, _attack);
-                    
+
                 }).AddTo (this); 
             
             Observable.Interval(TimeSpan.FromSeconds(_damageInterval)).Subscribe(_ =>
@@ -58,16 +57,20 @@ namespace _Scripts.Unit.Player
                 }
                 else
                 {
-                    _unit.Animator.SetBool(Attack, false);
+                    _photonView.RPC(nameof(Proccess), RpcTarget.AllViaServer, false);
                     _attack = false;
                 }
             }).AddTo(this);
         }
         
         [PunRPC]
-        private void Proccess()
+        private void Proccess(bool b)
         {
-            _dashAttackEffect.Play();
+            if (b)
+            {
+                _dashAttackEffect.Play();
+            }
+            _unit.Animator.SetBool(Attack, b);
         }
         
         private void AttackDamage()
