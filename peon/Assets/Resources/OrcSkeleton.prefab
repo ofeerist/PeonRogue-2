@@ -514,6 +514,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ToTarget: {x: 0, y: 0, z: 0}
   _gravity: {x: 0, y: -30, z: 0}
+  Unmovenable: 0
   _maxStableMoveSpeed: 2
   _stableMovementSharpness: 50
   _airAccelerationSpeed: 2
