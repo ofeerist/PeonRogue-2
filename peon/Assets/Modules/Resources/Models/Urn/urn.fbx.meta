@@ -1,8 +1,29 @@
 fileFormatVersion: 2
-guid: 4c28b467c96240e409410c9ee308fb96
+guid: 38fbe03a4e4608745b37dc9d62f2963c
 ModelImporter:
-  serializedVersion: 20200
-  internalIDToNameTable: []
+  serializedVersion: 21100
+  internalIDToNameTable:
+  - first:
+      74: 2788708581886206802
+    second: Death.001
+  - first:
+      74: 4410717801214988429
+    second: Stand 1.001
+  - first:
+      74: 2250099567583096830
+    second: Birth.001
+  - first:
+      74: -6364840854863587346
+    second: Morph .001
+  - first:
+      74: 688222811085966174
+    second: Death 1.001
+  - first:
+      74: -4753819906141882724
+    second: Attack 1.001
+  - first:
+      74: -7425293144584156079
+    second: Stand Alternate 1.001
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -35,7 +56,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 3
+    meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
