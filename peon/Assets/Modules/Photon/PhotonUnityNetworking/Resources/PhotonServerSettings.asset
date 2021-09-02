@@ -91,6 +91,8 @@ MonoBehaviour:
   - TeleporEffect
   - AnimatorTrigger
   - AnimatorTrigger1
+  - Destroy
+  - ActivateLoading
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

@@ -147,6 +147,7 @@ namespace _Scripts.Unit.Player
             _photonView.RPC(nameof(Destroy), RpcTarget.AllViaServer);
         }
 
+        [PunRPC]
         private void Destroy()
         {
             var ps = Instantiate(_disposeEffect);

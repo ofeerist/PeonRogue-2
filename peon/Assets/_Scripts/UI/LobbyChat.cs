@@ -59,7 +59,7 @@ namespace _Scripts.UI
             {
                 if (_messageInputField.text.Length > 0 && _messageInputField.text.Length < 500)
                 {
-                    _photonView.RPC(nameof(SndMessage), RpcTarget.All, PhotonNetwork.LocalPlayer, message);
+                    _photonView.RPC(nameof(SndMessage), RpcTarget.All, message);
                     _messageInputField.text = "";
                 }
 

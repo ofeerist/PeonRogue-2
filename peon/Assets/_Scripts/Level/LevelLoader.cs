@@ -46,6 +46,12 @@ namespace _Scripts.Level
             Loaded = 0;
             _started = false;
             
+            _photonView.RPC(nameof(ActivateLoading), RpcTarget.AllViaServer, sceneName);
+        }
+
+        [PunRPC]
+        private void ActivateLoading(string sceneName)
+        {
             _textMesh.text = "Loading...";
             
             _UI.SetActive(true);
