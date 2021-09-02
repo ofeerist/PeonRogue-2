@@ -49,7 +49,7 @@ namespace _Scripts.Unit.Player
             var pp = PhotonNetwork.Instantiate(prefab.name, position, rotation);
             var axe = pp.GetComponent<Axe>();
             axe._creator = creator;
-            axe._photonView = creator.GetComponent<PhotonView>();
+            axe._photonView = axe.GetComponent<PhotonView>();
             
             axe._damage = damage;
             axe._knockback = knockback;
@@ -144,11 +144,11 @@ namespace _Scripts.Unit.Player
 
             transform.GetChild(0).gameObject.SetActive(false);
 
-            _photonView.RPC(nameof(Destroy), RpcTarget.AllViaServer);
+            _photonView.RPC(nameof(End), RpcTarget.AllViaServer);
         }
 
         [PunRPC]
-        private void Destroy()
+        private void End()
         {
             var ps = Instantiate(_disposeEffect);
             ps.transform.position = transform.position;

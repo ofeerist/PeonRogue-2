@@ -20,6 +20,8 @@ namespace _Scripts.UI
             PhotonNetwork.AutomaticallySyncScene = true;
             PhotonNetwork.GameVersion = "beta1";
 
+            PhotonNetwork.PhotonServerSettings.AppSettings.FixedRegion = "ru";
+            
             PhotonNetwork.ConnectUsingSettings();
 
             var asource = GetComponent<AudioSource>();

@@ -23,7 +23,7 @@ namespace _Scripts.UI.InGameUI
                 {
                     foreach (var VARIABLE in _toHide)
                     {
-                        VARIABLE.SetActive(true);
+                        VARIABLE.SetActive(false);
                     }
                 }
             }).AddTo(this);
