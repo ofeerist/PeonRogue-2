@@ -196,6 +196,7 @@ namespace _Scripts.Unit.AI
 
         private void Death(int killerID)
         {
+            _unit.Animator.speed = 1;
             _unit.Animator.SetBool(Dead1, true);
             _onDeath.Play();
             _unit.CurrentState = UnitState.Dead;
