@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
-namespace _Scripts.Unit.Ship
+namespace _Scripts.Campaign.Ocean
 {
     public class ShipMovement : MonoBehaviour
     {
@@ -24,6 +24,11 @@ namespace _Scripts.Unit.Ship
         [SerializeField] private float _anglePerState;
         [SerializeField] private float _maxStates;
         [SerializeField] private float _maxDifference;
+
+        public float MaxDifference
+        {
+            set => _maxDifference = value;
+        }
 
         private int _currentState;
         private int _movement;
@@ -187,7 +192,7 @@ namespace _Scripts.Unit.Ship
                     }
                 } 
                 
-                rotation = Quaternion.Lerp(rotation,
+                rotation = Quaternion.Slerp(rotation,
                     Quaternion.Euler(0, _forwardAngle + _anglePerState * _currentState, 0),
                     _rotationSpeed * Time.fixedDeltaTime);
                 _ship.rotation = rotation;

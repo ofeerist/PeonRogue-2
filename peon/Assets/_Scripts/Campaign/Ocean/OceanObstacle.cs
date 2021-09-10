@@ -1,7 +1,6 @@
-using System;
 using UnityEngine;
 
-namespace _Scripts.Unit.Ship
+namespace _Scripts.Campaign.Ocean
 {
     public class OceanObstacle : MonoBehaviour
     {
